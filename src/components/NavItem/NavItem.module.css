@@ -1,0 +1,21 @@
+.link {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  text-decoration: none;
+  color: #8585ad;
+  padding: 16px 20px;
+}
+
+.linkActive {
+  color: #f2f2f3;
+}
+
+.iconWrapper {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
