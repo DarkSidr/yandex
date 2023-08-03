@@ -30,7 +30,11 @@ const BurgerIngredients = () => {
               </h2>
               <ul className={`${styles.list} pl-4`}>
                 {sortData[type].map((item) => (
-                  <BurgerIngredientsItem key={item._id} item={item} />
+                  <BurgerIngredientsItem
+                    key={item._id}
+                    item={item}
+                    count={item.fat < 200 && 1}
+                  />
                 ))}
               </ul>
             </div>

@@ -3,7 +3,7 @@ import PriceItem from "../PriceItem/PriceItem";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerIngredientsItem.module.css";
 
-const BurgerIngredientsItem = ({ item }) => {
+const BurgerIngredientsItem = ({ item, count }) => {
   return (
     <li className={styles.listItem}>
       <div className={styles.imgWrapper}>
@@ -13,7 +13,7 @@ const BurgerIngredientsItem = ({ item }) => {
       <span className={`text text_type_main-default ${styles.text}`}>
         {item.name}
       </span>
-      <Counter count={1} size="default" extraClass="m-1" />
+      {count && <Counter count={count} size="default" extraClass="m-1" />}
     </li>
   );
 };

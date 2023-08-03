@@ -2,11 +2,17 @@ import React from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons";
 import styles from "./PriceItem.module.css";
 
-const PriceItem = ({ price }) => {
+const PriceItem = ({ price, large = false }) => {
   return (
-    <div className={styles.wrapper}>
-      <span className="text text_type_digits-default">{price}</span>
-      <div className={styles.icon}>
+    <div className={`${styles.wrapper}  ${large && styles.largeWrapper}`}>
+      <span
+        className={`text text_type_digits-default ${
+          large && "text_type_digits-medium"
+        }`}
+      >
+        {price}
+      </span>
+      <div className={`${styles.icon} ${large && styles.largeIcon}`}>
         <CurrencyIcon type="primary" />
       </div>
     </div>
