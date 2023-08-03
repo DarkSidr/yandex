@@ -30,9 +30,8 @@ const AppNav = () => {
       <ul className={styles.nav}>
         {navList.map((item) => {
           return (
-            <li>
+            <li key={item.id}>
               <NavItem
-                key={item.id}
                 icon={item.icon}
                 title={item.title}
                 href={item.href}

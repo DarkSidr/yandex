@@ -1,0 +1,13 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
+}
+.icon {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
