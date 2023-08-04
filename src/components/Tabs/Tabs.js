@@ -1,6 +1,6 @@
 import React from "react";
 import TabItem from "../TabItem/TabItem";
-// import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./Tabs.module.css";
 
 const tabItems = [
   {
@@ -26,7 +26,7 @@ const tabItems = [
 const Tabs = () => {
   const [current, setCurrent] = React.useState("rolls");
   return (
-    <div style={{ display: "flex" }}>
+    <div className={styles.tabWrapepr}>
       {tabItems.map((tab) => {
         return (
           <TabItem

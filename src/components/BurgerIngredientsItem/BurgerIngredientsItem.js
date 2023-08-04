@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import PriceItem from "../PriceItem/PriceItem";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerIngredientsItem.module.css";
@@ -7,15 +8,20 @@ const BurgerIngredientsItem = ({ item, count }) => {
   return (
     <li className={styles.listItem}>
       <div className={styles.imgWrapper}>
-        <img className={styles.img} src={item.image} />
+        <img alt={item.name} className={styles.img} src={item.image} />
       </div>
       <PriceItem price={item.price} />
       <span className={`text text_type_main-default ${styles.text}`}>
         {item.name}
       </span>
-      {count && <Counter count={count} size="default" extraClass="m-1" />}
+      {!!count && <Counter count={count} size="default" extraClass="m-1" />}
     </li>
   );
+};
+
+BurgerIngredientsItem.propTypes = {
+  item: PropTypes.object,
+  count: PropTypes.number,
 };
 
 export default BurgerIngredientsItem;

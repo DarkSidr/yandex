@@ -13,7 +13,8 @@ const BurgerIngredients = () => {
   }, {});
 
   return (
-    <React.Fragment>
+    <section className="mt-10">
+      <h2 className="text text_type_main-large">Соберите бургер</h2>
       <div className="mt-5 mb-10">
         <Tabs />
       </div>
@@ -33,7 +34,7 @@ const BurgerIngredients = () => {
                   <BurgerIngredientsItem
                     key={item._id}
                     item={item}
-                    count={item.fat < 200 && 1}
+                    count={item.fat < 200 ? 1 : 0}
                   />
                 ))}
               </ul>
@@ -41,7 +42,7 @@ const BurgerIngredients = () => {
           );
         })}
       </div>
-    </React.Fragment>
+    </section>
   );
 };
 

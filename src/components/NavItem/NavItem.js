@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styles from "./NavItem.module.css";
 
 const NavItem = ({ icon, title, href, isActive }) => {
@@ -13,6 +14,13 @@ const NavItem = ({ icon, title, href, isActive }) => {
       <span className="text text_type_main-default">{title}</span>
     </a>
   );
+};
+
+NavItem.propTypes = {
+  icon: PropTypes.element,
+  title: PropTypes.string,
+  href: PropTypes.string,
+  isActive: PropTypes.bool,
 };
 
 export default NavItem;
