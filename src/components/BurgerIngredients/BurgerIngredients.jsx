@@ -1,10 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Tabs from "../Tabs/Tabs";
-import { data } from "../../utils/data";
 import BurgerIngredientsItem from "../BurgerIngredientsItem/BurgerIngredientsItem";
 import styles from "./BurgerIngredients.module.css";
 
-const BurgerIngredients = () => {
+const BurgerIngredients = ({ data }) => {
   const sortData = data.reduce((acc, obj) => {
     const property = obj.type;
     acc[property] = acc[property] || [];
@@ -44,6 +44,10 @@ const BurgerIngredients = () => {
       </div>
     </section>
   );
+};
+
+BurgerIngredients.propTypes = {
+  data: PropTypes.array,
 };
 
 export default BurgerIngredients;

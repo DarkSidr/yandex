@@ -17,7 +17,7 @@ const AppHeader = () => {
           </a>
         </h1>
         <NavItem
-          icon={<ProfileIcon type="primary" />}
+          icon={<ProfileIcon type="secondary" />}
           title="Личный кабинет"
           href="#"
           isActive={false}

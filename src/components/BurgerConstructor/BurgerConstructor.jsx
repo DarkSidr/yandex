@@ -1,18 +1,28 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { data } from "../../utils/data";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PriceItem from "../PriceItem/PriceItem";
+import Modal from "../Modal/Modal";
 import styles from "./BurgerConstructor.module.css";
+import useModalState from "../../utils/hooks/useModal";
+import OrderDetails from "../OrderDetails/OrderDetails";
 
-const BurgerConstructor = () => {
+const BurgerConstructor = ({ data }) => {
+  const { openModal, setOpenModal } = useModalState();
+
   const top = data.find((item) => {
     return item.name === "Краторная булка N-200i";
   });
   const bottom = data.find((item) => {
     return item.name === "Краторная булка N-200i";
   });
+
+  const closeModal = () => {
+    setOpenModal(false);
+  };
+
   return (
     <section className="mt-25 pl-4">
       <div className={styles.burgerConstructor}>
@@ -58,13 +68,29 @@ const BurgerConstructor = () => {
         </div>
         <div className={`mt-10 ${styles.acceptBlock}`}>
           <PriceItem price={610} large={true} />
-          <Button htmlType="button" type="primary" size="large">
+          <Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            onClick={() => {
+              setOpenModal(true);
+            }}
+          >
             Нажми на меня
           </Button>
         </div>
       </div>
+      {openModal && (
+        <Modal onClose={closeModal}>
+          <OrderDetails onClose={closeModal} />
+        </Modal>
+      )}
     </section>
   );
+};
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.array,
 };
 
 export default BurgerConstructor;

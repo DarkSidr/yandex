@@ -18,7 +18,7 @@ const navList = [
   {
     id: 2,
     title: "Лента заказов",
-    icon: <ListIcon type="primary" />,
+    icon: <ListIcon type="secondary" />,
     href: "#",
     isActive: false,
   },
