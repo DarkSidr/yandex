@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./IngredientDetails.module.css";
 import { Box } from "@ya.praktikum/react-developer-burger-ui-components";
-import CloseModal from "../CloseModal/CloseModal";
 
 const IngredientDetails = ({
   image_large,
@@ -11,14 +10,9 @@ const IngredientDetails = ({
   proteins,
   fat,
   carbohydrates,
-  onClose,
 }) => {
   return (
-    <div className={`pl-10 pt-10 pr-10 pb-15 ${styles.wrapper}`}>
-      <div className={styles.modalHeader}>
-        <h3 className="text text_type_main-large">Детали ингредиента</h3>
-        <CloseModal onClose={onClose} />
-      </div>
+    <div className={`${styles.wrapper}`}>
       <div className={styles.modalBody}>
         <div className={styles.imgWrapper}>
           <img className={styles.img} src={image_large} alt={name} />
@@ -58,7 +52,6 @@ IngredientDetails.propTypes = {
   proteins: PropTypes.number,
   fat: PropTypes.number,
   carbohydrates: PropTypes.number,
-  onClose: PropTypes.func,
 };
 
 export default IngredientDetails;

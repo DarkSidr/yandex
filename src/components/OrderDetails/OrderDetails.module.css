@@ -3,11 +3,8 @@
   flex-direction: column;
   min-width: 720px;
   row-gap: 36px;
-}
-
-.modalHeader {
-  display: flex;
-  justify-content: flex-end;
+  margin-top: 36px;
+  margin-bottom: 80px;
 }
 
 .modalBody {
