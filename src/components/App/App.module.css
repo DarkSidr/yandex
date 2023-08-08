@@ -4,4 +4,19 @@
   column-gap: 40px;
   max-width: 1240px;
   margin: 0 auto;
+  color: #f2f2f3;
+  padding-bottom: 40px;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.show {
+  animation: show 2.5s ease;
 }
