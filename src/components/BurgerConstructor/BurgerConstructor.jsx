@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useState, useReducer, useEffect } from "react";
+import { DataContext } from "../../services/dataContext";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -9,17 +9,121 @@ import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import styles from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
 
-const BurgerConstructor = ({ data }) => {
-  const [itemModal, setItemModal] = React.useState();
+const totalPriceInitialState = {
+  cartItems: [],
+  totalCost: 0,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "addToCart":
+      const updatedIngredient = [...state.cartItems, action.payload];
+      const updatedTotalCost = updatedIngredient.reduce(
+        (total, item) => total + item.price,
+        0
+      );
+      return {
+        ...state,
+        cartItems: updatedIngredient,
+        totalCost: updatedTotalCost,
+      };
+    case "removeToCart":
+      const deleteItem = state.cartItems.find(
+        (item) => item.name === action.payload.name
+      );
+      if (!deleteItem) {
+        return state;
+      }
+      const newArr = state.cartItems.filter((item) => item !== deleteItem);
+      const newPrice = state.totalCost - deleteItem.price;
+      return {
+        ...state,
+        cartItems: newArr,
+        totalCost: newPrice,
+      };
+    default:
+      throw new Error("Invalid action type.");
+  }
+};
+
+const BurgerConstructor = () => {
+  const { data } = useContext(DataContext);
+
+  const [order, setOrder] = React.useState({
+    success: false,
+    orderNumber: 0,
+    name: "",
+    isLoaded: false,
+  });
+
+  const [totalPriceState, totalPriceDispatcher] = useReducer(
+    reducer,
+    totalPriceInitialState
+  );
+
+  const didLogRef = React.useRef(false);
+
+  const [itemModal, setItemModal] = useState();
 
   usePopupClose(itemModal, setItemModal);
 
-  const top = data.find((item) => {
-    return item.name === "Краторная булка N-200i";
-  });
-  const bottom = data.find((item) => {
-    return item.name === "Краторная булка N-200i";
-  });
+  const findBun = (data, name) => {
+    return data.find((item) => {
+      return item.name === name && item.type === "bun";
+    });
+  };
+
+  const top = findBun(data, "Краторная булка N-200i");
+
+  const bottom = findBun(data, "Краторная булка N-200i");
+
+  const addToCart = (product) => {
+    totalPriceDispatcher({ type: "addToCart", payload: product });
+  };
+
+  const removeToCart = (product) => {
+    totalPriceDispatcher({ type: "removeToCart", payload: product });
+  };
+
+  useEffect(() => {
+    if (didLogRef.current === false) {
+      didLogRef.current = true;
+      addToCart(top);
+      addToCart(bottom);
+      data.forEach((product) => {
+        if (product.type !== "bun") {
+          addToCart(product);
+        }
+      });
+    }
+  }, []);
+
+  const postResponse = async () => {
+    let response = await fetch("https://norma.nomoreparties.space/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({
+        ingredients: totalPriceState.cartItems.map((item) => {
+          return item._id;
+        }),
+      }),
+    })
+      .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+      .then((res) =>
+        setOrder({
+          success: res.success,
+          orderNumber: res.order.number,
+          name: res.name,
+          isLoaded: true,
+        })
+      )
+      .catch((e) => {
+        setOrder({ success: false, orderNumber: 0, name: "", isLoaded: false });
+        console.error(e);
+      });
+  };
 
   return (
     <>
@@ -66,13 +170,14 @@ const BurgerConstructor = ({ data }) => {
             </div>
           </div>
           <div className={`mt-10 ${styles.acceptBlock}`}>
-            <PriceItem price={610} large={true} />
+            <PriceItem price={totalPriceState.totalCost} large={true} />
             <Button
               htmlType="button"
               type="primary"
               size="large"
               onClick={() => {
                 setItemModal(true);
+                postResponse();
               }}
             >
               Нажми на меня
@@ -80,17 +185,13 @@ const BurgerConstructor = ({ data }) => {
           </div>
         </div>
       </section>
-      {itemModal && (
+      {itemModal && order.isLoaded && (
         <Modal setState={setItemModal}>
-          <OrderDetails />
+          <OrderDetails orderNumber={order.orderNumber} />
         </Modal>
       )}
     </>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.array,
 };
 
 export default BurgerConstructor;

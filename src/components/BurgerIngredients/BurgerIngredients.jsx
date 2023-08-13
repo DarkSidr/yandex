@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
+import { DataContext } from "../../services/dataContext";
 import Tabs from "../Tabs/Tabs";
 import BurgerIngredientsItem from "../BurgerIngredientsItem/BurgerIngredientsItem";
 import { usePopupClose } from "../../utils/hooks/usePopupClose";
@@ -7,7 +7,9 @@ import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import styles from "./BurgerIngredients.module.css";
 
-const BurgerIngredients = ({ data }) => {
+const BurgerIngredients = () => {
+  const { data } = useContext(DataContext);
+
   const sortData = data.reduce((acc, obj) => {
     const property = obj.type;
     acc[property] = acc[property] || [];
@@ -59,10 +61,6 @@ const BurgerIngredients = ({ data }) => {
       )}
     </>
   );
-};
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.array,
 };
 
 export default BurgerIngredients;
