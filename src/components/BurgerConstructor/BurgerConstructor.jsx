@@ -9,7 +9,7 @@ import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import styles from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { postData } from "../../utils/requests/postData";
-import { usePriceReducer } from "../../utils/hooks/usePriceReducer";
+import { useCartReducer } from "../../utils/hooks/useCartReducer";
 
 const BUN = "bun";
 const MAIN = "main";
@@ -39,10 +39,16 @@ const BurgerConstructor = () => {
 
   const bottom = findBun(data, "Краторная булка N-200i");
 
-  const totalPriceState = usePriceReducer(data, top, bottom);
+  const { cartItems, totalCost, removeFromCart } = useCartReducer(
+    data,
+    top,
+    bottom
+  );
+
+  const uniqueIngredients = Array.from(new Set(cartItems));
 
   const postResponse = () => {
-    postData(totalPriceState.cartItems, setOrder);
+    postData(cartItems, setOrder);
   };
 
   return (
@@ -60,7 +66,7 @@ const BurgerConstructor = () => {
               />
             </div>
             <div className={`${styles.scrollContent} pl-8`}>
-              {data.map((item) => {
+              {uniqueIngredients.map((item) => {
                 return (
                   <React.Fragment key={item._id}>
                     {item.type !== BUN && (
@@ -72,6 +78,18 @@ const BurgerConstructor = () => {
                           text={item.name}
                           price={item.price}
                           thumbnail={item.image}
+                          handleClose={(e) => {
+                            const parent = e.target.closest(
+                              ".constructor-element__row"
+                            );
+                            if (parent) {
+                              removeFromCart({
+                                name: parent.querySelector(
+                                  ".constructor-element__text"
+                                ).textContent,
+                              });
+                            }
+                          }}
                         />
                       </div>
                     )}
@@ -90,7 +108,7 @@ const BurgerConstructor = () => {
             </div>
           </div>
           <div className={`mt-10 ${styles.acceptBlock}`}>
-            <PriceItem price={totalPriceState.totalCost} large={true} />
+            <PriceItem price={totalCost} large={true} />
             <Button
               htmlType="button"
               type="primary"

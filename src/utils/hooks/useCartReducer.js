@@ -1,24 +1,19 @@
 import React, { useEffect, useMemo, useReducer, useRef } from "react";
+import { countBurgerCost } from "../../components/BurgerConstructor/BurgerConstructor.utils";
 
 const totalPriceInitialState = {
   cartItems: [],
-  totalCost: 0,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "addToCart":
       const updatedIngredient = [...state.cartItems, action.payload];
-      const updatedTotalCost = updatedIngredient.reduce(
-        (total, item) => total + item.price,
-        0
-      );
       return {
         ...state,
         cartItems: updatedIngredient,
-        totalCost: updatedTotalCost,
       };
-    case "removeToCart":
+    case "removeFromCart":
       const deleteItem = state.cartItems.find(
         (item) => item.name === action.payload.name
       );
@@ -26,18 +21,16 @@ const reducer = (state, action) => {
         return state;
       }
       const newArr = state.cartItems.filter((item) => item !== deleteItem);
-      const newPrice = state.totalCost - deleteItem.price;
       return {
         ...state,
         cartItems: newArr,
-        totalCost: newPrice,
       };
     default:
       throw new Error("Invalid action type.");
   }
 };
 
-export const usePriceReducer = (data, top, bottom) => {
+export const useCartReducer = (data, top, bottom) => {
   const [totalPriceState, totalPriceDispatcher] = useReducer(
     reducer,
     totalPriceInitialState
@@ -49,8 +42,8 @@ export const usePriceReducer = (data, top, bottom) => {
     totalPriceDispatcher({ type: "addToCart", payload: product });
   };
 
-  const removeToCart = (product) => {
-    totalPriceDispatcher({ type: "removeToCart", payload: product });
+  const removeFromCart = (product) => {
+    totalPriceDispatcher({ type: "removeFromCart", payload: product });
   };
 
   useEffect(() => {
@@ -66,7 +59,14 @@ export const usePriceReducer = (data, top, bottom) => {
     }
   }, []);
 
-  return useMemo(() => {
-    return totalPriceState;
-  }, [data, top, bottom]);
+  const totalCost = useMemo(() => {
+    return countBurgerCost(totalPriceState.cartItems);
+  }, [totalPriceState.cartItems]);
+
+  return {
+    cartItems: totalPriceState.cartItems,
+    totalCost,
+    addToCart,
+    removeFromCart,
+  };
 };
