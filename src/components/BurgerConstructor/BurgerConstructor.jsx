@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useState } from "react";
+import { DataContext } from "../../services/dataContext";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -8,18 +8,48 @@ import Modal from "../Modal/Modal";
 import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import styles from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
+import { postData } from "../../utils/requests/postData";
+import { useCartReducer } from "../../utils/hooks/useCartReducer";
 
-const BurgerConstructor = ({ data }) => {
-  const [itemModal, setItemModal] = React.useState();
+const BUN = "bun";
+const MAIN = "main";
+const SAUCE = "sauce";
+
+const BurgerConstructor = () => {
+  const { data } = useContext(DataContext);
+
+  const [order, setOrder] = React.useState({
+    success: false,
+    orderNumber: 0,
+    name: "",
+    isLoaded: false,
+  });
+
+  const [itemModal, setItemModal] = useState();
 
   usePopupClose(itemModal, setItemModal);
 
-  const top = data.find((item) => {
-    return item.name === "Краторная булка N-200i";
-  });
-  const bottom = data.find((item) => {
-    return item.name === "Краторная булка N-200i";
-  });
+  const findBun = (data, name) => {
+    return data.find((item) => {
+      return item.name === name && item.type === BUN;
+    });
+  };
+
+  const top = findBun(data, "Краторная булка N-200i");
+
+  const bottom = findBun(data, "Краторная булка N-200i");
+
+  const { cartItems, totalCost, removeFromCart } = useCartReducer(
+    data,
+    top,
+    bottom
+  );
+
+  const uniqueIngredients = Array.from(new Set(cartItems));
+
+  const postResponse = () => {
+    postData(cartItems, setOrder);
+  };
 
   return (
     <>
@@ -36,10 +66,10 @@ const BurgerConstructor = ({ data }) => {
               />
             </div>
             <div className={`${styles.scrollContent} pl-8`}>
-              {data.map((item) => {
+              {uniqueIngredients.map((item) => {
                 return (
                   <React.Fragment key={item._id}>
-                    {item.type !== "bun" && (
+                    {item.type !== BUN && (
                       <div className={styles.row}>
                         <span className={styles.iconWrapper}>
                           <DragIcon type="primary" />
@@ -48,6 +78,18 @@ const BurgerConstructor = ({ data }) => {
                           text={item.name}
                           price={item.price}
                           thumbnail={item.image}
+                          handleClose={(e) => {
+                            const parent = e.target.closest(
+                              ".constructor-element__row"
+                            );
+                            if (parent) {
+                              removeFromCart({
+                                name: parent.querySelector(
+                                  ".constructor-element__text"
+                                ).textContent,
+                              });
+                            }
+                          }}
                         />
                       </div>
                     )}
@@ -66,13 +108,14 @@ const BurgerConstructor = ({ data }) => {
             </div>
           </div>
           <div className={`mt-10 ${styles.acceptBlock}`}>
-            <PriceItem price={610} large={true} />
+            <PriceItem price={totalCost} large={true} />
             <Button
               htmlType="button"
               type="primary"
               size="large"
               onClick={() => {
                 setItemModal(true);
+                postResponse();
               }}
             >
               Нажми на меня
@@ -80,17 +123,13 @@ const BurgerConstructor = ({ data }) => {
           </div>
         </div>
       </section>
-      {itemModal && (
+      {itemModal && order.isLoaded && (
         <Modal setState={setItemModal}>
-          <OrderDetails />
+          <OrderDetails orderNumber={order.orderNumber} />
         </Modal>
       )}
     </>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.array,
 };
 
 export default BurgerConstructor;
