@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
-import { DataContext } from "../../services/dataContext";
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import { CURRENT_ITEMS_SUCCESS } from "../../services/actions/burgerConstructor";
+import { TOTAL_PRICE } from "../../services/actions/totalPrice";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -9,123 +10,145 @@ import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import styles from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { postData } from "../../utils/requests/postData";
-import { useCartReducer } from "../../utils/hooks/useCartReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
 
 const BUN = "bun";
 const MAIN = "main";
 const SAUCE = "sauce";
 
 const BurgerConstructor = () => {
-  const { data } = useContext(DataContext);
+  const items = useSelector((store) => store.data.items);
 
-  const [order, setOrder] = React.useState({
-    success: false,
-    orderNumber: 0,
-    name: "",
-    isLoaded: false,
-  });
+  const currentItems = useSelector(
+    (store) => store.burgerConstructor.currentItems
+  );
+
+  const currentItemsRequest = useSelector(
+    (store) => store.burgerConstructor.currentItemsRequest
+  );
+
+  const totalPrice = useSelector((store) => store.totalPrice);
+
+  const orderNumber = useSelector((store) => store.order.orderNumber);
+
+  const isOrderLoading = useSelector((store) => store.order.isLoaded);
+
+  const dispatch = useDispatch();
+
+  const didLogRef = useRef(false);
+
+  useEffect(() => {
+    if (didLogRef.current === false) {
+      didLogRef.current = true;
+      const currentItems = items.filter(
+        (obj, index) =>
+          obj.type !== BUN ||
+          (obj.type === BUN && items.findIndex((o) => o.type === BUN) === index)
+      );
+      currentItems.push(currentItems[0]);
+
+      dispatch({
+        type: CURRENT_ITEMS_SUCCESS,
+        currentItems: currentItems,
+      });
+    }
+    dispatch({
+      type: TOTAL_PRICE,
+      totalPrice: countBurgerCost(currentItems),
+    });
+  }, [dispatch, items, currentItems]);
 
   const [itemModal, setItemModal] = useState();
 
   usePopupClose(itemModal, setItemModal);
 
-  const findBun = (data, name) => {
-    return data.find((item) => {
-      return item.name === name && item.type === BUN;
-    });
+  const delItem = (e) => {
+    dispatch(deleteItem(e, currentItems));
   };
-
-  const top = findBun(data, "Краторная булка N-200i");
-
-  const bottom = findBun(data, "Краторная булка N-200i");
-
-  const { cartItems, totalCost, removeFromCart } = useCartReducer(
-    data,
-    top,
-    bottom
-  );
-
-  const uniqueIngredients = Array.from(new Set(cartItems));
 
   const postResponse = () => {
-    postData(cartItems, setOrder);
+    dispatch(postData(currentItems));
   };
+
+  const { firstElement, lastElement } = useMemo(() => {
+    const firstElement = currentItems[0];
+    const lastElement = currentItems[currentItems.length - 1];
+    return {
+      firstElement,
+      lastElement,
+    };
+  }, [currentItems]);
 
   return (
     <>
       <section className="mt-25 pl-4">
-        <div className={styles.burgerConstructor}>
-          <div className={`${styles.wrapper}`}>
-            <div className="pl-8">
-              <ConstructorElement
-                type="top"
-                isLocked={true}
-                text={top.name + " " + "(верх)"}
-                price={top.price}
-                thumbnail={top.image}
-              />
+        {currentItemsRequest && (
+          <div className={styles.burgerConstructor}>
+            <div className={`${styles.wrapper}`}>
+              <div className="pl-8">
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text={`${firstElement.name} (верх)`}
+                  price={firstElement.price}
+                  thumbnail={firstElement.image}
+                />
+              </div>
+              <div className={`${styles.scrollContent} pl-8`}>
+                {Array.from(new Set(currentItems)).map((item) => {
+                  return (
+                    <React.Fragment key={item._id}>
+                      {item.type !== BUN && (
+                        <div className={styles.row}>
+                          <span className={styles.iconWrapper}>
+                            <DragIcon type="primary" />
+                          </span>
+                          <ConstructorElement
+                            text={item.name}
+                            price={item.price}
+                            thumbnail={item.image}
+                            handleClose={(e) => {
+                              delItem(e);
+                            }}
+                          />
+                        </div>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+              <div className="pl-8">
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={`${lastElement.name} (низ)`}
+                  price={lastElement.price}
+                  thumbnail={lastElement.image}
+                />
+              </div>
             </div>
-            <div className={`${styles.scrollContent} pl-8`}>
-              {uniqueIngredients.map((item) => {
-                return (
-                  <React.Fragment key={item._id}>
-                    {item.type !== BUN && (
-                      <div className={styles.row}>
-                        <span className={styles.iconWrapper}>
-                          <DragIcon type="primary" />
-                        </span>
-                        <ConstructorElement
-                          text={item.name}
-                          price={item.price}
-                          thumbnail={item.image}
-                          handleClose={(e) => {
-                            const parent = e.target.closest(
-                              ".constructor-element__row"
-                            );
-                            if (parent) {
-                              removeFromCart({
-                                name: parent.querySelector(
-                                  ".constructor-element__text"
-                                ).textContent,
-                              });
-                            }
-                          }}
-                        />
-                      </div>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </div>
-            <div className="pl-8">
-              <ConstructorElement
-                type="bottom"
-                isLocked={true}
-                text={bottom.name + " " + "(низ)"}
-                price={bottom.price}
-                thumbnail={bottom.image}
-              />
+
+            <div className={`mt-10 ${styles.acceptBlock}`}>
+              <PriceItem price={totalPrice} large={true} />
+              <Button
+                htmlType="button"
+                type="primary"
+                size="large"
+                onClick={() => {
+                  setItemModal(true);
+                  postResponse();
+                }}
+              >
+                Нажми на меня
+              </Button>
             </div>
           </div>
-          <div className={`mt-10 ${styles.acceptBlock}`}>
-            <PriceItem price={totalCost} large={true} />
-            <Button
-              htmlType="button"
-              type="primary"
-              size="large"
-              onClick={() => {
-                setItemModal(true);
-                postResponse();
-              }}
-            >
-              Нажми на меня
-            </Button>
-          </div>
-        </div>
+        )}
       </section>
-      {itemModal && order.isLoaded && (
+      {itemModal && isOrderLoading && (
         <Modal setState={setItemModal}>
-          <OrderDetails orderNumber={order.orderNumber} />
+          <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
     </>

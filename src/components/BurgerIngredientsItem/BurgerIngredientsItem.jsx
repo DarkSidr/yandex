@@ -4,13 +4,14 @@ import PriceItem from "../PriceItem/PriceItem";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerIngredientsItem.module.css";
 
-const BurgerIngredientsItem = ({ item, count, onChange }) => {
+const BurgerIngredientsItem = ({ item, count, onChange, getData }) => {
   return (
     <>
       <li
         className={styles.listItem}
         onClick={() => {
-          onChange(item);
+          onChange(true);
+          getData(item);
         }}
       >
         <div className={styles.imgWrapper}>

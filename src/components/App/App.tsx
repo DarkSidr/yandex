@@ -1,33 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import classNames from "classnames";
-import { DataContext } from "../../services/dataContext";
-import { getData } from "../../utils/requests/getData";
 import styles from "./App.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getData } from "../../utils/requests/getData";
+import Loader from "../Loader/Loader";
 
 const App = () => {
-  const [info, setInfo] = useState({
-    success: true,
-    isLoaded: false,
-    data: [],
-  });
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getData(info, setInfo);
-  }, []);
+    //@ts-ignore
+    dispatch(getData());
+  }, [dispatch]);
+
+  const itemsIsLoading = useSelector((store: any) => {
+    return store.data.isLoading;
+  });
 
   return (
-    <React.Fragment>
-      <AppHeader />
-      <main className={classNames(styles.main, styles.show)}>
-        <DataContext.Provider value={info}>
-          {info.isLoaded && <BurgerIngredients />}
-          {info.isLoaded && <BurgerConstructor />}
-        </DataContext.Provider>
-      </main>
-    </React.Fragment>
+    <>
+      {itemsIsLoading === true ? (
+        <Loader />
+      ) : itemsIsLoading === false ? (
+        <React.Fragment>
+          <AppHeader />
+          <main className={classNames(styles.main, styles.show)}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </main>
+        </React.Fragment>
+      ) : (
+        <Loader />
+      )}
+    </>
   );
 };
 

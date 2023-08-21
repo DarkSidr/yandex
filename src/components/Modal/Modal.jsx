@@ -1,15 +1,22 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import CloseModal from "../CloseModal/CloseModal";
+import { DELETE_CURRENT_ITEM } from "../../services/actions/currentIngredient";
 import styles from "./Modal.module.css";
 
 const modalRoot = document.getElementById("modals");
 
 const Modal = ({ title, setState, children }) => {
+  const dispatch = useDispatch();
+
   const closeModal = () => {
     setState(undefined);
+    dispatch({
+      type: DELETE_CURRENT_ITEM,
+    });
   };
 
   return ReactDOM.createPortal(
