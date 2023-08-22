@@ -2,11 +2,26 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const TabItem = ({ title, value, current, setCurrent }) => {
+const TabItem = ({
+  title,
+  value,
+  activeIndex,
+  handleMenuItemClick,
+  menuItemsRef,
+  index,
+}) => {
   return (
-    <Tab value={value} active={current === value} onClick={setCurrent}>
-      {title}
-    </Tab>
+    <div ref={(el) => (menuItemsRef.current[index] = el)}>
+      <Tab
+        value={value}
+        active={activeIndex === index}
+        onClick={() => {
+          handleMenuItemClick(index);
+        }}
+      >
+        {title}
+      </Tab>
+    </div>
   );
 };
 
