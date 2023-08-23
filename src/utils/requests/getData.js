@@ -27,6 +27,7 @@ export function getData() {
       .catch((e) => {
         dispatch({
           type: GET_ITEMS_FAILED,
+          items: [],
         });
         console.error(e);
       });

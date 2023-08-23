@@ -1,0 +1,15 @@
+.row {
+  position: relative;
+}
+
+.iconWrapper {
+  position: absolute;
+  top: 50%;
+  left: -32px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: block;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}

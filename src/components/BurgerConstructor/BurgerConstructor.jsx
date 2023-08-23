@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { CURRENT_ITEMS_SUCCESS } from "../../services/actions/burgerConstructor";
 import { TOTAL_PRICE } from "../../services/actions/totalPrice";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PriceItem from "../PriceItem/PriceItem";
 import Modal from "../Modal/Modal";
@@ -12,12 +11,14 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import { postData } from "../../utils/requests/postData";
 import { useSelector, useDispatch } from "react-redux";
 import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
+import { useDrop } from "react-dnd";
+import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
 
 const BUN = "bun";
 const MAIN = "main";
 const SAUCE = "sauce";
 
-const BurgerConstructor = () => {
+const BurgerConstructor = ({ onDropHandler }) => {
   const items = useSelector((store) => store.data.items);
 
   const currentItems = useSelector(
@@ -63,8 +64,8 @@ const BurgerConstructor = () => {
 
   usePopupClose(itemModal, setItemModal);
 
-  const delItem = (e) => {
-    dispatch(deleteItem(e, currentItems));
+  const delItem = (item) => {
+    dispatch(deleteItem(item, currentItems));
   };
 
   const postResponse = () => {
@@ -72,20 +73,32 @@ const BurgerConstructor = () => {
   };
 
   const { firstElement, lastElement } = useMemo(() => {
-    const firstElement = currentItems[0];
-    const lastElement = currentItems[currentItems.length - 1];
+    const bun = currentItems.find((item) => item.type === BUN);
+    const firstElement = bun;
+    const lastElement = bun;
     return {
       firstElement,
       lastElement,
     };
   }, [currentItems]);
 
+  const [, dropTarget] = useDrop({
+    accept: "ingredients",
+    drop(item) {
+      onDropHandler(item);
+    },
+  });
+
+  const randomInteger = function (min, max) {
+    return min + Math.random() * (max + 1 - min);
+  };
+
   return (
     <>
       <section className="mt-25 pl-4">
         {currentItemsRequest && (
           <div className={styles.burgerConstructor}>
-            <div className={`${styles.wrapper}`}>
+            <div className={`${styles.wrapper}`} ref={dropTarget}>
               <div className="pl-8">
                 <ConstructorElement
                   type="top"
@@ -96,23 +109,15 @@ const BurgerConstructor = () => {
                 />
               </div>
               <div className={`${styles.scrollContent} pl-8`}>
-                {Array.from(new Set(currentItems)).map((item) => {
+                {currentItems.map((item, index) => {
                   return (
-                    <React.Fragment key={item._id}>
+                    <React.Fragment key={randomInteger(0, index)}>
                       {item.type !== BUN && (
-                        <div className={styles.row}>
-                          <span className={styles.iconWrapper}>
-                            <DragIcon type="primary" />
-                          </span>
-                          <ConstructorElement
-                            text={item.name}
-                            price={item.price}
-                            thumbnail={item.image}
-                            handleClose={(e) => {
-                              delItem(e);
-                            }}
-                          />
-                        </div>
+                        <BurgerConstructorItem
+                          item={item}
+                          index={index}
+                          delItem={delItem}
+                        />
                       )}
                     </React.Fragment>
                   );

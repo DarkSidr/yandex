@@ -70,7 +70,9 @@ const BurgerIngredients = () => {
 
     root.current.addEventListener("scroll", handleScroll);
     return () => {
-      root.current.removeEventListener("scroll", handleScroll);
+      if (root.current) {
+        root.current.removeEventListener("scroll", handleScroll);
+      }
     };
   }, []);
 
@@ -115,7 +117,6 @@ const BurgerIngredients = () => {
                     <BurgerIngredientsItem
                       key={item._id}
                       item={item}
-                      count={item.fat < 200 ? 1 : 0}
                       onChange={setOpenModal}
                       getData={getData}
                     />

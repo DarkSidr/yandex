@@ -30,7 +30,13 @@ export const dataReducer = (state = initialState, action) => {
       };
     }
     case GET_ITEMS_FAILED: {
-      return { ...state, itemsFailed: true, itemsRequest: false };
+      return {
+        ...state,
+        items: [],
+        itemsFailed: true,
+        itemsRequest: false,
+        isLoading: null,
+      };
     }
     default: {
       return state;

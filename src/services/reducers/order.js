@@ -30,7 +30,7 @@ export const orderReducer = (state = initialState, action) => {
       };
     }
     case GET_ORDER_FAILED: {
-      return { ...state, success: false, isLoaded: false };
+      return initialState;
     }
     default: {
       return state;
