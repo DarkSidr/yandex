@@ -1,5 +1,5 @@
 import {
-  CURRENT_ITEMS_SUCCESS,
+  ADD_CURRENT_ITEMS,
   DELETE_ITEM,
 } from "../../services/actions/burgerConstructor";
 
@@ -32,7 +32,7 @@ export function moveCard(dragIndex, hoverIndex, items) {
     newCards.splice(dragIndex, 1);
     newCards.splice(hoverIndex, 0, dragCard);
     dispatch({
-      type: CURRENT_ITEMS_SUCCESS,
+      type: ADD_CURRENT_ITEMS,
       currentItems: newCards,
     });
   };

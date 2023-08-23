@@ -7,11 +7,14 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import styles from "./BurgerIngredients.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_CURRENT_ITEM } from "../../services/actions/currentIngredient";
+import {
+  getDataItems,
+  getCurrentIngredientCurrentItem,
+  getCurrentIngredientIsLoaded,
+} from "../../utils/functions/getStoreFunctions";
 
 const BurgerIngredients = () => {
-  const data = useSelector((store) => {
-    return store.data.items;
-  });
+  const data = useSelector(getDataItems);
 
   const sortData = data.reduce((acc, obj) => {
     const property = obj.type;
@@ -20,9 +23,9 @@ const BurgerIngredients = () => {
     return acc;
   }, {});
 
-  const itemModal = useSelector((store) => store.currentIngredient.currentItem);
+  const itemModal = useSelector(getCurrentIngredientCurrentItem);
 
-  const isLoaded = useSelector((store) => store.currentIngredient.isLoaded);
+  const isLoaded = useSelector(getCurrentIngredientIsLoaded);
 
   const dispatch = useDispatch();
 

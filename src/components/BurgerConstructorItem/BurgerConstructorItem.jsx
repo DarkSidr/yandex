@@ -5,13 +5,12 @@ import { useDrop, useDrag } from "react-dnd";
 import { moveCard } from "../BurgerConstructor/BurgerConstructor.utils";
 import styles from "./BurgerConstructorItem.module.css";
 import { useDispatch, useSelector } from "react-redux";
+import { getBurgerConstructorCurrentItems } from "../../utils/functions/getStoreFunctions";
 
 const BurgerConstructorItem = ({ item, index, delItem }) => {
   const ref = useRef(null);
 
-  const currentItems = useSelector(
-    (store) => store.burgerConstructor.currentItems
-  );
+  const currentItems = useSelector(getBurgerConstructorCurrentItems);
 
   const dispatch = useDispatch();
 

@@ -1,7 +1,4 @@
-import {
-  CURRENT_ITEMS_SUCCESS,
-  DELETE_ITEM,
-} from "../actions/burgerConstructor";
+import { ADD_CURRENT_ITEMS, DELETE_ITEM } from "../actions/burgerConstructor";
 
 const initialState = {
   currentItems: [], // ингредиенты в текущем конструкторе бургера
@@ -10,7 +7,7 @@ const initialState = {
 
 export const burgerConstructorReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CURRENT_ITEMS_SUCCESS: {
+    case ADD_CURRENT_ITEMS: {
       return {
         ...state,
         currentItems: action.currentItems,

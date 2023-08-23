@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
-import { CURRENT_ITEMS_SUCCESS } from "../../services/actions/burgerConstructor";
+import { ADD_CURRENT_ITEMS } from "../../services/actions/burgerConstructor";
 import { TOTAL_PRICE } from "../../services/actions/totalPrice";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -13,27 +13,33 @@ import { useSelector, useDispatch } from "react-redux";
 import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
 import { useDrop } from "react-dnd";
 import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
+import {
+  getDataItems,
+  getBurgerConstructorCurrentItems,
+  getBurgerConstructorCurrentItemsRequest,
+  getTotalPrice,
+  getOrderNumber,
+  getOrderLoaded,
+} from "../../utils/functions/getStoreFunctions";
 
 const BUN = "bun";
 const MAIN = "main";
 const SAUCE = "sauce";
 
 const BurgerConstructor = ({ onDropHandler }) => {
-  const items = useSelector((store) => store.data.items);
+  const items = useSelector(getDataItems);
 
-  const currentItems = useSelector(
-    (store) => store.burgerConstructor.currentItems
-  );
+  const currentItems = useSelector(getBurgerConstructorCurrentItems);
 
   const currentItemsRequest = useSelector(
-    (store) => store.burgerConstructor.currentItemsRequest
+    getBurgerConstructorCurrentItemsRequest
   );
 
-  const totalPrice = useSelector((store) => store.totalPrice);
+  const totalPrice = useSelector(getTotalPrice);
 
-  const orderNumber = useSelector((store) => store.order.orderNumber);
+  const orderNumber = useSelector(getOrderNumber);
 
-  const isOrderLoading = useSelector((store) => store.order.isLoaded);
+  const isOrderLoading = useSelector(getOrderLoaded);
 
   const dispatch = useDispatch();
 
@@ -50,7 +56,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
       currentItems.push(currentItems[0]);
 
       dispatch({
-        type: CURRENT_ITEMS_SUCCESS,
+        type: ADD_CURRENT_ITEMS,
         currentItems: currentItems,
       });
     }

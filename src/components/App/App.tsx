@@ -9,7 +9,11 @@ import { getData } from "../../utils/requests/getData";
 import Loader from "../Loader/Loader";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { CURRENT_ITEMS_SUCCESS } from "../../services/actions/burgerConstructor";
+import { ADD_CURRENT_ITEMS } from "../../services/actions/burgerConstructor";
+import {
+  getBurgerConstructorCurrentItems,
+  getDataLoading,
+} from "../../utils/functions/getStoreFunctions";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -19,14 +23,9 @@ const App = () => {
     dispatch(getData());
   }, [dispatch]);
 
-  const itemsIsLoading = useSelector((store: any) => {
-    return store.data.isLoading;
-  });
+  const itemsIsLoading = useSelector(getDataLoading);
 
-  const currentItems = useSelector(
-    //@ts-ignore
-    (store) => store.burgerConstructor.currentItems
-  );
+  const currentItems = useSelector(getBurgerConstructorCurrentItems);
   //@ts-ignore
   const changeBun = (item) => {
     //@ts-ignore
@@ -44,17 +43,17 @@ const App = () => {
     if (item.type === "bun") {
       const newArr = changeBun(item);
       dispatch({
-        type: CURRENT_ITEMS_SUCCESS,
+        type: ADD_CURRENT_ITEMS,
         currentItems: [...newArr],
       });
     } else {
       dispatch({
-        type: CURRENT_ITEMS_SUCCESS,
+        type: ADD_CURRENT_ITEMS,
         currentItems: [...currentItems, item],
       });
     }
   };
-  console.log(currentItems);
+
   return (
     <>
       {itemsIsLoading === true ? (
