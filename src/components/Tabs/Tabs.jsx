@@ -1,4 +1,3 @@
-import React from "react";
 import TabItem from "../TabItem/TabItem";
 import styles from "./Tabs.module.css";
 
@@ -6,35 +5,36 @@ const tabItems = [
   {
     id: 1,
     title: "Булки",
-    value: "rolls",
+    value: "bun",
     isActive: true,
   },
   {
     id: 2,
     title: "Соусы",
-    value: "sauces",
+    value: "sauce",
     isActive: false,
   },
   {
     id: 3,
     title: "Начинки",
-    value: "toppings",
+    value: "main",
     isActive: false,
   },
 ];
 
-const Tabs = () => {
-  const [current, setCurrent] = React.useState("rolls");
+const Tabs = ({ activeIndex, menuItemsRef, handleMenuItemClick }) => {
   return (
     <div className={styles.tabWrapepr}>
-      {tabItems.map((tab) => {
+      {tabItems.map((tab, index) => {
         return (
           <TabItem
             key={tab.id}
             title={tab.title}
             value={tab.value}
-            current={current}
-            setCurrent={setCurrent}
+            activeIndex={activeIndex}
+            handleMenuItemClick={handleMenuItemClick}
+            menuItemsRef={menuItemsRef}
+            index={index}
           />
         );
       })}

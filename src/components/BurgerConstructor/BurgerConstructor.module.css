@@ -9,28 +9,12 @@
   row-gap: 16px;
 }
 
-.row {
-  position: relative;
-}
-
 .scrollContent {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
   overflow-y: auto;
   max-height: 464px;
-}
-
-.iconWrapper {
-  position: absolute;
-  top: 50%;
-  left: -32px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  display: block;
-  width: 24px;
-  height: 24px;
-  overflow: hidden;
 }
 
 .acceptBlock {

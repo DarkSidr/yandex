@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
-import { DataContext } from "../../services/dataContext";
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import { ADD_CURRENT_ITEMS } from "../../services/actions/burgerConstructor";
+import { TOTAL_PRICE } from "../../services/actions/totalPrice";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PriceItem from "../PriceItem/PriceItem";
 import Modal from "../Modal/Modal";
@@ -9,123 +9,157 @@ import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import styles from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { postData } from "../../utils/requests/postData";
-import { useCartReducer } from "../../utils/hooks/useCartReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
+import { useDrop } from "react-dnd";
+import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
+import {
+  getDataItems,
+  getBurgerConstructorCurrentItems,
+  getBurgerConstructorCurrentItemsRequest,
+  getTotalPrice,
+  getOrderNumber,
+  getOrderLoaded,
+} from "../../utils/functions/getStoreFunctions";
 
 const BUN = "bun";
 const MAIN = "main";
 const SAUCE = "sauce";
 
-const BurgerConstructor = () => {
-  const { data } = useContext(DataContext);
+const BurgerConstructor = ({ onDropHandler }) => {
+  const items = useSelector(getDataItems);
 
-  const [order, setOrder] = React.useState({
-    success: false,
-    orderNumber: 0,
-    name: "",
-    isLoaded: false,
-  });
+  const currentItems = useSelector(getBurgerConstructorCurrentItems);
+
+  const currentItemsRequest = useSelector(
+    getBurgerConstructorCurrentItemsRequest
+  );
+
+  const totalPrice = useSelector(getTotalPrice);
+
+  const orderNumber = useSelector(getOrderNumber);
+
+  const isOrderLoading = useSelector(getOrderLoaded);
+
+  const dispatch = useDispatch();
+
+  const didLogRef = useRef(false);
+
+  useEffect(() => {
+    if (didLogRef.current === false) {
+      didLogRef.current = true;
+      const currentItems = items.filter(
+        (obj, index) =>
+          obj.type !== BUN ||
+          (obj.type === BUN && items.findIndex((o) => o.type === BUN) === index)
+      );
+      currentItems.push(currentItems[0]);
+
+      dispatch({
+        type: ADD_CURRENT_ITEMS,
+        currentItems: currentItems,
+      });
+    }
+    dispatch({
+      type: TOTAL_PRICE,
+      totalPrice: countBurgerCost(currentItems),
+    });
+  }, [dispatch, items, currentItems]);
 
   const [itemModal, setItemModal] = useState();
 
   usePopupClose(itemModal, setItemModal);
 
-  const findBun = (data, name) => {
-    return data.find((item) => {
-      return item.name === name && item.type === BUN;
-    });
+  const delItem = (item) => {
+    dispatch(deleteItem(item, currentItems));
   };
 
-  const top = findBun(data, "Краторная булка N-200i");
-
-  const bottom = findBun(data, "Краторная булка N-200i");
-
-  const { cartItems, totalCost, removeFromCart } = useCartReducer(
-    data,
-    top,
-    bottom
-  );
-
-  const uniqueIngredients = Array.from(new Set(cartItems));
-
   const postResponse = () => {
-    postData(cartItems, setOrder);
+    dispatch(postData(currentItems));
+  };
+
+  const { firstElement, lastElement } = useMemo(() => {
+    const bun = currentItems.find((item) => item.type === BUN);
+    const firstElement = bun;
+    const lastElement = bun;
+    return {
+      firstElement,
+      lastElement,
+    };
+  }, [currentItems]);
+
+  const [, dropTarget] = useDrop({
+    accept: "ingredients",
+    drop(item) {
+      onDropHandler(item);
+    },
+  });
+
+  const randomInteger = function (min, max) {
+    return min + Math.random() * (max + 1 - min);
   };
 
   return (
     <>
       <section className="mt-25 pl-4">
-        <div className={styles.burgerConstructor}>
-          <div className={`${styles.wrapper}`}>
-            <div className="pl-8">
-              <ConstructorElement
-                type="top"
-                isLocked={true}
-                text={top.name + " " + "(верх)"}
-                price={top.price}
-                thumbnail={top.image}
-              />
-            </div>
-            <div className={`${styles.scrollContent} pl-8`}>
-              {uniqueIngredients.map((item) => {
-                return (
-                  <React.Fragment key={item._id}>
-                    {item.type !== BUN && (
-                      <div className={styles.row}>
-                        <span className={styles.iconWrapper}>
-                          <DragIcon type="primary" />
-                        </span>
-                        <ConstructorElement
-                          text={item.name}
-                          price={item.price}
-                          thumbnail={item.image}
-                          handleClose={(e) => {
-                            const parent = e.target.closest(
-                              ".constructor-element__row"
-                            );
-                            if (parent) {
-                              removeFromCart({
-                                name: parent.querySelector(
-                                  ".constructor-element__text"
-                                ).textContent,
-                              });
-                            }
-                          }}
+        {currentItemsRequest && (
+          <div className={styles.burgerConstructor}>
+            <div className={`${styles.wrapper}`} ref={dropTarget}>
+              <div className="pl-8">
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text={`${firstElement.name} (верх)`}
+                  price={firstElement.price}
+                  thumbnail={firstElement.image}
+                />
+              </div>
+              <div className={`${styles.scrollContent} pl-8`}>
+                {currentItems.map((item, index) => {
+                  return (
+                    <React.Fragment key={randomInteger(0, index)}>
+                      {item.type !== BUN && (
+                        <BurgerConstructorItem
+                          item={item}
+                          index={index}
+                          delItem={delItem}
                         />
-                      </div>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+              <div className="pl-8">
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={`${lastElement.name} (низ)`}
+                  price={lastElement.price}
+                  thumbnail={lastElement.image}
+                />
+              </div>
             </div>
-            <div className="pl-8">
-              <ConstructorElement
-                type="bottom"
-                isLocked={true}
-                text={bottom.name + " " + "(низ)"}
-                price={bottom.price}
-                thumbnail={bottom.image}
-              />
+
+            <div className={`mt-10 ${styles.acceptBlock}`}>
+              <PriceItem price={totalPrice} large={true} />
+              <Button
+                htmlType="button"
+                type="primary"
+                size="large"
+                onClick={() => {
+                  setItemModal(true);
+                  postResponse();
+                }}
+              >
+                Нажми на меня
+              </Button>
             </div>
           </div>
-          <div className={`mt-10 ${styles.acceptBlock}`}>
-            <PriceItem price={totalCost} large={true} />
-            <Button
-              htmlType="button"
-              type="primary"
-              size="large"
-              onClick={() => {
-                setItemModal(true);
-                postResponse();
-              }}
-            >
-              Нажми на меня
-            </Button>
-          </div>
-        </div>
+        )}
       </section>
-      {itemModal && order.isLoaded && (
+      {itemModal && isOrderLoading && (
         <Modal setState={setItemModal}>
-          <OrderDetails orderNumber={order.orderNumber} />
+          <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
     </>
