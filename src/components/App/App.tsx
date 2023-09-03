@@ -5,7 +5,7 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import classNames from "classnames";
 import styles from "./App.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getData } from "../../utils/requests/getData";
+import { getIngredients } from "../../utils/requests/getIngredients";
 import Loader from "../Loader/Loader";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -24,7 +24,7 @@ const App = () => {
 
   useEffect(() => {
     //@ts-ignore
-    dispatch(getData());
+    dispatch(getIngredients());
   }, [dispatch]);
 
   const itemsIsLoading = useSelector(getDataLoading);

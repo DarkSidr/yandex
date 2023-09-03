@@ -12,7 +12,7 @@ import Modal from "../Modal/Modal";
 import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import styles from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { postData } from "../../utils/requests/postData";
+import { postIDIngredients } from "../../utils/requests/postIDIngredients";
 import { useSelector, useDispatch } from "react-redux";
 import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
 import { useDrop } from "react-dnd";
@@ -99,7 +99,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
   };
 
   const postResponse = () => {
-    dispatch(postData(burger));
+    dispatch(postIDIngredients(burger));
   };
 
   const [, dropTarget] = useDrop({
