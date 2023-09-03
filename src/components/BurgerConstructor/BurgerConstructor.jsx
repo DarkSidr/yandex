@@ -21,6 +21,7 @@ import {
   getOrderNumber,
   getOrderLoaded,
 } from "../../utils/functions/getStoreFunctions";
+import PropTypes from "prop-types";
 
 const BUN = "bun";
 const MAIN = "main";
@@ -164,6 +165,10 @@ const BurgerConstructor = ({ onDropHandler }) => {
       )}
     </>
   );
+};
+
+BurgerConstructor.propTypes = {
+  onDropHandler: PropTypes.func,
 };
 
 export default BurgerConstructor;

@@ -51,6 +51,7 @@ const BurgerIngredientsItem = ({ item, onChange, getData }) => {
 BurgerIngredientsItem.propTypes = {
   item: PropTypes.object,
   onChange: PropTypes.func,
+  getData: PropTypes.func,
 };
 
 export default BurgerIngredientsItem;

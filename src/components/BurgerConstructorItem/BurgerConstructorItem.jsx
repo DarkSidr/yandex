@@ -6,6 +6,7 @@ import { moveCard } from "../BurgerConstructor/BurgerConstructor.utils";
 import styles from "./BurgerConstructorItem.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getBurgerConstructorCurrentItems } from "../../utils/functions/getStoreFunctions";
+import PropTypes from "prop-types";
 
 const BurgerConstructorItem = ({ item, index, delItem }) => {
   const ref = useRef(null);
@@ -81,6 +82,12 @@ const BurgerConstructorItem = ({ item, index, delItem }) => {
       />
     </div>
   );
+};
+
+BurgerConstructorItem.propTypes = {
+  item: PropTypes.object,
+  index: PropTypes.number,
+  delItem: PropTypes.func,
 };
 
 export default BurgerConstructorItem;

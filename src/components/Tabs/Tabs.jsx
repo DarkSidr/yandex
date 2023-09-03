@@ -1,4 +1,5 @@
 import TabItem from "../TabItem/TabItem";
+import PropTypes from "prop-types";
 import styles from "./Tabs.module.css";
 
 const tabItems = [
@@ -40,6 +41,12 @@ const Tabs = ({ activeIndex, menuItemsRef, handleMenuItemClick }) => {
       })}
     </div>
   );
+};
+
+Tabs.propTypes = {
+  activeIndex: PropTypes.number,
+  menuItemsRef: PropTypes.object,
+  handleMenuItemClick: PropTypes.func,
 };
 
 export default Tabs;
