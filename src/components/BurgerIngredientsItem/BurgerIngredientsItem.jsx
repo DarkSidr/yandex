@@ -5,7 +5,7 @@ import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
 import styles from "./BurgerIngredientsItem.module.css";
 import { useSelector } from "react-redux";
-import { getBurgerConstructorCurrentItems } from "../../utils/functions/getStoreFunctions";
+import { getBurger } from "../../utils/functions/getStoreFunctions";
 
 const BurgerIngredientsItem = ({ item, onChange, getData }) => {
   const [{ isDrag }, dragRef] = useDrag({
@@ -16,11 +16,11 @@ const BurgerIngredientsItem = ({ item, onChange, getData }) => {
     }),
   });
 
-  const currentItems = useSelector(getBurgerConstructorCurrentItems);
+  const currentItems = useSelector(getBurger);
 
   const filteredArray = useMemo(() => {
     return currentItems.filter((element) => element._id === item._id);
-  }, [currentItems]);
+  }, [currentItems, item._id]);
   const count = filteredArray.length;
 
   return (

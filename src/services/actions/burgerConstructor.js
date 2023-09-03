@@ -1,3 +1,5 @@
-export const ADD_CURRENT_ITEMS = "ADD_CURRENT_ITEMS"; // успешное получение списка
-export const DELETE_ITEM = "DELETE_ITEM"; // удалить элемент
-export const ADD_ITEM = "ADD_ITEM"; // добавить элемент
+export const ADD_CURRENT_INGREDIENTS = "ADD_CURRENT_INGREDIENTS";
+export const ADD_CURRENT_BUN = "ADD_CURRENT_BUN";
+export const BURGER = "BURGER";
+export const DELETE_INGREDIENT = "DELETE_INGREDIENT";
+export const CHANGE_BUN = "CHANGE_BUN";

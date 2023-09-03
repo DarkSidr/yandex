@@ -1,6 +1,6 @@
 import {
-  ADD_CURRENT_ITEMS,
-  DELETE_ITEM,
+  ADD_CURRENT_INGREDIENTS,
+  DELETE_INGREDIENT,
 } from "../../services/actions/burgerConstructor";
 
 export function countBurgerCost(ingredients) {
@@ -19,8 +19,8 @@ export function deleteItem(itemToRemove, items) {
   return async function (dispatch) {
     const newArray = removeItemFromArray(items, itemToRemove);
     dispatch({
-      type: DELETE_ITEM,
-      currentItems: newArray,
+      type: DELETE_INGREDIENT,
+      ingredients: newArray,
     });
   };
 }
@@ -32,8 +32,8 @@ export function moveCard(dragIndex, hoverIndex, items) {
     newCards.splice(dragIndex, 1);
     newCards.splice(hoverIndex, 0, dragCard);
     dispatch({
-      type: ADD_CURRENT_ITEMS,
-      currentItems: newCards,
+      type: ADD_CURRENT_INGREDIENTS,
+      ingredients: newCards,
     });
   };
 }

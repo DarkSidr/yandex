@@ -1,10 +1,13 @@
 export const getDataLoading = (store) => store.data.isLoading;
 export const getDataItems = (store) => store.data.items;
 
-export const getBurgerConstructorCurrentItems = (store) =>
-  store.burgerConstructor.currentItems;
-export const getBurgerConstructorCurrentItemsRequest = (store) =>
-  store.burgerConstructor.currentItemsRequest;
+export const getBurgerConstructorCurrentIngredients = (store) =>
+  store.burgerConstructor.ingredients;
+export const getBurgerConstructorCurrentBun = (store) =>
+  store.burgerConstructor.bun;
+export const getBurger = (store) => store.burgerConstructor.burger;
+export const getBurgerConstructorBurgerConstructorRequest = (store) =>
+  store.burgerConstructor.burgerConstructorRequest;
 
 export const getTotalPrice = (store) => store.totalPrice;
 

@@ -9,14 +9,18 @@ import { getData } from "../../utils/requests/getData";
 import Loader from "../Loader/Loader";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { ADD_CURRENT_ITEMS } from "../../services/actions/burgerConstructor";
 import {
-  getBurgerConstructorCurrentItems,
+  getBurgerConstructorCurrentIngredients,
   getDataLoading,
 } from "../../utils/functions/getStoreFunctions";
+import {
+  ADD_CURRENT_INGREDIENTS,
+  CHANGE_BUN,
+} from "../../services/actions/burgerConstructor";
 
 const App = () => {
   const dispatch = useDispatch();
+  const currentItems = useSelector(getBurgerConstructorCurrentIngredients);
 
   useEffect(() => {
     //@ts-ignore
@@ -24,32 +28,17 @@ const App = () => {
   }, [dispatch]);
 
   const itemsIsLoading = useSelector(getDataLoading);
-
-  const currentItems = useSelector(getBurgerConstructorCurrentItems);
-  //@ts-ignore
-  const changeBun = (item) => {
-    //@ts-ignore
-    return currentItems.map((obj) => {
-      if (obj.type === "bun") {
-        return item;
-      } else {
-        return obj;
-      }
-    });
-  };
-
   //@ts-ignore
   const handleDrop = (item) => {
     if (item.type === "bun") {
-      const newArr = changeBun(item);
       dispatch({
-        type: ADD_CURRENT_ITEMS,
-        currentItems: [...newArr],
+        type: CHANGE_BUN,
+        bun: item,
       });
     } else {
       dispatch({
-        type: ADD_CURRENT_ITEMS,
-        currentItems: [...currentItems, item],
+        type: ADD_CURRENT_INGREDIENTS,
+        ingredients: [...currentItems, item],
       });
     }
   };

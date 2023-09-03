@@ -5,13 +5,13 @@ import { useDrop, useDrag } from "react-dnd";
 import { moveCard } from "../BurgerConstructor/BurgerConstructor.utils";
 import styles from "./BurgerConstructorItem.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getBurgerConstructorCurrentItems } from "../../utils/functions/getStoreFunctions";
+import { getBurgerConstructorCurrentIngredients } from "../../utils/functions/getStoreFunctions";
 import PropTypes from "prop-types";
 
 const BurgerConstructorItem = ({ item, index, delItem }) => {
   const ref = useRef(null);
 
-  const currentItems = useSelector(getBurgerConstructorCurrentItems);
+  const currentItems = useSelector(getBurgerConstructorCurrentIngredients);
 
   const dispatch = useDispatch();
 
@@ -67,6 +67,7 @@ const BurgerConstructorItem = ({ item, index, delItem }) => {
 
   const opacity = isDrag ? 0 : 1;
   drag(drop(ref));
+
   return (
     <div ref={ref} className={styles.row} style={{ opacity }}>
       <span className={styles.iconWrapper}>

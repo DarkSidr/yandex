@@ -1,5 +1,9 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
-import { ADD_CURRENT_ITEMS } from "../../services/actions/burgerConstructor";
+import React, { useEffect, useState } from "react";
+import {
+  ADD_CURRENT_INGREDIENTS,
+  ADD_CURRENT_BUN,
+  BURGER,
+} from "../../services/actions/burgerConstructor";
 import { TOTAL_PRICE } from "../../services/actions/totalPrice";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -15,8 +19,10 @@ import { useDrop } from "react-dnd";
 import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
 import {
   getDataItems,
-  getBurgerConstructorCurrentItems,
-  getBurgerConstructorCurrentItemsRequest,
+  getBurgerConstructorCurrentIngredients,
+  getBurgerConstructorCurrentBun,
+  getBurger,
+  getBurgerConstructorBurgerConstructorRequest,
   getTotalPrice,
   getOrderNumber,
   getOrderLoaded,
@@ -30,10 +36,16 @@ const SAUCE = "sauce";
 const BurgerConstructor = ({ onDropHandler }) => {
   const items = useSelector(getDataItems);
 
-  const currentItems = useSelector(getBurgerConstructorCurrentItems);
+  const currentIngredients = useSelector(
+    getBurgerConstructorCurrentIngredients
+  );
 
-  const currentItemsRequest = useSelector(
-    getBurgerConstructorCurrentItemsRequest
+  const currentBun = useSelector(getBurgerConstructorCurrentBun);
+
+  const burger = useSelector(getBurger);
+
+  const burgerConstructorRequest = useSelector(
+    getBurgerConstructorBurgerConstructorRequest
   );
 
   const totalPrice = useSelector(getTotalPrice);
@@ -44,50 +56,51 @@ const BurgerConstructor = ({ onDropHandler }) => {
 
   const dispatch = useDispatch();
 
-  const didLogRef = useRef(false);
+  useEffect(() => {
+    const currentIngredients = items.filter((obj) => obj.type !== BUN);
+    const currentBun = items.find(
+      (obj, index) =>
+        obj.type === BUN && items.findIndex((o) => o.type === BUN) === index
+    );
+
+    dispatch({
+      type: ADD_CURRENT_INGREDIENTS,
+      ingredients: currentIngredients,
+    });
+
+    dispatch({
+      type: ADD_CURRENT_BUN,
+      bun: currentBun,
+    });
+  }, [dispatch, items]);
 
   useEffect(() => {
-    if (didLogRef.current === false) {
-      didLogRef.current = true;
-      const currentItems = items.filter(
-        (obj, index) =>
-          obj.type !== BUN ||
-          (obj.type === BUN && items.findIndex((o) => o.type === BUN) === index)
-      );
-      currentItems.push(currentItems[0]);
-
+    if (currentBun && currentIngredients) {
       dispatch({
-        type: ADD_CURRENT_ITEMS,
-        currentItems: currentItems,
+        type: BURGER,
+        burger: [currentBun, ...currentIngredients, currentBun],
       });
     }
+  }, [dispatch, currentBun, currentIngredients]);
+
+  useEffect(() => {
     dispatch({
       type: TOTAL_PRICE,
-      totalPrice: countBurgerCost(currentItems),
+      totalPrice: countBurgerCost(burger),
     });
-  }, [dispatch, items, currentItems]);
+  }, [dispatch, burger]);
 
   const [itemModal, setItemModal] = useState();
 
   usePopupClose(itemModal, setItemModal);
 
   const delItem = (item) => {
-    dispatch(deleteItem(item, currentItems));
+    dispatch(deleteItem(item, currentIngredients));
   };
 
   const postResponse = () => {
-    dispatch(postData(currentItems));
+    dispatch(postData(burger));
   };
-
-  const { firstElement, lastElement } = useMemo(() => {
-    const bun = currentItems.find((item) => item.type === BUN);
-    const firstElement = bun;
-    const lastElement = bun;
-    return {
-      firstElement,
-      lastElement,
-    };
-  }, [currentItems]);
 
   const [, dropTarget] = useDrop({
     accept: "ingredients",
@@ -103,29 +116,27 @@ const BurgerConstructor = ({ onDropHandler }) => {
   return (
     <>
       <section className="mt-25 pl-4">
-        {currentItemsRequest && (
+        {burgerConstructorRequest && (
           <div className={styles.burgerConstructor}>
             <div className={`${styles.wrapper}`} ref={dropTarget}>
               <div className="pl-8">
                 <ConstructorElement
                   type="top"
                   isLocked={true}
-                  text={`${firstElement.name} (верх)`}
-                  price={firstElement.price}
-                  thumbnail={firstElement.image}
+                  text={`${currentBun.name} (верх)`}
+                  price={currentBun.price}
+                  thumbnail={currentBun.image}
                 />
               </div>
               <div className={`${styles.scrollContent} pl-8`}>
-                {currentItems.map((item, index) => {
+                {currentIngredients.map((item, index) => {
                   return (
                     <React.Fragment key={randomInteger(0, index)}>
-                      {item.type !== BUN && (
-                        <BurgerConstructorItem
-                          item={item}
-                          index={index}
-                          delItem={delItem}
-                        />
-                      )}
+                      <BurgerConstructorItem
+                        item={item}
+                        index={index}
+                        delItem={delItem}
+                      />
                     </React.Fragment>
                   );
                 })}
@@ -134,9 +145,9 @@ const BurgerConstructor = ({ onDropHandler }) => {
                 <ConstructorElement
                   type="bottom"
                   isLocked={true}
-                  text={`${lastElement.name} (низ)`}
-                  price={lastElement.price}
-                  thumbnail={lastElement.image}
+                  text={`${currentBun.name} (низ)`}
+                  price={currentBun.price}
+                  thumbnail={currentBun.image}
                 />
               </div>
             </div>
