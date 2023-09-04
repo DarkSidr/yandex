@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import styles from "./AppHeader.module.css";
 import AppNav from "../AppNav/AppNav";
 import { Box } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -12,15 +13,14 @@ const AppHeader = () => {
       <div className={styles.headerWrapper}>
         <AppNav />
         <h1 className={styles.headerLogo}>
-          <a className={styles.headerLogoLink} href="#">
+          <NavLink to="/" className={styles.headerLogoLink}>
             <Logo />
-          </a>
+          </NavLink>
         </h1>
         <NavItem
           icon={<ProfileIcon type="secondary" />}
           title="Личный кабинет"
-          href="#"
-          isActive={false}
+          href="/login"
         />
       </div>
     </header>
