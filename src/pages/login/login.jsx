@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
+import { getLogin } from "../../utils/functions/getStoreFunctions";
+import { login } from "../../services/api";
 
 const links = [
   {
@@ -21,28 +25,55 @@ const links = [
 ];
 
 export const Login = () => {
-  const [valueEmail, setValueEmail] = React.useState("bob@example.com");
-  const onChangeEmail = (e) => {
-    setValueEmail(e.target.value);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e) => {
+    setForm((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const [valuePassword, setValuePassword] = React.useState("password");
-  const onChangePassword = (e) => {
-    setValuePassword(e.target.value);
+  const dispatch = useDispatch();
+
+  const onButtonClick = (e) => {
+    e.preventDefault();
+    if (form.email.length > 1 && form.password.length > 1) {
+      dispatch(login(form));
+    }
   };
+  console.log(form);
+
+  const test = useSelector(getLogin);
+  console.log(test);
+
   return (
-    <FormWrapper title="Вход" buttonText="Войти" links={links}>
-      <EmailInput
-        onChange={onChangeEmail}
-        value={valueEmail}
-        name={"email"}
-        isIcon={false}
-      />
-      <PasswordInput
-        onChange={onChangePassword}
-        value={valuePassword}
-        name={"password"}
-      />
+    <FormWrapper
+      title="Вход"
+      buttonText="Войти"
+      links={links}
+      onButtomClick={onButtonClick}
+    >
+      <>
+        <EmailInput
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          value={form.email}
+          name={"email"}
+          isIcon={false}
+        />
+        <PasswordInput
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          value={form.password}
+          name={"password"}
+        />
+      </>
     </FormWrapper>
   );
 };

@@ -1,20 +1,58 @@
 import React, { useState, useRef } from "react";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useDispatch } from "react-redux";
 import {
   Input,
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./profile.module.css";
+import { useSelector } from "react-redux";
 import classNames from "classnames";
+import { getLogin } from "../../utils/functions/getStoreFunctions";
+import { logout } from "../../services/api";
+import { updateUserInfo } from "../../services/api";
+import { getUserInfo } from "./profile.utils";
+
+import styles from "./profile.module.css";
 
 const prfileMenu = [
-  { id: 1, title: "Профиль", isActive: true, href: "#" },
-  { id: 2, title: "История заказов", isActive: false, href: "#" },
-  { id: 3, title: "Выход", isActive: false, href: "#" },
+  { id: 1, title: "Профиль", isActive: true, href: "/profile" },
+  {
+    id: 2,
+    title: "История заказов",
+    isActive: false,
+    href: "/order",
+    code: "order",
+  },
+  {
+    id: 3,
+    title: "Выход",
+    isActive: false,
+    href: "/logout",
+    code: "logout",
+  },
 ];
 
 export const Profile = () => {
-  const [valueInput, setValueInput] = useState("Марк");
+  const login = useSelector(getLogin);
+  const refreshToken = localStorage.getItem("refreshToken");
+  const accessToken = localStorage.getItem("accessToken");
+  const dispatch = useDispatch();
+
+  const [form, setForm] = useState(getUserInfo(login));
+
+  const handleInputChange = (e) => {
+    setForm((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const isShowButtons =
+    form.name !== login.user.user.name ||
+    form.email !== login.user.user.email ||
+    (form.password && form.password !== "");
+
   const inputRef = useRef(null);
   const [disabled, setDisabled] = useState(true);
   const onIconClick = (state) => {
@@ -22,16 +60,6 @@ export const Profile = () => {
       setTimeout(() => inputRef.current.focus(), 0);
     }
     setDisabled(state);
-  };
-
-  const [valueLogin, setValueLogin] = React.useState("bob@example.com");
-  const onChangeLogin = (e) => {
-    setValueLogin(e.target.value);
-  };
-
-  const [valuePassword, setValuePassword] = React.useState("password");
-  const onChangePassword = (e) => {
-    setValuePassword(e.target.value);
   };
 
   return (
@@ -47,6 +75,12 @@ export const Profile = () => {
                     item.isActive && styles.linkActive
                   )}
                   href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (item.code === "logout") {
+                      dispatch(logout(refreshToken));
+                    }
+                  }}
                 >
                   {item.title}
                 </a>
@@ -68,9 +102,9 @@ export const Profile = () => {
           type={"text"}
           ref={inputRef}
           placeholder={"Имя"}
-          onChange={(e) => setValueInput(e.target.value)}
+          onChange={(e) => handleInputChange(e)}
           name={"name"}
-          value={valueInput}
+          value={form.name}
           error={false}
           errorText={"Ошибка"}
           size={"default"}
@@ -84,18 +118,48 @@ export const Profile = () => {
           }}
         />
         <EmailInput
-          onChange={onChangeLogin}
-          value={valueLogin}
+          onChange={(e) => handleInputChange(e)}
+          value={form.email}
           name={"email"}
           placeholder="Логин"
           isIcon={true}
         />
         <PasswordInput
-          onChange={onChangePassword}
-          value={valuePassword}
+          onChange={(e) => handleInputChange(e)}
+          value={form.password || ""}
           name={"password"}
           icon="EditIcon"
         />
+
+        {isShowButtons && (
+          <div className={styles.buttonWrapper}>
+            <button
+              className={styles.resetButton}
+              onClick={() => {
+                setForm(getUserInfo(login));
+              }}
+            >
+              Отмена
+            </button>
+            <Button
+              htmlType="button"
+              type="primary"
+              size="medium"
+              onClick={() => {
+                if (form.name.length > 1 && form.email.length > 1) {
+                  if (form.email.password && form.email.password.length > 1) {
+                    dispatch(updateUserInfo(accessToken, form));
+                    setForm({ ...form, password: "" });
+                  }
+                  dispatch(updateUserInfo(accessToken, form));
+                  setForm({ ...form, password: "" });
+                }
+              }}
+            >
+              Сохранить
+            </Button>
+          </div>
+        )}
       </form>
     </div>
   );

@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
 import {
   PasswordInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { getNewPassword } from "../../utils/functions/getStoreFunctions";
+import { newPassword } from "../../services/api";
 
 const links = [
   {
@@ -15,35 +19,74 @@ const links = [
 ];
 
 export const ResetPassword = () => {
-  const [valuePassword, setValuePassword] = React.useState();
-  const onChangePassword = (e) => {
-    setValuePassword(e.target.value);
+  const [form, setForm] = useState({
+    password: "",
+    token: "",
+  });
+
+  const handleInputChange = (e) => {
+    setForm((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const [valueInput, setValueInput] = React.useState();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const dispatch = useDispatch();
+
+  const isNewPassword = useSelector(getNewPassword).newPassword;
+
+  useEffect(() => {
+    if (isNewPassword) {
+      const timer = setTimeout(() => {
+        navigate("/login", {
+          state: { previousPath: location.pathname },
+        });
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [navigate, location.pathname, isNewPassword]);
+
+  const onClickButton = (e) => {
+    e.preventDefault();
+    if (form.password.length > 1 && form.token.length > 1) {
+      dispatch(newPassword(form));
+      setForm({ password: "", token: "" });
+    }
+  };
 
   return (
     <FormWrapper
       title="Восстановление пароля"
       buttonText="Сохранить"
       links={links}
+      onButtomClick={onClickButton}
     >
-      <PasswordInput
-        onChange={onChangePassword}
-        value={valuePassword}
-        name={"password"}
-        placeholder={"Введите новый пароль"}
-      />
-      <Input
-        type={"text"}
-        placeholder={"Введите код из письма"}
-        onChange={(e) => setValueInput(e.target.value)}
-        name={"code"}
-        value={valueInput}
-        error={false}
-        errorText={"Ошибка"}
-        size={"default"}
-      />
+      {isNewPassword ? (
+        <>успешно!</>
+      ) : (
+        <>
+          <PasswordInput
+            onChange={(e) => handleInputChange(e)}
+            value={form.password}
+            name={"password"}
+            placeholder={"Введите новый пароль"}
+          />
+          <Input
+            type={"text"}
+            placeholder={"Введите код из письма"}
+            onChange={(e) => handleInputChange(e)}
+            name={"token"}
+            value={form.token}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+          />
+        </>
+      )}
     </FormWrapper>
   );
 };

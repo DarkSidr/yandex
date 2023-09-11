@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
+import { register } from "../../services/api";
 import {
   Input,
   EmailInput,
@@ -16,46 +18,70 @@ const links = [
 ];
 
 export const Register = () => {
-  const [valueName, setValueName] = React.useState();
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const [valueEmail, setValueEmail] = React.useState();
-  const onChangeEmail = (e) => {
-    setValueEmail(e.target.value);
+  const handleInputChange = (e) => {
+    setForm((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const [valuePassword, setValuePassword] = React.useState();
-  const onChangePassword = (e) => {
-    setValuePassword(e.target.value);
+  const dispatch = useDispatch();
+
+  const onButtonClick = (e) => {
+    e.preventDefault();
+    if (
+      form.email.length > 1 &&
+      form.password.length > 1 &&
+      form.name.length > 1
+    ) {
+      dispatch(register(form));
+    }
   };
+
   return (
     <FormWrapper
       title="Регистрация"
       buttonText="Зарегистрироваться"
       links={links}
+      onButtomClick={onButtonClick}
     >
-      <Input
-        type={"text"}
-        placeholder={"Имя"}
-        onChange={(e) => setValueName(e.target.value)}
-        name={"name"}
-        value={valueName}
-        error={false}
-        errorText={"Ошибка"}
-        size={"default"}
-      />
+      <>
+        <Input
+          type={"text"}
+          placeholder={"Имя"}
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          name={"name"}
+          value={form.name}
+          error={false}
+          errorText={"Ошибка"}
+          size={"default"}
+        />
 
-      <EmailInput
-        onChange={onChangeEmail}
-        value={valueEmail}
-        name={"email"}
-        isIcon={false}
-      />
+        <EmailInput
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          value={form.email}
+          name={"email"}
+          isIcon={false}
+        />
 
-      <PasswordInput
-        onChange={onChangePassword}
-        value={valuePassword}
-        name={"password"}
-      />
+        <PasswordInput
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          value={form.password}
+          name={"password"}
+        />
+      </>
     </FormWrapper>
   );
 };

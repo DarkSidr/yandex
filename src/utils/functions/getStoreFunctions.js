@@ -18,3 +18,11 @@ export const getCurrentIngredientCurrentItem = (store) =>
   store.currentIngredient.currentItem;
 export const getCurrentIngredientIsLoaded = (store) =>
   store.currentIngredient.isLoaded;
+
+export const getRegister = (store) => store.registerReducer;
+
+export const getLogin = (store) => store.loginReducer;
+
+export const getUpdatePassword = (store) => store.updatePasswordReducer;
+
+export const getNewPassword = (store) => store.newPasswordReducer;
