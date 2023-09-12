@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";
@@ -8,7 +8,6 @@ import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredie
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
 import Loader from "../../components/Loader/Loader";
 
-import { getIngredients } from "../../utils/requests/getIngredients";
 import {
   getBurgerConstructorCurrentIngredients,
   getDataLoading,
@@ -24,10 +23,6 @@ import styles from "./home.module.css";
 export const Home = () => {
   const dispatch = useDispatch();
   const currentItems = useSelector(getBurgerConstructorCurrentIngredients);
-
-  // useEffect(() => {
-  //   dispatch(getIngredients());
-  // }, [dispatch]);
 
   const itemsIsLoading = useSelector(getDataLoading);
 

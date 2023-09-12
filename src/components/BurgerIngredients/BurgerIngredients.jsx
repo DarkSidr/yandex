@@ -1,17 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import Tabs from "../Tabs/Tabs";
 import BurgerIngredientsItem from "../BurgerIngredientsItem/BurgerIngredientsItem";
-import { usePopupClose } from "../../utils/hooks/usePopupClose";
-import Modal from "../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import styles from "./BurgerIngredients.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { GET_CURRENT_ITEM } from "../../services/actions/currentIngredient";
-import {
-  getDataItems,
-  getCurrentIngredientCurrentItem,
-  getCurrentIngredientIsLoaded,
-} from "../../utils/functions/getStoreFunctions";
+import { useSelector } from "react-redux";
+import { getDataItems } from "../../utils/functions/getStoreFunctions";
 
 const BurgerIngredients = () => {
   const data = useSelector(getDataItems);
@@ -22,19 +14,6 @@ const BurgerIngredients = () => {
     acc[property].push(obj);
     return acc;
   }, {});
-
-  // const itemModal = useSelector(getCurrentIngredientCurrentItem);
-
-  // const isLoaded = useSelector(getCurrentIngredientIsLoaded);
-
-  const dispatch = useDispatch();
-
-  const getData = (item) => {
-    dispatch({
-      type: GET_CURRENT_ITEM,
-      currentItem: item,
-    });
-  };
 
   const [activeMenuIndex, setActiveMenuIndex] = useState(0);
 
@@ -113,12 +92,7 @@ const BurgerIngredients = () => {
                 </h2>
                 <ul className={`${styles.list} pl-4`}>
                   {sortData[type].map((item) => (
-                    <BurgerIngredientsItem
-                      key={item._id}
-                      item={item}
-                      // onChange={setOpenModal}
-                      getData={getData}
-                    />
+                    <BurgerIngredientsItem key={item._id} item={item} />
                   ))}
                 </ul>
               </div>

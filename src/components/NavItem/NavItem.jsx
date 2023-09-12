@@ -25,7 +25,6 @@ NavItem.propTypes = {
   icon: PropTypes.element,
   title: PropTypes.string,
   href: PropTypes.string,
-  // isActive: PropTypes.bool,
 };
 
 export default NavItem;

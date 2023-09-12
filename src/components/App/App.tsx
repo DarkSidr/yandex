@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
@@ -20,7 +20,6 @@ import {
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { usePopupClose } from "../../utils/hooks/usePopupClose";
-import { getCurrentIngredientCurrentItem } from "../../utils/functions/getStoreFunctions";
 import { getIngredients } from "../../utils/requests/getIngredients";
 import Ingredients from "../../pages/ingredients/ingredients";
 
@@ -48,8 +47,6 @@ const App = () => {
   const handleModalClose = () => {
     navigate(-1);
   };
-
-  // const currentIngredient = useSelector(getCurrentIngredientCurrentItem);
 
   usePopupClose(background, handleModalClose);
 

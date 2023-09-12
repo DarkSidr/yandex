@@ -1,19 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styles from "./IngredientDetails.module.css";
 import { Box } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getDataItems } from "../../utils/functions/getStoreFunctions";
 
-const IngredientDetails = ({
-  image_large,
-  name,
-  calories,
-  proteins,
-  fat,
-  carbohydrates,
-}) => {
+const IngredientDetails = () => {
   const { ingredientId } = useParams();
   const ingredient = useSelector(getDataItems).find(
     (item) => item._id === ingredientId
@@ -69,15 +61,6 @@ const IngredientDetails = ({
       )}
     </>
   );
-};
-
-IngredientDetails.propTypes = {
-  image_large: PropTypes.string,
-  name: PropTypes.string,
-  calories: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-  carbohydrates: PropTypes.number,
 };
 
 export default IngredientDetails;
