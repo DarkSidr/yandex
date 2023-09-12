@@ -241,3 +241,32 @@ export const newPassword = (form) => {
       });
   };
 };
+
+export const updateToken = (refreshToken) => {
+  return async function (dispatch) {
+    dispatch({
+      type: FETCH_USER_REQUEST,
+    });
+    return tokenRequest(refreshToken)
+      .then(async (res) => {
+        localStorage.setItem("refreshToken", res.refreshToken);
+        localStorage.setItem("accessToken", res.accessToken);
+        const userData = await userRequest(res.accessToken);
+        dispatch({
+          type: FETCH_USER_SUCCESS,
+          user: userData,
+        });
+        dispatch({
+          type: LOGIN_SUCCESS,
+          user: userData,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: FETCH_USER_FAILURE,
+          error: error,
+        });
+        console.log(error);
+      });
+  };
+};

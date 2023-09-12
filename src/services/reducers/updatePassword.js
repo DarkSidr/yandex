@@ -1,6 +1,7 @@
 import {
   UPDATE_PASSWORD_REQUEST,
   UPDATE_PASSWORD_SUCCESS,
+  UPDATE_PASSWORD_RESET,
   UPDATE_PASSWORD_FAILURE,
 } from "../actions/updatePassword";
 
@@ -23,6 +24,12 @@ export const updatePasswordReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         updatePassword: true,
+      };
+    case UPDATE_PASSWORD_RESET:
+      return {
+        ...state,
+        loading: false,
+        updatePassword: null,
       };
     case UPDATE_PASSWORD_FAILURE:
       return {

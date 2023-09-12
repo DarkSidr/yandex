@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BURGER } from "../../services/actions/burgerConstructor";
 import EmptyBurger from "../EmptyBurger/EmptyBurger";
 import { TOTAL_PRICE } from "../../services/actions/totalPrice";
@@ -12,6 +13,7 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import { postIDIngredients } from "../../utils/requests/postIDIngredients";
 import { useSelector, useDispatch } from "react-redux";
 import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
+import CustomAlert from "../CustomAlert/CustomAlert";
 import { useDrop } from "react-dnd";
 import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
 import {
@@ -21,10 +23,19 @@ import {
   getTotalPrice,
   getOrderNumber,
   getOrderLoaded,
+  getLogin,
 } from "../../utils/functions/getStoreFunctions";
 import PropTypes from "prop-types";
 
 const BurgerConstructor = ({ onDropHandler }) => {
+  const login = useSelector(getLogin);
+
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const [checkBun, setCheckBum] = useState(false);
+
   const currentIngredients = useSelector(
     getBurgerConstructorCurrentIngredients
   );
@@ -142,13 +153,26 @@ const BurgerConstructor = ({ onDropHandler }) => {
               type="primary"
               size="large"
               onClick={() => {
-                setItemModal(true);
-                postResponse();
+                if (!login.isAuthenticated) {
+                  navigate("/login", {
+                    state: { previousPath: location.pathname },
+                  });
+                }
+                if (!currentBun && login.isAuthenticated) {
+                  setCheckBum(true);
+                }
+
+                if (currentBun && login.isAuthenticated) {
+                  setCheckBum(false);
+                  setItemModal(true);
+                  postResponse();
+                }
               }}
             >
               Оформить заказ
             </Button>
           </div>
+          <CustomAlert text="выберите булки" active={checkBun && !currentBun} />
         </div>
       </section>
       {itemModal && isOrderLoading && (

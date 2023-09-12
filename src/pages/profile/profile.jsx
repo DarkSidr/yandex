@@ -12,6 +12,7 @@ import { getLogin } from "../../utils/functions/getStoreFunctions";
 import { logout } from "../../services/api";
 import { updateUserInfo } from "../../services/api";
 import { getUserInfo } from "./profile.utils";
+import { updateToken } from "../../services/api";
 
 import styles from "./profile.module.css";
 
@@ -62,6 +63,18 @@ export const Profile = () => {
     setDisabled(state);
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (form.name.length > 1 && form.email.length > 1) {
+      dispatch(updateUserInfo(accessToken, form));
+      dispatch(updateToken(refreshToken));
+      if (form.password) {
+        delete form.password;
+      }
+      setForm({ ...form });
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.navBlock}>
@@ -97,7 +110,12 @@ export const Profile = () => {
           В этом разделе вы можете <br /> изменить свои персональные данные
         </p>
       </div>
-      <form className={styles.form}>
+      <form
+        className={styles.form}
+        onSubmit={(e) => {
+          onSubmit(e);
+        }}
+      >
         <Input
           type={"text"}
           ref={inputRef}
@@ -141,21 +159,7 @@ export const Profile = () => {
             >
               Отмена
             </button>
-            <Button
-              htmlType="button"
-              type="primary"
-              size="medium"
-              onClick={() => {
-                if (form.name.length > 1 && form.email.length > 1) {
-                  if (form.email.password && form.email.password.length > 1) {
-                    dispatch(updateUserInfo(accessToken, form));
-                    setForm({ ...form, password: "" });
-                  }
-                  dispatch(updateUserInfo(accessToken, form));
-                  setForm({ ...form, password: "" });
-                }
-              }}
-            >
+            <Button htmlType="submit" type="primary" size="medium">
               Сохранить
             </Button>
           </div>

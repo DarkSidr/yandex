@@ -5,6 +5,7 @@ import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
 import { updatePassword } from "../../services/api";
 import { getUpdatePassword } from "../../utils/functions/getStoreFunctions";
+import { UPDATE_PASSWORD_RESET } from "../../services/actions/updatePassword";
 
 const links = [
   {
@@ -32,10 +33,13 @@ export const ForgotPassword = () => {
       navigate("/reset-password", {
         state: { previousPath: location.pathname },
       });
+      dispatch({
+        type: UPDATE_PASSWORD_RESET,
+      });
     }
   }, [navigate, location.pathname, isUpdatePassword]);
 
-  const onButtonClick = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
 
     if (valueEmail.length > 1) {
@@ -52,7 +56,7 @@ export const ForgotPassword = () => {
       title="Восстановление пароля"
       buttonText="Восстановить"
       links={links}
-      onButtomClick={onButtonClick}
+      onFormSubmit={onFormSubmit}
     >
       <EmailInput
         onChange={onChangeEmail}

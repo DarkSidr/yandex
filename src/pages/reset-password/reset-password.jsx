@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
+import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import {
   PasswordInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getNewPassword } from "../../utils/functions/getStoreFunctions";
 import { newPassword } from "../../services/api";
+import { NEW_PASSWORD_RESET } from "../../services/actions/newPassword";
 
 const links = [
   {
@@ -25,9 +27,13 @@ export const ResetPassword = () => {
   });
 
   const handleInputChange = (e) => {
+    let value = e.target.value;
+    if (e.target.name === "token") {
+      value = value.replace(/[.\s]/g, "");
+    }
     setForm((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     }));
   };
 
@@ -44,13 +50,16 @@ export const ResetPassword = () => {
         navigate("/login", {
           state: { previousPath: location.pathname },
         });
+        dispatch({
+          type: NEW_PASSWORD_RESET,
+        });
       }, 3000);
 
       return () => clearTimeout(timer);
     }
   }, [navigate, location.pathname, isNewPassword]);
 
-  const onClickButton = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
     if (form.password.length > 1 && form.token.length > 1) {
       dispatch(newPassword(form));
@@ -59,15 +68,13 @@ export const ResetPassword = () => {
   };
 
   return (
-    <FormWrapper
-      title="Восстановление пароля"
-      buttonText="Сохранить"
-      links={links}
-      onButtomClick={onClickButton}
-    >
-      {isNewPassword ? (
-        <>успешно!</>
-      ) : (
+    <>
+      <FormWrapper
+        title="Восстановление пароля"
+        buttonText="Сохранить"
+        links={links}
+        onFormSubmit={onFormSubmit}
+      >
         <>
           <PasswordInput
             onChange={(e) => handleInputChange(e)}
@@ -86,7 +93,11 @@ export const ResetPassword = () => {
             size={"default"}
           />
         </>
-      )}
-    </FormWrapper>
+      </FormWrapper>
+      <CustomAlert
+        text="Успешно! Скоро будет редирект"
+        active={isNewPassword}
+      />
+    </>
   );
 };

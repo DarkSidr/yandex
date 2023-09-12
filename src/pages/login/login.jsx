@@ -6,6 +6,7 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
+import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import { getLogin } from "../../utils/functions/getStoreFunctions";
 import { login } from "../../services/api";
 
@@ -30,6 +31,8 @@ export const Login = () => {
     password: "",
   });
 
+  const loginData = useSelector(getLogin);
+
   const handleInputChange = (e) => {
     setForm((prevState) => ({
       ...prevState,
@@ -39,41 +42,47 @@ export const Login = () => {
 
   const dispatch = useDispatch();
 
-  const onButtonClick = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
     if (form.email.length > 1 && form.password.length > 1) {
       dispatch(login(form));
     }
   };
-  console.log(form);
-
-  const test = useSelector(getLogin);
-  console.log(test);
 
   return (
-    <FormWrapper
-      title="Вход"
-      buttonText="Войти"
-      links={links}
-      onButtomClick={onButtonClick}
-    >
-      <>
-        <EmailInput
-          onChange={(e) => {
-            handleInputChange(e);
-          }}
-          value={form.email}
-          name={"email"}
-          isIcon={false}
-        />
-        <PasswordInput
-          onChange={(e) => {
-            handleInputChange(e);
-          }}
-          value={form.password}
-          name={"password"}
-        />
-      </>
-    </FormWrapper>
+    <>
+      <FormWrapper
+        title="Вход"
+        buttonText="Войти"
+        links={links}
+        onFormSubmit={onFormSubmit}
+      >
+        <>
+          <EmailInput
+            onChange={(e) => {
+              handleInputChange(e);
+            }}
+            value={form.email}
+            name={"email"}
+            isIcon={false}
+          />
+          <PasswordInput
+            onChange={(e) => {
+              handleInputChange(e);
+            }}
+            value={form.password}
+            name={"password"}
+          />
+        </>
+      </FormWrapper>
+      <CustomAlert
+        text="Не правильный логин или пароль"
+        active={
+          loginData.error &&
+          loginData.error.success === false &&
+          !loginData.isAuthenticated
+        }
+      />
+    </>
   );
 };

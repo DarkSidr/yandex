@@ -1,6 +1,7 @@
 import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  REGISTER_RESET,
   REGISTER_FAILURE,
 } from "../actions/register";
 
@@ -25,6 +26,12 @@ export const registerReducer = (state = initialState, action) => {
         loading: false,
         user: action.user,
         isRegistered: true,
+      };
+    case REGISTER_RESET:
+      return {
+        ...state,
+        loading: false,
+        isRegistered: false,
       };
     case REGISTER_FAILURE:
       return {

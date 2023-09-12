@@ -1,6 +1,7 @@
 import {
   NEW_PASSWORD_REQUEST,
   NEW_PASSWORD_SUCCESS,
+  NEW_PASSWORD_RESET,
   NEW_PASSWORD_FAILURE,
 } from "../actions/newPassword";
 
@@ -23,6 +24,12 @@ export const newPasswordReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         newPassword: true,
+      };
+    case NEW_PASSWORD_RESET:
+      return {
+        ...state,
+        loading: false,
+        newPassword: null,
       };
     case NEW_PASSWORD_FAILURE:
       return {
