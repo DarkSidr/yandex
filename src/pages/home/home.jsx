@@ -25,11 +25,12 @@ export const Home = () => {
   const dispatch = useDispatch();
   const currentItems = useSelector(getBurgerConstructorCurrentIngredients);
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getIngredients());
+  // }, [dispatch]);
 
   const itemsIsLoading = useSelector(getDataLoading);
+
   const handleDrop = (item) => {
     if (item.type === "bun") {
       dispatch({

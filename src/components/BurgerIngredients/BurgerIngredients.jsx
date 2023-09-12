@@ -23,9 +23,9 @@ const BurgerIngredients = () => {
     return acc;
   }, {});
 
-  const itemModal = useSelector(getCurrentIngredientCurrentItem);
+  // const itemModal = useSelector(getCurrentIngredientCurrentItem);
 
-  const isLoaded = useSelector(getCurrentIngredientIsLoaded);
+  // const isLoaded = useSelector(getCurrentIngredientIsLoaded);
 
   const dispatch = useDispatch();
 
@@ -35,10 +35,6 @@ const BurgerIngredients = () => {
       currentItem: item,
     });
   };
-
-  const [openModal, setOpenModal] = React.useState(false);
-
-  usePopupClose(openModal, setOpenModal);
 
   const [activeMenuIndex, setActiveMenuIndex] = useState(0);
 
@@ -120,7 +116,7 @@ const BurgerIngredients = () => {
                     <BurgerIngredientsItem
                       key={item._id}
                       item={item}
-                      onChange={setOpenModal}
+                      // onChange={setOpenModal}
                       getData={getData}
                     />
                   ))}
@@ -130,11 +126,6 @@ const BurgerIngredients = () => {
           })}
         </div>
       </section>
-      {openModal && itemModal && isLoaded && (
-        <Modal title="Детали ингредиента" setState={setOpenModal}>
-          <IngredientDetails {...itemModal} />
-        </Modal>
-      )}
     </>
   );
 };

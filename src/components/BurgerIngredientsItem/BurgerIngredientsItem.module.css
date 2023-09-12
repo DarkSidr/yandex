@@ -7,6 +7,8 @@
   min-height: 208px;
   cursor: pointer;
   position: relative;
+  text-decoration: none;
+  color: #f2f2f3;
 }
 
 .imgWrapper {
