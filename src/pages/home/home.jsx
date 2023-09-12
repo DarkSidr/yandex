@@ -16,7 +16,7 @@ import {
 
 import {
   ADD_CURRENT_INGREDIENTS,
-  CHANGE_BUN,
+  ADD_CURRENT_BUN,
 } from "../../services/actions/burgerConstructor";
 
 import styles from "./home.module.css";
@@ -33,16 +33,17 @@ export const Home = () => {
   const handleDrop = (item) => {
     if (item.type === "bun") {
       dispatch({
-        type: CHANGE_BUN,
+        type: ADD_CURRENT_BUN,
         bun: item,
       });
     } else {
       dispatch({
         type: ADD_CURRENT_INGREDIENTS,
-        ingredients: [...currentItems, item],
+        ingredients: currentItems ? [...currentItems, item] : [item],
       });
     }
   };
+
   return (
     <>
       {itemsIsLoading === true ? (

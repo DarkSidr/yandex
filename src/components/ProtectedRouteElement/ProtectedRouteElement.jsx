@@ -20,12 +20,7 @@ const ProtectedRouteElement = ({ onlyUnAuth = false, component }) => {
   }, []);
 
   if (location.pathname === "/reset-password" && !location.state) {
-    return (
-      <Navigate
-        to="/forgot-password"
-        state={{ previousPath: location.pathname }}
-      />
-    );
+    return <Navigate to="/forgot-password" />;
   }
 
   if (isLoading) {
@@ -34,16 +29,11 @@ const ProtectedRouteElement = ({ onlyUnAuth = false, component }) => {
 
   if (onlyUnAuth && user) {
     const { from } = location.state || { from: { pathname: "/" } };
-    return <Navigate to={from} state={{ previousPath: location.pathname }} />;
+    return <Navigate to={from} />;
   }
 
   if (!onlyUnAuth && !user) {
-    return (
-      <Navigate
-        to="/login"
-        state={{ from: location, previousPath: location.pathname }}
-      />
-    );
+    return <Navigate to="/login" state={{ from: location }} />;
   }
 
   return component;

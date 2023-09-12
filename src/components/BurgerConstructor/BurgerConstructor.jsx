@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  ADD_CURRENT_INGREDIENTS,
-  ADD_CURRENT_BUN,
-  BURGER,
-} from "../../services/actions/burgerConstructor";
+import { BURGER } from "../../services/actions/burgerConstructor";
+import EmptyBurger from "../EmptyBurger/EmptyBurger";
 import { TOTAL_PRICE } from "../../services/actions/totalPrice";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -18,24 +15,16 @@ import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
 import { useDrop } from "react-dnd";
 import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
 import {
-  getDataItems,
   getBurgerConstructorCurrentIngredients,
   getBurgerConstructorCurrentBun,
   getBurger,
-  getBurgerConstructorBurgerConstructorRequest,
   getTotalPrice,
   getOrderNumber,
   getOrderLoaded,
 } from "../../utils/functions/getStoreFunctions";
 import PropTypes from "prop-types";
 
-const BUN = "bun";
-const MAIN = "main";
-const SAUCE = "sauce";
-
 const BurgerConstructor = ({ onDropHandler }) => {
-  const items = useSelector(getDataItems);
-
   const currentIngredients = useSelector(
     getBurgerConstructorCurrentIngredients
   );
@@ -44,10 +33,6 @@ const BurgerConstructor = ({ onDropHandler }) => {
 
   const burger = useSelector(getBurger);
 
-  const burgerConstructorRequest = useSelector(
-    getBurgerConstructorBurgerConstructorRequest
-  );
-
   const totalPrice = useSelector(getTotalPrice);
 
   const orderNumber = useSelector(getOrderNumber);
@@ -55,24 +40,6 @@ const BurgerConstructor = ({ onDropHandler }) => {
   const isOrderLoading = useSelector(getOrderLoaded);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const currentIngredients = items.filter((obj) => obj.type !== BUN);
-    const currentBun = items.find(
-      (obj, index) =>
-        obj.type === BUN && items.findIndex((o) => o.type === BUN) === index
-    );
-
-    dispatch({
-      type: ADD_CURRENT_INGREDIENTS,
-      ingredients: currentIngredients,
-    });
-
-    dispatch({
-      type: ADD_CURRENT_BUN,
-      bun: currentBun,
-    });
-  }, [dispatch, items]);
 
   useEffect(() => {
     if (currentBun && currentIngredients) {
@@ -116,58 +83,73 @@ const BurgerConstructor = ({ onDropHandler }) => {
   return (
     <>
       <section className="mt-25 pl-4">
-        {burgerConstructorRequest && (
-          <div className={styles.burgerConstructor}>
-            <div className={`${styles.wrapper}`} ref={dropTarget}>
-              <div className="pl-8">
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  text={`${currentBun.name} (верх)`}
-                  price={currentBun.price}
-                  thumbnail={currentBun.image}
-                />
-              </div>
-              <div className={`${styles.scrollContent} pl-8`}>
-                {currentIngredients.map((item, index) => {
-                  return (
-                    <React.Fragment key={randomInteger(0, index)}>
-                      <BurgerConstructorItem
-                        item={item}
-                        index={index}
-                        delItem={delItem}
-                      />
-                    </React.Fragment>
-                  );
-                })}
-              </div>
-              <div className="pl-8">
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  text={`${currentBun.name} (низ)`}
-                  price={currentBun.price}
-                  thumbnail={currentBun.image}
-                />
-              </div>
-            </div>
-
-            <div className={`mt-10 ${styles.acceptBlock}`}>
-              <PriceItem price={totalPrice} large={true} />
-              <Button
-                htmlType="button"
-                type="primary"
-                size="large"
-                onClick={() => {
-                  setItemModal(true);
-                  postResponse();
-                }}
-              >
-                Нажми на меня
-              </Button>
-            </div>
+        <div className={styles.burgerConstructor}>
+          <div className={`${styles.wrapper}`} ref={dropTarget}>
+            <>
+              {currentBun ? (
+                <div className="pl-8">
+                  <ConstructorElement
+                    type="top"
+                    isLocked={true}
+                    text={`${currentBun.name} (верх)`}
+                    price={currentBun.price}
+                    thumbnail={currentBun.image}
+                  />
+                </div>
+              ) : (
+                <EmptyBurger type={"top"} text="Выберите булки"></EmptyBurger>
+              )}
+              {currentIngredients.length > 0 ? (
+                <div className={`${styles.scrollContent} pl-8`}>
+                  {currentIngredients.map((item, index) => {
+                    return (
+                      <React.Fragment key={randomInteger(0, index)}>
+                        <BurgerConstructorItem
+                          item={item}
+                          index={index}
+                          delItem={delItem}
+                        />
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+              ) : (
+                <EmptyBurger text="Выберите начинки"></EmptyBurger>
+              )}
+              {currentBun ? (
+                <div className="pl-8">
+                  <ConstructorElement
+                    type="bottom"
+                    isLocked={true}
+                    text={`${currentBun.name} (низ)`}
+                    price={currentBun.price}
+                    thumbnail={currentBun.image}
+                  />
+                </div>
+              ) : (
+                <EmptyBurger
+                  type={"bottom"}
+                  text="Выберите булки"
+                ></EmptyBurger>
+              )}
+            </>
           </div>
-        )}
+
+          <div className={`mt-10 ${styles.acceptBlock}`}>
+            <PriceItem price={totalPrice} large={true} />
+            <Button
+              htmlType="button"
+              type="primary"
+              size="large"
+              onClick={() => {
+                setItemModal(true);
+                postResponse();
+              }}
+            >
+              Оформить заказ
+            </Button>
+          </div>
+        </div>
       </section>
       {itemModal && isOrderLoading && (
         <Modal setState={setItemModal}>

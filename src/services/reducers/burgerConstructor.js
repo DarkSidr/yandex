@@ -3,7 +3,6 @@ import {
   ADD_CURRENT_BUN,
   BURGER,
   DELETE_INGREDIENT,
-  CHANGE_BUN,
 } from "../actions/burgerConstructor";
 
 const initialState = {
@@ -40,13 +39,6 @@ export const burgerConstructorReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredients: action.ingredients,
-        burgerConstructorRequest: true,
-      };
-    }
-    case CHANGE_BUN: {
-      return {
-        ...state,
-        bun: action.bun,
         burgerConstructorRequest: true,
       };
     }
