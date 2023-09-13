@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { v4 as uuidv4 } from "uuid";
 
 import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
@@ -35,7 +36,9 @@ export const Home = () => {
     } else {
       dispatch({
         type: ADD_CURRENT_INGREDIENTS,
-        ingredients: currentItems ? [...currentItems, item] : [item],
+        ingredients: currentItems
+          ? [...currentItems, { ...item, uniqueId: uuidv4() }]
+          : [{ ...item, uniqueId: uuidv4() }],
       });
     }
   };

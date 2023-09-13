@@ -32,6 +32,7 @@ export const Register = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isRegistered) {
@@ -52,7 +53,7 @@ export const Register = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [navigate, location.pathname, isRegistered]);
+  }, [dispatch, navigate, location.pathname, isRegistered]);
 
   const handleInputChange = (e) => {
     setForm((prevState) => ({
@@ -60,8 +61,6 @@ export const Register = () => {
       [e.target.name]: e.target.value,
     }));
   };
-
-  const dispatch = useDispatch();
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -82,37 +81,35 @@ export const Register = () => {
         links={links}
         onFormSubmit={onFormSubmit}
       >
-        <>
-          <Input
-            type={"text"}
-            placeholder={"Имя"}
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-            name={"name"}
-            value={form.name}
-            error={false}
-            errorText={"Ошибка"}
-            size={"default"}
-          />
+        <Input
+          type={"text"}
+          placeholder={"Имя"}
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          name={"name"}
+          value={form.name}
+          error={false}
+          errorText={"Ошибка"}
+          size={"default"}
+        />
 
-          <EmailInput
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-            value={form.email}
-            name={"email"}
-            isIcon={false}
-          />
+        <EmailInput
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          value={form.email}
+          name={"email"}
+          isIcon={false}
+        />
 
-          <PasswordInput
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-            value={form.password}
-            name={"password"}
-          />
-        </>
+        <PasswordInput
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          value={form.password}
+          name={"password"}
+        />
       </FormWrapper>
       <CustomAlert
         text="Регистрация прошла успешно! Скоро редирект!"

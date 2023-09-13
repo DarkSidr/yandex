@@ -57,7 +57,7 @@ export const ResetPassword = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [navigate, location.pathname, isNewPassword]);
+  }, [dispatch, navigate, location.pathname, isNewPassword]);
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -75,24 +75,22 @@ export const ResetPassword = () => {
         links={links}
         onFormSubmit={onFormSubmit}
       >
-        <>
-          <PasswordInput
-            onChange={(e) => handleInputChange(e)}
-            value={form.password}
-            name={"password"}
-            placeholder={"Введите новый пароль"}
-          />
-          <Input
-            type={"text"}
-            placeholder={"Введите код из письма"}
-            onChange={(e) => handleInputChange(e)}
-            name={"token"}
-            value={form.token}
-            error={false}
-            errorText={"Ошибка"}
-            size={"default"}
-          />
-        </>
+        <PasswordInput
+          onChange={(e) => handleInputChange(e)}
+          value={form.password}
+          name={"password"}
+          placeholder={"Введите новый пароль"}
+        />
+        <Input
+          type={"text"}
+          placeholder={"Введите код из письма"}
+          onChange={(e) => handleInputChange(e)}
+          name={"token"}
+          value={form.token}
+          error={false}
+          errorText={"Ошибка"}
+          size={"default"}
+        />
       </FormWrapper>
       <CustomAlert
         text="Успешно! Скоро будет редирект"

@@ -61,46 +61,44 @@ const BurgerIngredients = () => {
   };
 
   return (
-    <>
-      <section className="mt-10">
-        <h2 className="text text_type_main-large">Соберите бургер</h2>
-        <div className="mt-5 mb-10">
-          <Tabs
-            activeIndex={activeMenuIndex}
-            menuItemsRef={menuItemsRef}
-            handleMenuItemClick={handleMenuItemClick}
-          />
-        </div>
-        <div
-          className={styles.burgerConstructor}
-          id="burgerConstructor"
-          ref={root}
-        >
-          {["bun", "sauce", "main"].map((type, index) => {
-            return (
-              <div
-                className={`mb-10`}
-                key={index}
-                ref={(el) => (sectionsRef.current[index] = el)}
-              >
-                <h2 className="text text_type_main-medium mb-6">
-                  {type === "bun"
-                    ? "Булки"
-                    : type === "sauce"
-                    ? "Соусы"
-                    : "Начинки"}
-                </h2>
-                <ul className={`${styles.list} pl-4`}>
-                  {sortData[type].map((item) => (
-                    <BurgerIngredientsItem key={item._id} item={item} />
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-    </>
+    <section className="mt-10">
+      <h2 className="text text_type_main-large">Соберите бургер</h2>
+      <div className="mt-5 mb-10">
+        <Tabs
+          activeIndex={activeMenuIndex}
+          menuItemsRef={menuItemsRef}
+          handleMenuItemClick={handleMenuItemClick}
+        />
+      </div>
+      <div
+        className={styles.burgerConstructor}
+        id="burgerConstructor"
+        ref={root}
+      >
+        {["bun", "sauce", "main"].map((type, index) => {
+          return (
+            <div
+              className={`mb-10`}
+              key={index}
+              ref={(el) => (sectionsRef.current[index] = el)}
+            >
+              <h2 className="text text_type_main-medium mb-6">
+                {type === "bun"
+                  ? "Булки"
+                  : type === "sauce"
+                  ? "Соусы"
+                  : "Начинки"}
+              </h2>
+              <ul className={`${styles.list} pl-4`}>
+                {sortData[type].map((item) => (
+                  <BurgerIngredientsItem key={item._id} item={item} />
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 

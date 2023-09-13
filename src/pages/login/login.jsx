@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import {
   EmailInput,
   PasswordInput,
@@ -57,23 +56,21 @@ export const Login = () => {
         links={links}
         onFormSubmit={onFormSubmit}
       >
-        <>
-          <EmailInput
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-            value={form.email}
-            name={"email"}
-            isIcon={false}
-          />
-          <PasswordInput
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-            value={form.password}
-            name={"password"}
-          />
-        </>
+        <EmailInput
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          value={form.email}
+          name={"email"}
+          isIcon={false}
+        />
+        <PasswordInput
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+          value={form.password}
+          name={"password"}
+        />
       </FormWrapper>
       <CustomAlert
         text="Не правильный логин или пароль"

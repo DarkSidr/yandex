@@ -48,7 +48,10 @@ FormWrapper.propTypes = {
   buttonText: PropTypes.string,
   links: PropTypes.array,
   onButtomClick: PropTypes.func,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
 
 export default FormWrapper;

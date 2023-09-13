@@ -87,63 +87,54 @@ const BurgerConstructor = ({ onDropHandler }) => {
     },
   });
 
-  const randomInteger = function (min, max) {
-    return min + Math.random() * (max + 1 - min);
-  };
-
   return (
     <>
       <section className="mt-25 pl-4">
         <div className={styles.burgerConstructor}>
           <div className={`${styles.wrapper}`} ref={dropTarget}>
-            <>
-              {currentBun ? (
-                <div className="pl-8">
-                  <ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text={`${currentBun.name} (верх)`}
-                    price={currentBun.price}
-                    thumbnail={currentBun.image}
-                  />
-                </div>
-              ) : (
-                <EmptyBurger type={"top"} text="Выберите булки"></EmptyBurger>
-              )}
-              {currentIngredients.length > 0 ? (
-                <div className={`${styles.scrollContent} pl-8`}>
-                  {currentIngredients.map((item, index) => {
-                    return (
-                      <React.Fragment key={randomInteger(0, index)}>
-                        <BurgerConstructorItem
-                          item={item}
-                          index={index}
-                          delItem={delItem}
-                        />
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-              ) : (
-                <EmptyBurger text="Выберите начинки"></EmptyBurger>
-              )}
-              {currentBun ? (
-                <div className="pl-8">
-                  <ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text={`${currentBun.name} (низ)`}
-                    price={currentBun.price}
-                    thumbnail={currentBun.image}
-                  />
-                </div>
-              ) : (
-                <EmptyBurger
-                  type={"bottom"}
-                  text="Выберите булки"
-                ></EmptyBurger>
-              )}
-            </>
+            {currentBun ? (
+              <div className="pl-8">
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text={`${currentBun.name} (верх)`}
+                  price={currentBun.price}
+                  thumbnail={currentBun.image}
+                />
+              </div>
+            ) : (
+              <EmptyBurger type={"top"} text="Выберите булки"></EmptyBurger>
+            )}
+            {currentIngredients.length > 0 ? (
+              <div className={`${styles.scrollContent} pl-8`}>
+                {currentIngredients.map((item, index) => {
+                  return (
+                    <React.Fragment key={item.uniqueId}>
+                      <BurgerConstructorItem
+                        item={item}
+                        index={index}
+                        delItem={delItem}
+                      />
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            ) : (
+              <EmptyBurger text="Выберите начинки"></EmptyBurger>
+            )}
+            {currentBun ? (
+              <div className="pl-8">
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={`${currentBun.name} (низ)`}
+                  price={currentBun.price}
+                  thumbnail={currentBun.image}
+                />
+              </div>
+            ) : (
+              <EmptyBurger type={"bottom"} text="Выберите булки"></EmptyBurger>
+            )}
           </div>
 
           <div className={`mt-10 ${styles.acceptBlock}`}>
