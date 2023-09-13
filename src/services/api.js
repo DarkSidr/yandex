@@ -1,10 +1,4 @@
-import { registerRequest } from "../utils/requests/registerRequest";
-import { loginRequest } from "../utils/requests/loginRequest";
-import { userRequest } from "../utils/requests/userRequest";
-import { logoutRequest } from "../utils/requests/logoutRequest";
-import { updateUserInfoRequest } from "../utils/requests/updateUserInfoRequest";
-import { updatePasswordRequest } from "../utils/requests/updatePasswordRequest";
-import { newPasswordRequest } from "../utils/requests/newPasswordRequest";
+import { request } from "../utils/requests/request";
 
 import {
   REGISTER_REQUEST,
@@ -49,14 +43,23 @@ import {
   NEW_PASSWORD_FAILURE,
 } from "./actions/newPassword";
 
-import { tokenRequest } from "../utils/requests/tokenRequest";
-
 export const register = (form) => {
   return async function (dispatch) {
     dispatch({
       type: REGISTER_REQUEST,
     });
-    return registerRequest(form)
+    return request("auth/register", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(form),
+    })
       .then((data) => {
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
@@ -80,7 +83,18 @@ export const login = (form) => {
     dispatch({
       type: LOGIN_REQUEST,
     });
-    return loginRequest(form)
+    return request("auth/login", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(form),
+    })
       .then((data) => {
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
@@ -104,7 +118,18 @@ export const user = (accessToken, refreshToken) => {
     dispatch({
       type: FETCH_USER_REQUEST,
     });
-    return userRequest(accessToken)
+    return request("auth/user", {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: accessToken,
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    })
       .then((data) => {
         dispatch({
           type: FETCH_USER_SUCCESS,
@@ -117,11 +142,30 @@ export const user = (accessToken, refreshToken) => {
       })
       .catch((err) => {
         if (err.message === "jwt expired") {
-          tokenRequest(refreshToken)
+          request("auth/token", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify({
+              token: refreshToken,
+            }),
+          })
             .then(async (res) => {
               localStorage.setItem("refreshToken", res.refreshToken);
               localStorage.setItem("accessToken", res.accessToken);
-              const userData = await userRequest(res.accessToken);
+              const userData = await request("auth/user", {
+                method: "GET",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                  "Content-Type": "application/json",
+                  authorization: res.accessToken,
+                },
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+              });
               dispatch({
                 type: FETCH_USER_SUCCESS,
                 user: userData,
@@ -153,7 +197,20 @@ export const logout = (refreshToken) => {
     dispatch({
       type: LOGOUT_REQUEST,
     });
-    return logoutRequest(refreshToken)
+    return request("auth/logout", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify({
+        token: refreshToken,
+      }),
+    })
       .then((data) => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
@@ -179,7 +236,19 @@ export const updateUserInfo = (token, form) => {
     dispatch({
       type: UPDATE_USER_INFO_REQUEST,
     });
-    return updateUserInfoRequest(token, form)
+    return request("auth/user", {
+      method: "PATCH",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: token,
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(form),
+    })
       .then((data) => {
         dispatch({
           type: UPDATE_USER_INFO_SUCCESS,
@@ -205,7 +274,18 @@ export const updatePassword = (form) => {
     dispatch({
       type: UPDATE_PASSWORD_REQUEST,
     });
-    return updatePasswordRequest(form)
+    return request("password-reset", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(form),
+    })
       .then((data) => {
         dispatch({
           type: UPDATE_PASSWORD_SUCCESS,
@@ -226,7 +306,18 @@ export const newPassword = (form) => {
     dispatch({
       type: NEW_PASSWORD_REQUEST,
     });
-    return newPasswordRequest(form)
+    return request("password-reset/reset", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(form),
+    })
       .then((data) => {
         dispatch({
           type: NEW_PASSWORD_SUCCESS,
@@ -247,11 +338,30 @@ export const updateToken = (refreshToken) => {
     dispatch({
       type: FETCH_USER_REQUEST,
     });
-    return tokenRequest(refreshToken)
+    return request("auth/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({
+        token: refreshToken,
+      }),
+    })
       .then(async (res) => {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
-        const userData = await userRequest(res.accessToken);
+        const userData = await request("auth/user", {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: res.accessToken,
+          },
+          redirect: "follow",
+          referrerPolicy: "no-referrer",
+        });
         dispatch({
           type: FETCH_USER_SUCCESS,
           user: userData,

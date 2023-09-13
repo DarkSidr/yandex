@@ -13,6 +13,7 @@ import { logout } from "../../services/api";
 import { updateUserInfo } from "../../services/api";
 import { getUserInfo } from "./profile.utils";
 import { updateToken } from "../../services/api";
+import { useForm } from "../../utils/hooks/useForm";
 
 import styles from "./profile.module.css";
 
@@ -40,19 +41,12 @@ export const Profile = () => {
   const accessToken = localStorage.getItem("accessToken");
   const dispatch = useDispatch();
 
-  const [form, setForm] = useState(getUserInfo(login));
-
-  const handleInputChange = (e) => {
-    setForm((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const { values, handleChange, setValues } = useForm(getUserInfo(login));
 
   const isShowButtons =
-    form.name !== login.user.user.name ||
-    form.email !== login.user.user.email ||
-    (form.password && form.password !== "");
+    values.name !== login.user.user.name ||
+    values.email !== login.user.user.email ||
+    (values.password && values.password !== "");
 
   const inputRef = useRef(null);
   const [disabled, setDisabled] = useState(true);
@@ -65,13 +59,13 @@ export const Profile = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (form.name.length > 1 && form.email.length > 1) {
-      dispatch(updateUserInfo(accessToken, form));
+    if (values.name.length > 1 && values.email.length > 1) {
+      dispatch(updateUserInfo(accessToken, values));
       dispatch(updateToken(refreshToken));
-      if (form.password) {
-        delete form.password;
+      if (values.password) {
+        delete values.password;
       }
-      setForm({ ...form });
+      setValues({ ...values });
     }
   };
 
@@ -120,9 +114,9 @@ export const Profile = () => {
           type={"text"}
           ref={inputRef}
           placeholder={"Имя"}
-          onChange={(e) => handleInputChange(e)}
+          onChange={handleChange}
           name={"name"}
-          value={form.name}
+          value={values.name}
           error={false}
           errorText={"Ошибка"}
           size={"default"}
@@ -136,15 +130,15 @@ export const Profile = () => {
           }}
         />
         <EmailInput
-          onChange={(e) => handleInputChange(e)}
-          value={form.email}
+          onChange={handleChange}
+          value={values.email}
           name={"email"}
           placeholder="Логин"
           isIcon={true}
         />
         <PasswordInput
-          onChange={(e) => handleInputChange(e)}
-          value={form.password || ""}
+          onChange={handleChange}
+          value={values.password || ""}
           name={"password"}
           icon="EditIcon"
         />
@@ -154,7 +148,7 @@ export const Profile = () => {
             <button
               className={styles.resetButton}
               onClick={() => {
-                setForm(getUserInfo(login));
+                setValues(getUserInfo(login));
               }}
             >
               Отмена

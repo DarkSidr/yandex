@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   EmailInput,
@@ -8,6 +8,7 @@ import FormWrapper from "../../components/FormWrapper/FormWrapper";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import { getLogin } from "../../utils/functions/getStoreFunctions";
 import { login } from "../../services/api";
+import { useForm } from "../../utils/hooks/useForm";
 
 const links = [
   {
@@ -25,26 +26,23 @@ const links = [
 ];
 
 export const Login = () => {
-  const [form, setForm] = useState({
+  const { values, handleChange, setValues } = useForm({
     email: "",
     password: "",
   });
 
   const loginData = useSelector(getLogin);
 
-  const handleInputChange = (e) => {
-    setForm((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
   const dispatch = useDispatch();
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    if (form.email.length > 1 && form.password.length > 1) {
-      dispatch(login(form));
+    if (values.email.length > 1 && values.password.length > 1) {
+      dispatch(login(values));
+      setValues({
+        email: "",
+        password: "",
+      });
     }
   };
 
@@ -57,18 +55,14 @@ export const Login = () => {
         onFormSubmit={onFormSubmit}
       >
         <EmailInput
-          onChange={(e) => {
-            handleInputChange(e);
-          }}
-          value={form.email}
+          onChange={handleChange}
+          value={values.email}
           name={"email"}
           isIcon={false}
         />
         <PasswordInput
-          onChange={(e) => {
-            handleInputChange(e);
-          }}
-          value={form.password}
+          onChange={handleChange}
+          value={values.password}
           name={"password"}
         />
       </FormWrapper>

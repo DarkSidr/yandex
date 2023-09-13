@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
@@ -10,6 +10,7 @@ import {
 import { getNewPassword } from "../../utils/functions/getStoreFunctions";
 import { newPassword } from "../../services/api";
 import { NEW_PASSWORD_RESET } from "../../services/actions/newPassword";
+import { useForm } from "../../utils/hooks/useForm";
 
 const links = [
   {
@@ -21,21 +22,10 @@ const links = [
 ];
 
 export const ResetPassword = () => {
-  const [form, setForm] = useState({
+  const { values, handleChange, setValues } = useForm({
     password: "",
     token: "",
   });
-
-  const handleInputChange = (e) => {
-    let value = e.target.value;
-    if (e.target.name === "token") {
-      value = value.replace(/[.\s]/g, "");
-    }
-    setForm((prevState) => ({
-      ...prevState,
-      [e.target.name]: value,
-    }));
-  };
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -61,9 +51,9 @@ export const ResetPassword = () => {
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    if (form.password.length > 1 && form.token.length > 1) {
-      dispatch(newPassword(form));
-      setForm({ password: "", token: "" });
+    if (values.password.length > 1 && values.token.length > 1) {
+      dispatch(newPassword(values));
+      setValues({ password: "", token: "" });
     }
   };
 
@@ -76,17 +66,17 @@ export const ResetPassword = () => {
         onFormSubmit={onFormSubmit}
       >
         <PasswordInput
-          onChange={(e) => handleInputChange(e)}
-          value={form.password}
+          onChange={handleChange}
+          value={values.password}
           name={"password"}
           placeholder={"Введите новый пароль"}
         />
         <Input
           type={"text"}
           placeholder={"Введите код из письма"}
-          onChange={(e) => handleInputChange(e)}
+          onChange={handleChange}
           name={"token"}
-          value={form.token}
+          value={values.token}
           error={false}
           errorText={"Ошибка"}
           size={"default"}
