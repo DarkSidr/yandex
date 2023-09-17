@@ -1,0 +1,47 @@
+.formWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.formContent {
+  margin-top: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 80px;
+  width: 480px;
+  height: 100%;
+  overflow: hidden;
+  padding-bottom: 15px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 24px;
+}
+
+.linkBlock {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.linkText {
+  display: flex;
+  justify-content: center;
+  column-gap: 8px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  color: #8585ad;
+}
+
+.link {
+  text-decoration: none;
+  color: #4c4cff;
+}

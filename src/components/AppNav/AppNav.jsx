@@ -12,15 +12,13 @@ const navList = [
     id: 1,
     title: "Конструктор",
     icon: <BurgerIcon type="primary" />,
-    href: "#",
-    isActive: true,
+    href: "/",
   },
   {
     id: 2,
     title: "Лента заказов",
     icon: <ListIcon type="secondary" />,
-    href: "#",
-    isActive: false,
+    href: "/test",
   },
 ];
 
@@ -31,12 +29,7 @@ const AppNav = () => {
         {navList.map((item) => {
           return (
             <li key={item.id}>
-              <NavItem
-                icon={item.icon}
-                title={item.title}
-                href={item.href}
-                isActive={item.isActive}
-              />
+              <NavItem icon={item.icon} title={item.title} href={item.href} />
             </li>
           );
         })}

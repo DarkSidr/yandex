@@ -42,7 +42,7 @@ const Modal = ({ title, setState, children }) => {
 };
 
 Modal.propTypes = {
-  onClose: PropTypes.func,
+  title: PropTypes.string,
   setState: PropTypes.func,
   children: PropTypes.element,
 };

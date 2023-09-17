@@ -1,0 +1,81 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 320px 480px;
+  padding: 0 20px;
+  margin: 0 auto;
+  column-gap: 60px;
+  max-width: 1280px;
+  margin-top: 120px;
+}
+
+.navBlock {
+  display: flex;
+  flex-direction: column;
+  row-gap: 80px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.link {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px;
+  text-decoration: none;
+  color: #8585ad;
+  transition: all 0.3s;
+}
+
+.link:hover {
+  color: #f2f2f3;
+  transition: all 0.3s;
+}
+
+.linkActive {
+  color: #f2f2f3;
+}
+
+.navBlockText {
+  opacity: 0.4;
+  color: #8585ad;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 20px;
+}
+
+.resetButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 16px 8px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  color: #4c4cff;
+  transition: all 0.3s;
+}
+
+.resetButton:hover {
+  transition: all 0.3s;
+  color: #f2f2f3;
+}

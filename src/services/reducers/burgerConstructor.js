@@ -1,23 +1,45 @@
-import { ADD_CURRENT_ITEMS, DELETE_ITEM } from "../actions/burgerConstructor";
+import {
+  ADD_CURRENT_INGREDIENTS,
+  ADD_CURRENT_BUN,
+  BURGER,
+  DELETE_INGREDIENT,
+} from "../actions/burgerConstructor";
 
 const initialState = {
-  currentItems: [], // ингредиенты в текущем конструкторе бургера
-  currentItemsRequest: false,
+  bun: null,
+  ingredients: [],
+  burger: [],
+  burgerConstructorRequest: false,
 };
 
 export const burgerConstructorReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_CURRENT_ITEMS: {
+    case ADD_CURRENT_INGREDIENTS: {
       return {
         ...state,
-        currentItems: action.currentItems,
-        currentItemsRequest: true,
+        ingredients: action.ingredients,
+        burgerConstructorRequest: false,
       };
     }
-    case DELETE_ITEM: {
+    case ADD_CURRENT_BUN: {
       return {
-        currentItems: action.currentItems,
-        currentItemsRequest: true,
+        ...state,
+        bun: action.bun,
+        burgerConstructorRequest: false,
+      };
+    }
+    case BURGER: {
+      return {
+        ...state,
+        burger: action.burger,
+        burgerConstructorRequest: true,
+      };
+    }
+    case DELETE_INGREDIENT: {
+      return {
+        ...state,
+        ingredients: action.ingredients,
+        burgerConstructorRequest: true,
       };
     }
     default: {

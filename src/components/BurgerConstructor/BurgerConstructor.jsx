@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
-import { ADD_CURRENT_ITEMS } from "../../services/actions/burgerConstructor";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { BURGER } from "../../services/actions/burgerConstructor";
+import EmptyBurger from "../EmptyBurger/EmptyBurger";
 import { TOTAL_PRICE } from "../../services/actions/totalPrice";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -8,32 +10,39 @@ import Modal from "../Modal/Modal";
 import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import styles from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { postData } from "../../utils/requests/postData";
+import { postIDIngredients } from "../../utils/requests/postIDIngredients";
 import { useSelector, useDispatch } from "react-redux";
 import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
+import CustomAlert from "../CustomAlert/CustomAlert";
 import { useDrop } from "react-dnd";
 import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
 import {
-  getDataItems,
-  getBurgerConstructorCurrentItems,
-  getBurgerConstructorCurrentItemsRequest,
+  getBurgerConstructorCurrentIngredients,
+  getBurgerConstructorCurrentBun,
+  getBurger,
   getTotalPrice,
   getOrderNumber,
   getOrderLoaded,
+  getLogin,
 } from "../../utils/functions/getStoreFunctions";
-
-const BUN = "bun";
-const MAIN = "main";
-const SAUCE = "sauce";
+import PropTypes from "prop-types";
 
 const BurgerConstructor = ({ onDropHandler }) => {
-  const items = useSelector(getDataItems);
+  const login = useSelector(getLogin);
 
-  const currentItems = useSelector(getBurgerConstructorCurrentItems);
+  const navigate = useNavigate();
 
-  const currentItemsRequest = useSelector(
-    getBurgerConstructorCurrentItemsRequest
+  const location = useLocation();
+
+  const [checkBun, setCheckBum] = useState(false);
+
+  const currentIngredients = useSelector(
+    getBurgerConstructorCurrentIngredients
   );
+
+  const currentBun = useSelector(getBurgerConstructorCurrentBun);
+
+  const burger = useSelector(getBurger);
 
   const totalPrice = useSelector(getTotalPrice);
 
@@ -43,50 +52,33 @@ const BurgerConstructor = ({ onDropHandler }) => {
 
   const dispatch = useDispatch();
 
-  const didLogRef = useRef(false);
-
   useEffect(() => {
-    if (didLogRef.current === false) {
-      didLogRef.current = true;
-      const currentItems = items.filter(
-        (obj, index) =>
-          obj.type !== BUN ||
-          (obj.type === BUN && items.findIndex((o) => o.type === BUN) === index)
-      );
-      currentItems.push(currentItems[0]);
-
+    if (currentBun && currentIngredients) {
       dispatch({
-        type: ADD_CURRENT_ITEMS,
-        currentItems: currentItems,
+        type: BURGER,
+        burger: [currentBun, ...currentIngredients, currentBun],
       });
     }
+  }, [dispatch, currentBun, currentIngredients]);
+
+  useEffect(() => {
     dispatch({
       type: TOTAL_PRICE,
-      totalPrice: countBurgerCost(currentItems),
+      totalPrice: countBurgerCost(burger),
     });
-  }, [dispatch, items, currentItems]);
+  }, [dispatch, burger]);
 
   const [itemModal, setItemModal] = useState();
 
   usePopupClose(itemModal, setItemModal);
 
   const delItem = (item) => {
-    dispatch(deleteItem(item, currentItems));
+    dispatch(deleteItem(item, currentIngredients));
   };
 
   const postResponse = () => {
-    dispatch(postData(currentItems));
+    dispatch(postIDIngredients(burger));
   };
-
-  const { firstElement, lastElement } = useMemo(() => {
-    const bun = currentItems.find((item) => item.type === BUN);
-    const firstElement = bun;
-    const lastElement = bun;
-    return {
-      firstElement,
-      lastElement,
-    };
-  }, [currentItems]);
 
   const [, dropTarget] = useDrop({
     accept: "ingredients",
@@ -95,67 +87,84 @@ const BurgerConstructor = ({ onDropHandler }) => {
     },
   });
 
-  const randomInteger = function (min, max) {
-    return min + Math.random() * (max + 1 - min);
-  };
-
   return (
     <>
       <section className="mt-25 pl-4">
-        {currentItemsRequest && (
-          <div className={styles.burgerConstructor}>
-            <div className={`${styles.wrapper}`} ref={dropTarget}>
+        <div className={styles.burgerConstructor}>
+          <div className={`${styles.wrapper}`} ref={dropTarget}>
+            {currentBun ? (
               <div className="pl-8">
                 <ConstructorElement
                   type="top"
                   isLocked={true}
-                  text={`${firstElement.name} (верх)`}
-                  price={firstElement.price}
-                  thumbnail={firstElement.image}
+                  text={`${currentBun.name} (верх)`}
+                  price={currentBun.price}
+                  thumbnail={currentBun.image}
                 />
               </div>
+            ) : (
+              <EmptyBurger type={"top"} text="Выберите булки"></EmptyBurger>
+            )}
+            {currentIngredients.length > 0 ? (
               <div className={`${styles.scrollContent} pl-8`}>
-                {currentItems.map((item, index) => {
+                {currentIngredients.map((item, index) => {
                   return (
-                    <React.Fragment key={randomInteger(0, index)}>
-                      {item.type !== BUN && (
-                        <BurgerConstructorItem
-                          item={item}
-                          index={index}
-                          delItem={delItem}
-                        />
-                      )}
+                    <React.Fragment key={item.uniqueId}>
+                      <BurgerConstructorItem
+                        item={item}
+                        index={index}
+                        delItem={delItem}
+                      />
                     </React.Fragment>
                   );
                 })}
               </div>
+            ) : (
+              <EmptyBurger text="Выберите начинки"></EmptyBurger>
+            )}
+            {currentBun ? (
               <div className="pl-8">
                 <ConstructorElement
                   type="bottom"
                   isLocked={true}
-                  text={`${lastElement.name} (низ)`}
-                  price={lastElement.price}
-                  thumbnail={lastElement.image}
+                  text={`${currentBun.name} (низ)`}
+                  price={currentBun.price}
+                  thumbnail={currentBun.image}
                 />
               </div>
-            </div>
+            ) : (
+              <EmptyBurger type={"bottom"} text="Выберите булки"></EmptyBurger>
+            )}
+          </div>
 
-            <div className={`mt-10 ${styles.acceptBlock}`}>
-              <PriceItem price={totalPrice} large={true} />
-              <Button
-                htmlType="button"
-                type="primary"
-                size="large"
-                onClick={() => {
+          <div className={`mt-10 ${styles.acceptBlock}`}>
+            <PriceItem price={totalPrice} large={true} />
+            <Button
+              htmlType="button"
+              type="primary"
+              size="large"
+              onClick={() => {
+                if (!login.isAuthenticated) {
+                  navigate("/login", {
+                    state: { previousPath: location.pathname },
+                  });
+                }
+                if (!currentBun && login.isAuthenticated) {
+                  setCheckBum(true);
+                }
+
+                if (currentBun && login.isAuthenticated) {
+                  setCheckBum(false);
                   setItemModal(true);
                   postResponse();
-                }}
-              >
-                Нажми на меня
-              </Button>
-            </div>
+                }
+              }}
+            >
+              Оформить заказ
+            </Button>
           </div>
-        )}
+          <CustomAlert text="выберите булки" active={checkBun && !currentBun} />
+        </div>
       </section>
       {itemModal && isOrderLoading && (
         <Modal setState={setItemModal}>
@@ -164,6 +173,10 @@ const BurgerConstructor = ({ onDropHandler }) => {
       )}
     </>
   );
+};
+
+BurgerConstructor.propTypes = {
+  onDropHandler: PropTypes.func,
 };
 
 export default BurgerConstructor;

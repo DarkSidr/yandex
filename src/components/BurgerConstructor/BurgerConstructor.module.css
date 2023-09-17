@@ -23,3 +23,23 @@
   justify-content: flex-end;
   column-gap: 40px;
 }
+
+.checkBun {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  top: -100px;
+  left: 0;
+  opacity: 0;
+  background: linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
+  transition: all 0.5s;
+}
+
+.checkBunActive {
+  top: 0;
+  opacity: 1;
+  transition: all 0.5s;
+}

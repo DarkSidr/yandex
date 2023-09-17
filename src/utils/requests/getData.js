@@ -1,35 +1,11 @@
-import {
-  GET_ITEMS_REQUEST,
-  GET_ITEMS_SUCCESS,
-  GET_ITEMS_FAILED,
-} from "../../services/actions/data";
+import { BURGER_API_URL } from "../../constants/constants";
+import { checkReponse } from "./checkReponse ";
 
-const URL = "https://norma.nomoreparties.space/api/ingredients";
-
-export function getData() {
-  return async function (dispatch) {
-    dispatch({
-      type: GET_ITEMS_REQUEST,
+export async function getData() {
+  return await fetch(`${BURGER_API_URL}/ingredients`)
+    .then(checkReponse)
+    .then((data) => {
+      if (data?.success) return data.data;
+      return Promise.reject(data);
     });
-    await fetch(URL)
-      .then((res) => {
-        if (res.ok) {
-          res.json().then((data) => {
-            dispatch({
-              type: GET_ITEMS_SUCCESS,
-              items: data.data,
-            });
-          });
-        } else {
-          Promise.reject(res);
-        }
-      })
-      .catch((e) => {
-        dispatch({
-          type: GET_ITEMS_FAILED,
-          items: [],
-        });
-        console.error(e);
-      });
-  };
 }

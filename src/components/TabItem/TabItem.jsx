@@ -28,8 +28,10 @@ const TabItem = ({
 TabItem.propTypes = {
   title: PropTypes.string,
   value: PropTypes.string,
-  current: PropTypes.string,
-  setCurrent: PropTypes.func,
+  activeIndex: PropTypes.number,
+  handleMenuItemClick: PropTypes.func,
+  menuItemsRef: PropTypes.object,
+  index: PropTypes.number,
 };
 
 export default TabItem;
