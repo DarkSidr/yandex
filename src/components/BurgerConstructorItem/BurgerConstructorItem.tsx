@@ -1,23 +1,57 @@
 import React, { useRef } from "react";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDrop, useDrag } from "react-dnd";
+import { useDrop, useDrag, DropTargetMonitor } from "react-dnd";
+import { XYCoord } from "dnd-core";
 import { moveCard } from "../BurgerConstructor/BurgerConstructor.utils";
 import styles from "./BurgerConstructorItem.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getBurgerConstructorCurrentIngredients } from "../../utils/functions/getStoreFunctions";
-import PropTypes from "prop-types";
+import { AppDispatch } from "../..";
 
-const BurgerConstructorItem = ({ item, index, delItem }) => {
-  const ref = useRef(null);
+export type TItemBurger = {
+  _id: string;
+  name: string;
+  type: string;
+  proteins: number;
+  fat: number;
+  carbohydrates: number;
+  calories: number;
+  price: number;
+  image: string;
+  image_mobile: string;
+  image_large: string;
+  uniqueId?: string;
+};
+
+type TDelItemFN = (item: TItemBurger) => void;
+
+type TDragItem = {
+  index: number;
+  id: string;
+  type: string;
+};
+
+type TBurgerConstructorItem = {
+  item: TItemBurger;
+  index: number;
+  delItem: TDelItemFN;
+};
+
+const BurgerConstructorItem = ({
+  item,
+  index,
+  delItem,
+}: TBurgerConstructorItem) => {
+  const ref = useRef<HTMLDivElement>(null);
 
   const currentItems = useSelector(getBurgerConstructorCurrentIngredients);
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const [, drop] = useDrop({
     accept: "other",
-    hover: (item, monitor) => {
+    hover: (item: TDragItem, monitor: DropTargetMonitor) => {
       if (!ref.current) {
         return;
       }
@@ -29,14 +63,14 @@ const BurgerConstructorItem = ({ item, index, delItem }) => {
       }
 
       // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
       // Get vertical middle
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       // Determine mouse position
       const clientOffset = monitor.getClientOffset();
       // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
       // Only perform the move when the mouse has crossed half of the items height
       // When dragging downwards, only move when the cursor is below 50%
       // When dragging upwards, only move when the cursor is above 50%
@@ -83,12 +117,6 @@ const BurgerConstructorItem = ({ item, index, delItem }) => {
       />
     </div>
   );
-};
-
-BurgerConstructorItem.propTypes = {
-  item: PropTypes.object,
-  index: PropTypes.number,
-  delItem: PropTypes.func,
 };
 
 export default BurgerConstructorItem;

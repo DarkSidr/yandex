@@ -20,14 +20,14 @@ import {
 } from "../../services/actions/burgerConstructor";
 
 import styles from "./home.module.css";
+import { TItemBurger } from "../../components/BurgerConstructorItem/BurgerConstructorItem";
 
 export const Home = () => {
   const dispatch = useDispatch();
   const currentItems = useSelector(getBurgerConstructorCurrentIngredients);
 
   const itemsIsLoading = useSelector(getDataLoading);
-
-  const handleDrop = (item) => {
+  const handleDrop = (item: TItemBurger): void => {
     if (item.type === "bun") {
       dispatch({
         type: ADD_CURRENT_BUN,

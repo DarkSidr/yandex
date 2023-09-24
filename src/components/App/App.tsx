@@ -22,20 +22,19 @@ import Modal from "../Modal/Modal";
 import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import { getIngredients } from "../../utils/requests/getIngredients";
 import Ingredients from "../../pages/ingredients/ingredients";
+import { AppDispatch } from "../..";
 
 const App = () => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    //@ts-ignore
     dispatch(getIngredients());
   }, [dispatch]);
 
   useEffect(() => {
     if (accessToken && refreshToken) {
-      //@ts-ignore
       dispatch(user(accessToken, refreshToken));
     }
   }, [dispatch, accessToken, refreshToken]);
@@ -44,7 +43,7 @@ const App = () => {
   const navigate = useNavigate();
   const background = location.state && location.state.background;
 
-  const handleModalClose = () => {
+  const handleModalClose = (): void => {
     navigate(-1);
   };
 

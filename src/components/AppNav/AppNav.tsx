@@ -1,13 +1,12 @@
-import React from "react";
 import styles from "./AppNav.module.css";
 import {
   BurgerIcon,
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons";
 
-import NavItem from "../NavItem/NavItem";
+import NavItem, { TNavItem } from "../NavItem/NavItem";
 
-const navList = [
+const navList: TNavItem[] = [
   {
     id: 1,
     title: "Конструктор",

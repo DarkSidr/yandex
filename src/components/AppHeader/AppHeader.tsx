@@ -2,7 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./AppHeader.module.css";
 import AppNav from "../AppNav/AppNav";
-import { Box } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/logo";
 import NavItem from "../NavItem/NavItem";
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons";

@@ -4,27 +4,44 @@ import BurgerIngredientsItem from "../BurgerIngredientsItem/BurgerIngredientsIte
 import styles from "./BurgerIngredients.module.css";
 import { useSelector } from "react-redux";
 import { getDataItems } from "../../utils/functions/getStoreFunctions";
+import { TItemBurger } from "../BurgerConstructorItem/BurgerConstructorItem";
+
+type TAcc<T> = Record<string, T[]>;
+
+type IntersectionObserverCallback = (
+  entries: IntersectionObserverEntry[],
+  observer: IntersectionObserver
+) => void;
+
+interface IntersectionObserverEntry {
+  readonly target: Element;
+  readonly boundingClientRect: DOMRectReadOnly;
+  readonly intersectionRect: DOMRectReadOnly;
+  readonly intersectionRatio: number;
+  readonly isIntersecting: boolean;
+  readonly time: number;
+}
 
 const BurgerIngredients = () => {
   const data = useSelector(getDataItems);
 
-  const sortData = data.reduce((acc, obj) => {
+  const sortData = data.reduce((acc: TAcc<TItemBurger>, obj: TItemBurger) => {
     const property = obj.type;
     acc[property] = acc[property] || [];
     acc[property].push(obj);
     return acc;
   }, {});
 
-  const [activeMenuIndex, setActiveMenuIndex] = useState(0);
+  const [activeMenuIndex, setActiveMenuIndex] = useState<number>(0);
 
-  const root = useRef(null);
-  const menuItemsRef = useRef([]);
-  const sectionsRef = useRef([]);
+  const root = useRef<HTMLDivElement>(null);
+  const menuItemsRef = useRef<Array<HTMLDivElement>>([]);
+  const sectionsRef = useRef<Array<HTMLDivElement>>([]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const callback = (entries) => {
-        entries.forEach((entry, index) => {
+      const callback: IntersectionObserverCallback = (entries): void => {
+        entries.forEach((entry: IntersectionObserverEntry, index: number) => {
           if (
             entry.isIntersecting &&
             entry.intersectionRatio >= 0.2 &&
@@ -45,8 +62,10 @@ const BurgerIngredients = () => {
         observer.observe(sectionRef);
       });
     };
+    if (root.current) {
+      root.current.addEventListener("scroll", handleScroll);
+    }
 
-    root.current.addEventListener("scroll", handleScroll);
     return () => {
       if (root.current) {
         root.current.removeEventListener("scroll", handleScroll);
@@ -54,7 +73,7 @@ const BurgerIngredients = () => {
     };
   }, []);
 
-  const handleMenuItemClick = (index) => {
+  const handleMenuItemClick = (index: number) => {
     const section = sectionsRef.current[index];
     section.scrollIntoView({ block: "start", behavior: "smooth" });
     setActiveMenuIndex(index);
@@ -90,7 +109,7 @@ const BurgerIngredients = () => {
                   : "Начинки"}
               </h2>
               <ul className={`${styles.list} pl-4`}>
-                {sortData[type].map((item) => (
+                {sortData[type].map((item: TItemBurger) => (
                   <BurgerIngredientsItem key={item._id} item={item} />
                 ))}
               </ul>

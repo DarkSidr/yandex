@@ -15,7 +15,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
 import CustomAlert from "../CustomAlert/CustomAlert";
 import { useDrop } from "react-dnd";
-import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
+import BurgerConstructorItem, {
+  TItemBurger,
+} from "../BurgerConstructorItem/BurgerConstructorItem";
 import {
   getBurgerConstructorCurrentIngredients,
   getBurgerConstructorCurrentBun,
@@ -26,8 +28,13 @@ import {
   getLogin,
 } from "../../utils/functions/getStoreFunctions";
 import PropTypes from "prop-types";
+import { AppDispatch } from "../..";
 
-const BurgerConstructor = ({ onDropHandler }) => {
+type TBurgerConstructor = {
+  onDropHandler: (item: TItemBurger) => void;
+};
+
+const BurgerConstructor = ({ onDropHandler }: TBurgerConstructor) => {
   const login = useSelector(getLogin);
 
   const navigate = useNavigate();
@@ -50,7 +57,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
 
   const isOrderLoading = useSelector(getOrderLoaded);
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     if (currentBun && currentIngredients) {
@@ -68,11 +75,11 @@ const BurgerConstructor = ({ onDropHandler }) => {
     });
   }, [dispatch, burger]);
 
-  const [itemModal, setItemModal] = useState();
+  const [itemModal, setItemModal] = useState<boolean>();
 
   usePopupClose(itemModal, setItemModal);
 
-  const delItem = (item) => {
+  const delItem = (item: TItemBurger) => {
     dispatch(deleteItem(item, currentIngredients));
   };
 
@@ -82,7 +89,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
 
   const [, dropTarget] = useDrop({
     accept: "ingredients",
-    drop(item) {
+    drop(item: TItemBurger) {
       onDropHandler(item);
     },
   });
@@ -107,7 +114,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
             )}
             {currentIngredients.length > 0 ? (
               <div className={`${styles.scrollContent} pl-8`}>
-                {currentIngredients.map((item, index) => {
+                {currentIngredients.map((item: TItemBurger, index: number) => {
                   return (
                     <React.Fragment key={item.uniqueId}>
                       <BurgerConstructorItem
