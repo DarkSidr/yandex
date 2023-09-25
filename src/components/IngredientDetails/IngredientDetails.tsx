@@ -1,14 +1,14 @@
 import React from "react";
 import styles from "./IngredientDetails.module.css";
-import { Box } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getDataItems } from "../../utils/functions/getStoreFunctions";
+import { TItemBurger } from "../BurgerConstructorItem/BurgerConstructorItem";
 
 const IngredientDetails = () => {
   const { ingredientId } = useParams();
   const ingredient = useSelector(getDataItems).find(
-    (item) => item._id === ingredientId
+    (item: TItemBurger) => item._id === ingredientId
   );
 
   return (

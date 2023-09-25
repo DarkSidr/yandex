@@ -1,9 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons";
 import styles from "./PriceItem.module.css";
 
-const PriceItem = ({ price, large = false }) => {
+type TPriceItem = {
+  price: number;
+  large?: boolean;
+};
+
+const PriceItem = ({ price, large = false }: TPriceItem) => {
   return (
     <div className={`${styles.wrapper}  ${large && styles.largeWrapper}`}>
       <span
@@ -18,11 +22,6 @@ const PriceItem = ({ price, large = false }) => {
       </div>
     </div>
   );
-};
-
-PriceItem.propTypes = {
-  price: PropTypes.number,
-  large: PropTypes.bool,
 };
 
 export default PriceItem;

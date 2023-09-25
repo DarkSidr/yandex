@@ -27,7 +27,6 @@ import {
   getOrderLoaded,
   getLogin,
 } from "../../utils/functions/getStoreFunctions";
-import PropTypes from "prop-types";
 import { AppDispatch } from "../..";
 
 type TBurgerConstructor = {
@@ -75,9 +74,9 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructor) => {
     });
   }, [dispatch, burger]);
 
-  const [itemModal, setItemModal] = useState<boolean>();
+  const [showModal, setShowModal] = useState<boolean>();
 
-  usePopupClose(itemModal, setItemModal);
+  usePopupClose(showModal, setShowModal);
 
   const delItem = (item: TItemBurger) => {
     dispatch(deleteItem(item, currentIngredients));
@@ -162,7 +161,7 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructor) => {
 
                 if (currentBun && login.isAuthenticated) {
                   setCheckBum(false);
-                  setItemModal(true);
+                  setShowModal(true);
                   postResponse();
                 }
               }}
@@ -173,17 +172,13 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructor) => {
           <CustomAlert text="выберите булки" active={checkBun && !currentBun} />
         </div>
       </section>
-      {itemModal && isOrderLoading && (
-        <Modal setState={setItemModal}>
+      {showModal && isOrderLoading && (
+        <Modal setState={setShowModal}>
           <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
     </>
   );
-};
-
-BurgerConstructor.propTypes = {
-  onDropHandler: PropTypes.func,
 };
 
 export default BurgerConstructor;

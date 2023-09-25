@@ -1,11 +1,31 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FormEvent, ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./FormWrapper.module.css";
 
-const FormWrapper = ({ title, buttonText, links, onFormSubmit, children }) => {
+export type TLinks = {
+  id: number;
+  text: string;
+  linkTo: string;
+  linkText: string;
+};
+
+type TFormWrapper = {
+  title: string;
+  buttonText: string;
+  links: TLinks[];
+  onFormSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  children: ReactNode;
+};
+
+const FormWrapper = ({
+  title,
+  buttonText,
+  links,
+  onFormSubmit,
+  children,
+}: TFormWrapper) => {
   const location = useLocation();
   return (
     <div className={styles.formWrapper}>
@@ -23,7 +43,7 @@ const FormWrapper = ({ title, buttonText, links, onFormSubmit, children }) => {
           </Button>
         </form>
         <div className={styles.linkBlock}>
-          {links.map((item) => {
+          {links.map((item: TLinks) => {
             return (
               <span className={styles.linkText} key={item.id}>
                 {item.text}
@@ -41,17 +61,6 @@ const FormWrapper = ({ title, buttonText, links, onFormSubmit, children }) => {
       </div>
     </div>
   );
-};
-
-FormWrapper.propTypes = {
-  title: PropTypes.string,
-  buttonText: PropTypes.string,
-  links: PropTypes.array,
-  onButtomClick: PropTypes.func,
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]),
 };
 
 export default FormWrapper;

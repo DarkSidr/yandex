@@ -1,6 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { TItemTab, TMenuItemsRef } from "../Tabs/Tabs";
+
+export type TTabItem = {
+  activeIndex: number;
+  handleMenuItemClick: (index: number) => void;
+  index: number;
+} & TItemTab &
+  TMenuItemsRef;
 
 const TabItem = ({
   title,
@@ -9,9 +16,9 @@ const TabItem = ({
   handleMenuItemClick,
   menuItemsRef,
   index,
-}) => {
+}: TTabItem) => {
   return (
-    <div ref={(el) => (menuItemsRef.current[index] = el)}>
+    <div ref={(el) => el && (menuItemsRef.current[index] = el)}>
       <Tab
         value={value}
         active={activeIndex === index}
@@ -23,15 +30,6 @@ const TabItem = ({
       </Tab>
     </div>
   );
-};
-
-TabItem.propTypes = {
-  title: PropTypes.string,
-  value: PropTypes.string,
-  activeIndex: PropTypes.number,
-  handleMenuItemClick: PropTypes.func,
-  menuItemsRef: PropTypes.object,
-  index: PropTypes.number,
 };
 
 export default TabItem;

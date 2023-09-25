@@ -1,32 +1,43 @@
 import TabItem from "../TabItem/TabItem";
-import PropTypes from "prop-types";
 import styles from "./Tabs.module.css";
 
-const tabItems = [
+export type TMenuItemsRef = {
+  menuItemsRef: React.MutableRefObject<HTMLDivElement[]>;
+};
+
+export type TItemTab = {
+  id?: number;
+  title: string;
+  value: string;
+};
+
+type TTabs = {
+  activeIndex: number;
+  handleMenuItemClick: (index: number) => void;
+} & TMenuItemsRef;
+
+const tabItems: TItemTab[] = [
   {
     id: 1,
     title: "Булки",
     value: "bun",
-    isActive: true,
   },
   {
     id: 2,
     title: "Соусы",
     value: "sauce",
-    isActive: false,
   },
   {
     id: 3,
     title: "Начинки",
     value: "main",
-    isActive: false,
   },
 ];
 
-const Tabs = ({ activeIndex, menuItemsRef, handleMenuItemClick }) => {
+const Tabs = ({ activeIndex, menuItemsRef, handleMenuItemClick }: TTabs) => {
   return (
     <div className={styles.tabWrapepr}>
-      {tabItems.map((tab, index) => {
+      {tabItems.map((tab: TItemTab, index: number) => {
         return (
           <TabItem
             key={tab.id}
@@ -41,12 +52,6 @@ const Tabs = ({ activeIndex, menuItemsRef, handleMenuItemClick }) => {
       })}
     </div>
   );
-};
-
-Tabs.propTypes = {
-  activeIndex: PropTypes.number,
-  menuItemsRef: PropTypes.object,
-  handleMenuItemClick: PropTypes.func,
 };
 
 export default Tabs;

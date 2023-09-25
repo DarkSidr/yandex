@@ -36,7 +36,9 @@ const BurgerIngredients = () => {
 
   const root = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<Array<HTMLDivElement>>([]);
-  const sectionsRef = useRef<Array<HTMLDivElement>>([]);
+  const sectionsRef = useRef<Array<HTMLDivElement | null>>([]);
+
+  const { current: rootCurrent } = root;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,23 +61,27 @@ const BurgerIngredients = () => {
       const observer = new IntersectionObserver(callback, options);
 
       sectionsRef.current.forEach((sectionRef) => {
-        observer.observe(sectionRef);
+        if (sectionRef) {
+          observer.observe(sectionRef);
+        }
       });
     };
-    if (root.current) {
-      root.current.addEventListener("scroll", handleScroll);
+    if (rootCurrent) {
+      rootCurrent.addEventListener("scroll", handleScroll);
     }
 
     return () => {
-      if (root.current) {
-        root.current.removeEventListener("scroll", handleScroll);
+      if (rootCurrent) {
+        rootCurrent.removeEventListener("scroll", handleScroll);
       }
     };
-  }, []);
+  }, [rootCurrent]);
 
   const handleMenuItemClick = (index: number) => {
     const section = sectionsRef.current[index];
-    section.scrollIntoView({ block: "start", behavior: "smooth" });
+    if (section) {
+      section.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
     setActiveMenuIndex(index);
   };
 

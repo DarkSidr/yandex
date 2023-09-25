@@ -1,12 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
-import PropTypes from "prop-types";
 
 import { getLogin } from "../../utils/functions/getStoreFunctions";
 import Loader from "../Loader/Loader";
 
-const ProtectedRouteElement = ({ onlyUnAuth = false, component }) => {
+type TComponent = {
+  component: ReactElement;
+};
+
+type TProtectedRouteElement = {
+  onlyUnAuth?: boolean;
+} & TComponent;
+
+const ProtectedRouteElement = ({
+  onlyUnAuth = false,
+  component,
+}: TProtectedRouteElement) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const user = useSelector(getLogin).user;
@@ -40,12 +50,7 @@ const ProtectedRouteElement = ({ onlyUnAuth = false, component }) => {
   return component;
 };
 
-ProtectedRouteElement.propTypes = {
-  onlyUnAuth: PropTypes.bool,
-  component: PropTypes.element,
-};
-
 export const OnlyAuth = ProtectedRouteElement;
-export const OnlyUnAuth = ({ component }) => (
+export const OnlyUnAuth = ({ component }: TComponent) => (
   <ProtectedRouteElement onlyUnAuth={true} component={component} />
 );

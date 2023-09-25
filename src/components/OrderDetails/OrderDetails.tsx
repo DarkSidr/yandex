@@ -1,9 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styles from "./OrderDetails.module.css";
 import doneImage from "../../images/done.png";
 
-const OrderDetails = ({ orderNumber }) => {
+type TOrderDetails = {
+  orderNumber: number;
+};
+
+const OrderDetails = ({ orderNumber }: TOrderDetails) => {
   return (
     <div className={`${styles.wrapper}`}>
       <div className={styles.modalBody}>
@@ -28,10 +31,6 @@ const OrderDetails = ({ orderNumber }) => {
       </div>
     </div>
   );
-};
-
-OrderDetails.propTypes = {
-  orderNumber: PropTypes.number,
 };
 
 export default OrderDetails;
