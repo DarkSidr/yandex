@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { FormEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import FormWrapper from "../../components/FormWrapper/FormWrapper";
+import FormWrapper, { TLinks } from "../../components/FormWrapper/FormWrapper";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import {
   PasswordInput,
@@ -11,8 +11,14 @@ import { getNewPassword } from "../../utils/functions/getStoreFunctions";
 import { newPassword } from "../../services/api";
 import { NEW_PASSWORD_RESET } from "../../services/actions/newPassword";
 import { useForm } from "../../utils/hooks/useForm";
+import { AppDispatch } from "../..";
 
-const links = [
+type TResetPassword = {
+  password: string;
+  token: string;
+};
+
+const links: TLinks[] = [
   {
     id: 1,
     text: "Вспомнили пароль?",
@@ -22,7 +28,7 @@ const links = [
 ];
 
 export const ResetPassword = () => {
-  const { values, handleChange, setValues } = useForm({
+  const { values, handleChange, setValues } = useForm<TResetPassword>({
     password: "",
     token: "",
   });
@@ -30,7 +36,7 @@ export const ResetPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const isNewPassword = useSelector(getNewPassword).newPassword;
 
@@ -49,7 +55,7 @@ export const ResetPassword = () => {
     }
   }, [dispatch, navigate, location.pathname, isNewPassword]);
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (values.password.length > 1 && values.token.length > 1) {
       dispatch(newPassword(values));

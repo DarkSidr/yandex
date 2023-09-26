@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, FormEvent } from "react";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
 import {
@@ -16,8 +16,23 @@ import { updateToken } from "../../services/api";
 import { useForm } from "../../utils/hooks/useForm";
 
 import styles from "./profile.module.css";
+import { AppDispatch } from "../..";
 
-const prfileMenu = [
+type TProfile = {
+  name: string;
+  email: string;
+  password?: string;
+};
+
+type TPrfileMenu = {
+  id: number;
+  title: string;
+  isActive: boolean;
+  href: string;
+  code?: string;
+};
+
+const prfileMenu: TPrfileMenu[] = [
   { id: 1, title: "Профиль", isActive: true, href: "/profile" },
   {
     id: 2,
@@ -39,25 +54,27 @@ export const Profile = () => {
   const login = useSelector(getLogin);
   const refreshToken = localStorage.getItem("refreshToken");
   const accessToken = localStorage.getItem("accessToken");
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const { values, handleChange, setValues } = useForm(getUserInfo(login));
+  const { values, handleChange, setValues } = useForm<TProfile>(
+    getUserInfo(login)
+  );
 
   const isShowButtons =
-    values.name !== login.user.user.name ||
-    values.email !== login.user.user.email ||
+    values.name !== (login.user && login.user.user.name) ||
+    values.email !== (login.user && login.user.user.email) ||
     (values.password && values.password !== "");
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [disabled, setDisabled] = useState(true);
-  const onIconClick = (state) => {
+  const onIconClick = (state: boolean): void => {
     if (!state) {
-      setTimeout(() => inputRef.current.focus(), 0);
+      setTimeout(() => inputRef.current && inputRef.current.focus(), 0);
     }
     setDisabled(state);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (values.name.length > 1 && values.email.length > 1) {
       dispatch(updateUserInfo(accessToken, values));

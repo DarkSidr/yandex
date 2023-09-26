@@ -1,22 +1,24 @@
+import { AppDispatch } from "../..";
 import {
   ADD_CURRENT_INGREDIENTS,
   DELETE_INGREDIENT,
 } from "../../services/actions/burgerConstructor";
+import { TItemBurger } from "../BurgerConstructorItem/BurgerConstructorItem";
 
-export function countBurgerCost(ingredients) {
+export function countBurgerCost(ingredients: TItemBurger[]) {
   return ingredients.reduce((total, item) => total + item.price, 0);
 }
 
-function removeItemFromArray(array, itemToRemove) {
-  const index = array.findIndex((item) => item === itemToRemove);
+function removeItemFromArray(array: TItemBurger[], itemToRemove: TItemBurger) {
+  const index = array.findIndex((item: TItemBurger) => item === itemToRemove);
   if (index !== -1) {
     return array.slice(0, index).concat(array.slice(index + 1));
   }
   return array;
 }
 
-export function deleteItem(itemToRemove, items) {
-  return async function (dispatch) {
+export function deleteItem(itemToRemove: TItemBurger, items: TItemBurger[]) {
+  return async function (dispatch: AppDispatch) {
     const newArray = removeItemFromArray(items, itemToRemove);
     dispatch({
       type: DELETE_INGREDIENT,
@@ -25,8 +27,9 @@ export function deleteItem(itemToRemove, items) {
   };
 }
 
-export function moveCard(dragIndex, hoverIndex, items) {
-  return async function (dispatch) {
+// убрать any
+export function moveCard(dragIndex: number, hoverIndex: number, items: any) {
+  return async function (dispatch: AppDispatch) {
     const dragCard = items[dragIndex];
     const newCards = [...items];
     newCards.splice(dragIndex, 1);

@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { FormEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import FormWrapper from "../../components/FormWrapper/FormWrapper";
+import FormWrapper, { TLinks } from "../../components/FormWrapper/FormWrapper";
 import { updatePassword } from "../../services/api";
 import { getUpdatePassword } from "../../utils/functions/getStoreFunctions";
 import { UPDATE_PASSWORD_RESET } from "../../services/actions/updatePassword";
 import { useForm } from "../../utils/hooks/useForm";
+import { AppDispatch } from "../..";
 
-const links = [
+type TForgotPassword = {
+  email: string;
+};
+
+const links: TLinks[] = [
   {
     id: 1,
     text: "Вспомнили пароль?",
@@ -18,14 +23,14 @@ const links = [
 ];
 
 export const ForgotPassword = () => {
-  const { values, handleChange, setValues } = useForm({
+  const { values, handleChange, setValues } = useForm<TForgotPassword>({
     email: "",
   });
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const isUpdatePassword = useSelector(getUpdatePassword).updatePassword;
 
@@ -40,7 +45,7 @@ export const ForgotPassword = () => {
     }
   }, [dispatch, navigate, location.pathname, isUpdatePassword]);
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (values.email.length > 1) {

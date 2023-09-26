@@ -104,9 +104,12 @@ export const login = (form) => {
         });
       })
       .catch((err) => {
+        const errorData = {
+          success: err.ok,
+        };
         dispatch({
           type: LOGIN_FAILURE,
-          error: err,
+          error: errorData,
         });
         console.error(err);
       });

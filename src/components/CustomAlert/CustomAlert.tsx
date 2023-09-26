@@ -4,7 +4,7 @@ import styles from "./CustomAlert.module.css";
 
 type TCustomAlert = {
   text: string;
-  active: boolean;
+  active: boolean | null;
 };
 
 const CustomAlert = ({ text, active }: TCustomAlert) => {

@@ -1,16 +1,22 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import FormWrapper from "../../components/FormWrapper/FormWrapper";
+import FormWrapper, { TLinks } from "../../components/FormWrapper/FormWrapper";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import { getLogin } from "../../utils/functions/getStoreFunctions";
 import { login } from "../../services/api";
 import { useForm } from "../../utils/hooks/useForm";
+import { AppDispatch } from "../..";
 
-const links = [
+type TResetPassword = {
+  email: string;
+  password: string;
+};
+
+const links: TLinks[] = [
   {
     id: 1,
     text: "Вы — новый пользователь?",
@@ -26,16 +32,16 @@ const links = [
 ];
 
 export const Login = () => {
-  const { values, handleChange, setValues } = useForm({
+  const { values, handleChange, setValues } = useForm<TResetPassword>({
     email: "",
     password: "",
   });
 
   const loginData = useSelector(getLogin);
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (values.email.length > 1 && values.password.length > 1) {
       dispatch(login(values));
