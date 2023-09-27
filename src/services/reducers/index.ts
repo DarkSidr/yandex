@@ -3,7 +3,6 @@ import { dataReducer } from "./data";
 import { burgerConstructorReducer } from "./burgerConstructor";
 import { totalPriceReducer } from "./totalPrice";
 import { orderReducer } from "./order";
-import { currentIngredientReducer } from "./currentIngredient";
 import { registerReducer } from "./register";
 import { loginReducer } from "./login";
 import { userReducer } from "./user";
@@ -17,7 +16,6 @@ export const rootReducer = combineReducers({
   burgerConstructor: burgerConstructorReducer,
   totalPrice: totalPriceReducer,
   order: orderReducer,
-  currentIngredient: currentIngredientReducer,
   registerReducer: registerReducer,
   loginReducer: loginReducer,
   userReducer: userReducer,

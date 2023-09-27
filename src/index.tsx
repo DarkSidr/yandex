@@ -4,10 +4,10 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import App from "./components/App/App";
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, Action } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
-import { Provider } from "react-redux";
-import thunk from "redux-thunk";
+import { Provider, TypedUseSelectorHook, useSelector } from "react-redux";
+import thunk, { ThunkAction } from "redux-thunk";
 import { rootReducer } from "./services/reducers";
 
 const store = createStore(
@@ -16,6 +16,16 @@ const store = createStore(
 );
 
 export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

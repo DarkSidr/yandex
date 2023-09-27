@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import FormWrapper from "../../components/FormWrapper/FormWrapper";
+import FormWrapper, { TLinks } from "../../components/FormWrapper/FormWrapper";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import { register } from "../../services/api";
 import { getRegister } from "../../utils/functions/getStoreFunctions";
@@ -14,7 +14,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { AppDispatch } from "../..";
 
-const links = [
+type TRegister = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+const links: TLinks[] = [
   {
     id: 1,
     text: "Уже зарегистрированы?",
@@ -24,7 +30,7 @@ const links = [
 ];
 
 export const Register = () => {
-  const { values, handleChange, setValues } = useForm({
+  const { values, handleChange, setValues } = useForm<TRegister>({
     name: "",
     email: "",
     password: "",

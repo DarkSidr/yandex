@@ -1,11 +1,7 @@
 import { useEffect } from "react";
 // кастомные хуки всегда должны начинаться с глагола `use`, чтобы реакт понял, что это хук. Он следит за их вызовами
-import { useDispatch } from "react-redux";
-import { DELETE_CURRENT_ITEM } from "../../services/actions/currentIngredient";
 
 export function usePopupClose(isOpen, closePopup) {
-  const dispatch = useDispatch();
-
   useEffect(() => {
     if (!isOpen) return; // останавливаем действие эффекта, если попап закрыт
 
@@ -13,18 +9,12 @@ export function usePopupClose(isOpen, closePopup) {
       // если есть атрибут data-overlay, значит, кликнули на оверлей
       if (event.target.dataset.overlay) {
         closePopup();
-        dispatch({
-          type: DELETE_CURRENT_ITEM,
-        });
       }
     };
 
     const handleEscape = (e) => {
       if (e.key === "Escape") {
         closePopup();
-        dispatch({
-          type: DELETE_CURRENT_ITEM,
-        });
       }
     };
 

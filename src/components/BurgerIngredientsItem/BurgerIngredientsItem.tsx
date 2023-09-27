@@ -7,7 +7,7 @@ import styles from "./BurgerIngredientsItem.module.css";
 import { useSelector } from "react-redux";
 import { getBurger } from "../../utils/functions/getStoreFunctions";
 import { Link } from "react-router-dom";
-import { TItemBurger } from "../BurgerConstructorItem/BurgerConstructorItem";
+import { TItemBurger } from "../../utils/types/commonTypes";
 
 type TBurgerIngredientsItem = {
   item: TItemBurger;

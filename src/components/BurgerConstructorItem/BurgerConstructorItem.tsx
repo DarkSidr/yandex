@@ -8,21 +8,7 @@ import styles from "./BurgerConstructorItem.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getBurgerConstructorCurrentIngredients } from "../../utils/functions/getStoreFunctions";
 import { AppDispatch } from "../..";
-
-export type TItemBurger = {
-  _id: string;
-  name: string;
-  type: string;
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  uniqueId?: string;
-};
+import { TItemBurger } from "../../utils/types/commonTypes";
 
 type TDelItemFN = (item: TItemBurger) => void;
 

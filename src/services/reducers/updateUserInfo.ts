@@ -1,17 +1,38 @@
+import { TUpdateUserInfo } from "../../utils/types/updateUserInfoTypes";
 import {
   UPDATE_USER_INFO_REQUEST,
   UPDATE_USER_INFO_SUCCESS,
   UPDATE_USER_INFO_FAILURE,
 } from "../actions/updateUserInfo";
 
-const initialState = {
+type TUpdateUserInfoRequest = {
+  type: typeof UPDATE_USER_INFO_REQUEST;
+} & TUpdateUserInfo;
+
+type TUpdateUserInfoSuccess = {
+  type: typeof UPDATE_USER_INFO_SUCCESS;
+} & TUpdateUserInfo;
+
+type TUpdateUserInfoFailure = {
+  type: typeof UPDATE_USER_INFO_FAILURE;
+} & TUpdateUserInfo;
+
+type TAction =
+  | TUpdateUserInfoRequest
+  | TUpdateUserInfoSuccess
+  | TUpdateUserInfoFailure;
+
+const initialState: TUpdateUserInfo = {
   user: null,
   loading: false,
   error: null,
   isAuthenticated: false,
 };
 
-export const updateUserInfoReducer = (state = initialState, action) => {
+export const updateUserInfoReducer = (
+  state = initialState,
+  action: TAction
+) => {
   switch (action.type) {
     case UPDATE_USER_INFO_REQUEST:
       return {

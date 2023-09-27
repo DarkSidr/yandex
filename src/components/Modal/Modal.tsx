@@ -1,9 +1,7 @@
 import React, { ReactNode } from "react";
-import { useDispatch } from "react-redux";
 import ReactDOM from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import CloseModal from "../CloseModal/CloseModal";
-import { DELETE_CURRENT_ITEM } from "../../services/actions/currentIngredient";
 import styles from "./Modal.module.css";
 
 type TModal = {
@@ -15,13 +13,8 @@ type TModal = {
 const modalRoot = document.getElementById("modals");
 
 const Modal = ({ title, setState, children }: TModal) => {
-  const dispatch = useDispatch();
-
   const closeModal = (): void => {
     setState(false);
-    dispatch({
-      type: DELETE_CURRENT_ITEM,
-    });
   };
 
   return modalRoot

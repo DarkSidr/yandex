@@ -10,11 +10,7 @@ import { getLogin } from "../../utils/functions/getStoreFunctions";
 import { login } from "../../services/api";
 import { useForm } from "../../utils/hooks/useForm";
 import { AppDispatch } from "../..";
-
-type TResetPassword = {
-  email: string;
-  password: string;
-};
+import { TLoginForm } from "../../utils/types/loginTypes";
 
 const links: TLinks[] = [
   {
@@ -32,7 +28,7 @@ const links: TLinks[] = [
 ];
 
 export const Login = () => {
-  const { values, handleChange, setValues } = useForm<TResetPassword>({
+  const { values, handleChange, setValues } = useForm<TLoginForm>({
     email: "",
     password: "",
   });

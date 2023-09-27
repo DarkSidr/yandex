@@ -16,3 +16,12 @@ export type TLogin = {
   error: null | TLoginError;
   isAuthenticated: boolean;
 };
+
+export type TLoginForm = {
+  email: string;
+  password: string;
+};
+
+export type TLoginReducer = {
+  loginReducer: TLogin;
+};

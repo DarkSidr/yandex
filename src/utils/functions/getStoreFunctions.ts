@@ -1,8 +1,23 @@
-import { TLogin } from "../types/loginTypes";
+import { TDataItemsReducer, TDataLoadingReducer } from "../types/dataTypes";
 
-type TLoginReducer = {
-  loginReducer: TLogin;
-};
+import {
+  TBurgerConstructorBunReducer,
+  TBurgerConstructorBurgerReducer,
+  TBurgerConstructorIngredientsReducer,
+  TBurgerConstructorRequestReducer,
+} from "../types/burgerConstructorTypes";
+
+import { TTotalPriceReducer } from "../types/totalPriceTypes";
+
+import { TOrderLoadedReducer, TOrderNumberReducer } from "../types/orderTypes";
+
+import { TRegisterReducer } from "../types/registerTypes";
+
+import { TLoginReducer } from "../types/loginTypes";
+
+import { TUpdatePasswordReducer } from "../types/updatePasswordTypes";
+
+import { TNewPasswordReducer } from "../types/newPasswordTypes";
 
 export const getDataLoading = (store: any) => store.data.isLoading;
 export const getDataItems = (store: any) => store.data.items;
@@ -20,14 +35,9 @@ export const getTotalPrice = (store: any) => store.totalPrice;
 export const getOrderNumber = (store: any) => store.order.orderNumber;
 export const getOrderLoaded = (store: any) => store.order.isLoaded;
 
-export const getCurrentIngredientCurrentItem = (store: any) =>
-  store.currentIngredient.currentItem;
-export const getCurrentIngredientIsLoaded = (store: any) =>
-  store.currentIngredient.isLoaded;
-
 export const getRegister = (store: any) => store.registerReducer;
 
-export const getLogin = (store: TLoginReducer) => store.loginReducer;
+export const getLogin = (store: any) => store.loginReducer;
 
 export const getUpdatePassword = (store: any) => store.updatePasswordReducer;
 

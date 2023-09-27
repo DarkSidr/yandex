@@ -4,7 +4,7 @@ import BurgerIngredientsItem from "../BurgerIngredientsItem/BurgerIngredientsIte
 import styles from "./BurgerIngredients.module.css";
 import { useSelector } from "react-redux";
 import { getDataItems } from "../../utils/functions/getStoreFunctions";
-import { TItemBurger } from "../BurgerConstructorItem/BurgerConstructorItem";
+import { TItemBurger } from "../../utils/types/commonTypes";
 
 type TAcc<T> = Record<string, T[]>;
 
@@ -23,7 +23,7 @@ interface IntersectionObserverEntry {
 }
 
 const BurgerIngredients = () => {
-  const data = useSelector(getDataItems);
+  const data = useSelector(getDataItems) as TItemBurger[];
 
   const sortData = data.reduce((acc: TAcc<TItemBurger>, obj: TItemBurger) => {
     const property = obj.type;

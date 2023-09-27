@@ -3,7 +3,7 @@ import {
   ADD_CURRENT_INGREDIENTS,
   DELETE_INGREDIENT,
 } from "../../services/actions/burgerConstructor";
-import { TItemBurger } from "../BurgerConstructorItem/BurgerConstructorItem";
+import { TItemBurger } from "../../utils/types/commonTypes";
 
 export function countBurgerCost(ingredients: TItemBurger[]) {
   return ingredients.reduce((total, item) => total + item.price, 0);

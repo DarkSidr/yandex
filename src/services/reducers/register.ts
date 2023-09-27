@@ -1,3 +1,4 @@
+import { TRegister } from "../../utils/types/registerTypes";
 import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
@@ -5,14 +6,36 @@ import {
   REGISTER_FAILURE,
 } from "../actions/register";
 
-const initialState = {
+type TRegisterRequest = {
+  type: typeof REGISTER_REQUEST;
+} & TRegister;
+
+type TRegisterSuccess = {
+  type: typeof REGISTER_SUCCESS;
+} & TRegister;
+
+type TRegisterReset = {
+  type: typeof REGISTER_RESET;
+} & TRegister;
+
+type TRegisterFailure = {
+  type: typeof REGISTER_FAILURE;
+} & TRegister;
+
+type TAction =
+  | TRegisterRequest
+  | TRegisterSuccess
+  | TRegisterReset
+  | TRegisterFailure;
+
+const initialState: TRegister = {
   user: null,
   loading: false,
   error: null,
   isRegistered: false,
 };
 
-export const registerReducer = (state = initialState, action) => {
+export const registerReducer = (state = initialState, action: TAction) => {
   switch (action.type) {
     case REGISTER_REQUEST:
       return {

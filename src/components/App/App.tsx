@@ -22,12 +22,12 @@ import Modal from "../Modal/Modal";
 import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import { getIngredients } from "../../utils/requests/getIngredients";
 import Ingredients from "../../pages/ingredients/ingredients";
-import { AppDispatch } from "../..";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 
 const App = () => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getIngredients());

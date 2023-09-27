@@ -4,8 +4,9 @@ import {
   GET_ITEMS_SUCCESS,
   GET_ITEMS_FAILED,
 } from "../../services/actions/data";
+import { AppThunk } from "../..";
 
-export const getIngredients = () => {
+export const getIngredients = (): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: GET_ITEMS_REQUEST,

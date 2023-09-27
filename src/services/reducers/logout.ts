@@ -1,15 +1,30 @@
+import { TLogout } from "../../utils/types/logoutTypes";
 import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
 } from "../actions/logout";
 
-const initialState = {
+type TLogoutRequest = {
+  type: typeof LOGOUT_REQUEST;
+} & TLogout;
+
+type TLogoutSuccess = {
+  type: typeof LOGOUT_SUCCESS;
+} & TLogout;
+
+type TLogoutFailure = {
+  type: typeof LOGOUT_FAILURE;
+} & TLogout;
+
+type TAction = TLogoutRequest | TLogoutSuccess | TLogoutFailure;
+
+const initialState: TLogout = {
   loading: false,
   error: null,
 };
 
-export const logoutReducer = (state = initialState, action) => {
+export const logoutReducer = (state = initialState, action: TAction) => {
   switch (action.type) {
     case LOGOUT_REQUEST:
       return {
@@ -27,7 +42,7 @@ export const logoutReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        error: action.error,
       };
     default:
       return state;

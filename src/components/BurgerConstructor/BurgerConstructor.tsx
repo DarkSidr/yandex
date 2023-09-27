@@ -15,9 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
 import CustomAlert from "../CustomAlert/CustomAlert";
 import { useDrop } from "react-dnd";
-import BurgerConstructorItem, {
-  TItemBurger,
-} from "../BurgerConstructorItem/BurgerConstructorItem";
+import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
 import {
   getBurgerConstructorCurrentIngredients,
   getBurgerConstructorCurrentBun,
@@ -28,12 +26,10 @@ import {
   getLogin,
 } from "../../utils/functions/getStoreFunctions";
 import { AppDispatch } from "../..";
+import { TItemBurger } from "../../utils/types/commonTypes";
+import { TBurgerConstructorComponent } from "../../utils/types/burgerConstructorTypes";
 
-type TBurgerConstructor = {
-  onDropHandler: (item: TItemBurger) => void;
-};
-
-const BurgerConstructor = ({ onDropHandler }: TBurgerConstructor) => {
+const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
   const login = useSelector(getLogin);
 
   const navigate = useNavigate();
@@ -50,7 +46,7 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructor) => {
 
   const burger = useSelector(getBurger);
 
-  const totalPrice = useSelector(getTotalPrice);
+  const totalPrice = useSelector(getTotalPrice).totalPrice;
 
   const orderNumber = useSelector(getOrderNumber);
 

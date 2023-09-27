@@ -20,7 +20,7 @@ import {
 } from "../../services/actions/burgerConstructor";
 
 import styles from "./home.module.css";
-import { TItemBurger } from "../../components/BurgerConstructorItem/BurgerConstructorItem";
+import { TItemBurger } from "../../utils/types/commonTypes";
 
 export const Home = () => {
   const dispatch = useDispatch();
