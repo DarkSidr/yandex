@@ -4,13 +4,14 @@ import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import FormWrapper, { TLinks } from "../../components/FormWrapper/FormWrapper";
+import FormWrapper from "../../components/FormWrapper/FormWrapper";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import { getLogin } from "../../utils/functions/getStoreFunctions";
 import { login } from "../../services/api";
 import { useForm } from "../../utils/hooks/useForm";
 import { AppDispatch } from "../..";
 import { TLoginForm } from "../../utils/types/loginTypes";
+import { TLinks } from "../../utils/types/commonTypes";
 
 const links: TLinks[] = [
   {

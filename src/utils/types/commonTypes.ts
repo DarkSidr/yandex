@@ -12,3 +12,44 @@ export type TItemBurger = {
   image_large: string;
   uniqueId?: string;
 };
+
+export type TRegisterForm = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type TProfileForm = {
+  name: string;
+  email: string;
+  password?: string;
+};
+
+export type TForgotPasswordForm = {
+  email: string;
+};
+
+export type TResetPasswordForm = {
+  password: string;
+  token: string;
+};
+
+export type TLinks = {
+  id: number;
+  text: string;
+  linkTo: string;
+  linkText: string;
+};
+
+export type TRequestError = {
+  success: boolean;
+  message: string;
+};
+
+export type TRequestUser = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+};

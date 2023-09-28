@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import FormWrapper, { TLinks } from "../../components/FormWrapper/FormWrapper";
+import FormWrapper from "../../components/FormWrapper/FormWrapper";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import {
   PasswordInput,
@@ -12,11 +12,7 @@ import { newPassword } from "../../services/api";
 import { NEW_PASSWORD_RESET } from "../../services/actions/newPassword";
 import { useForm } from "../../utils/hooks/useForm";
 import { AppDispatch } from "../..";
-
-type TResetPassword = {
-  password: string;
-  token: string;
-};
+import { TLinks, TResetPasswordForm } from "../../utils/types/commonTypes";
 
 const links: TLinks[] = [
   {
@@ -28,7 +24,7 @@ const links: TLinks[] = [
 ];
 
 export const ResetPassword = () => {
-  const { values, handleChange, setValues } = useForm<TResetPassword>({
+  const { values, handleChange, setValues } = useForm<TResetPasswordForm>({
     password: "",
     token: "",
   });

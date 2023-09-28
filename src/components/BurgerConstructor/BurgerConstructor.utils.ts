@@ -27,8 +27,11 @@ export function deleteItem(itemToRemove: TItemBurger, items: TItemBurger[]) {
   };
 }
 
-// убрать any
-export function moveCard(dragIndex: number, hoverIndex: number, items: any) {
+export function moveCard(
+  dragIndex: number,
+  hoverIndex: number,
+  items: TItemBurger[]
+) {
   return async function (dispatch: AppDispatch) {
     const dragCard = items[dragIndex];
     const newCards = [...items];

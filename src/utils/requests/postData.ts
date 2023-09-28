@@ -1,7 +1,8 @@
 import { BURGER_API_URL } from "../../constants/constants";
+import { TItemBurger } from "../types/commonTypes";
 import { checkReponse } from "./checkReponse ";
 
-export async function postData(ingredients) {
+export async function postData(ingredients: TItemBurger[]) {
   return fetch(`${BURGER_API_URL}/orders`, {
     method: "POST",
     headers: {

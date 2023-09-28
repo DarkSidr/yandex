@@ -1,5 +1,7 @@
+import { TRequestError, TRequestUser } from "./commonTypes";
+
 export type TUser = {
-  data: null | {};
+  data: null | TRequestUser;
   loading: boolean;
-  error: null | {};
+  error: null | TRequestError;
 };

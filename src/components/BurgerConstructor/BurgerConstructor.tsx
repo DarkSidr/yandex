@@ -72,7 +72,7 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
 
   const [showModal, setShowModal] = useState<boolean>();
 
-  usePopupClose(showModal, setShowModal);
+  usePopupClose(showModal as boolean, setShowModal);
 
   const delItem = (item: TItemBurger) => {
     dispatch(deleteItem(item, currentIngredients));

@@ -16,7 +16,3 @@ export type TRegister = {
   error: null | boolean;
   isRegistered: boolean;
 };
-
-export type TRegisterReducer = {
-  registerReducer: TRegister;
-};

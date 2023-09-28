@@ -1,27 +1,13 @@
-type TLoginError = {
-  success: boolean;
-};
-
-type TLoginSuccess = {
-  success: boolean;
-  user: {
-    email: string;
-    name: string;
-  };
-};
+import { TRequestError, TRequestUser } from "./commonTypes";
 
 export type TLogin = {
-  user: null | TLoginSuccess;
+  user: null | TRequestUser;
   loading: boolean;
-  error: null | TLoginError;
+  error: null | TRequestError;
   isAuthenticated: boolean;
 };
 
 export type TLoginForm = {
   email: string;
   password: string;
-};
-
-export type TLoginReducer = {
-  loginReducer: TLogin;
 };

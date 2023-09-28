@@ -11,11 +11,3 @@ export type TOrder = {
   name: string;
 } & TOrderNumber &
   TIsLoaded;
-
-export type TOrderNumberReducer = {
-  order: TOrderNumber;
-};
-
-export type TOrderLoadedReducer = {
-  order: TIsLoaded;
-};

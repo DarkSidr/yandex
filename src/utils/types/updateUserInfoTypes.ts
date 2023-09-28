@@ -1,6 +1,8 @@
+import { TRequestError, TRequestUser } from "./commonTypes";
+
 export type TUpdateUserInfo = {
-  user: null | {};
+  user: null | TRequestUser;
   loading: boolean;
-  error: null | {};
+  error: null | TRequestError;
   isAuthenticated: boolean;
 };

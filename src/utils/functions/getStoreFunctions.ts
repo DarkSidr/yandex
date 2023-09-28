@@ -1,44 +1,27 @@
-import { TDataItemsReducer, TDataLoadingReducer } from "../types/dataTypes";
+import { RootState } from "../..";
 
-import {
-  TBurgerConstructorBunReducer,
-  TBurgerConstructorBurgerReducer,
-  TBurgerConstructorIngredientsReducer,
-  TBurgerConstructorRequestReducer,
-} from "../types/burgerConstructorTypes";
+export const getDataLoading = (store: RootState) => store.data.isLoading;
+export const getDataItems = (store: RootState) => store.data.items;
 
-import { TTotalPriceReducer } from "../types/totalPriceTypes";
-
-import { TOrderLoadedReducer, TOrderNumberReducer } from "../types/orderTypes";
-
-import { TRegisterReducer } from "../types/registerTypes";
-
-import { TLoginReducer } from "../types/loginTypes";
-
-import { TUpdatePasswordReducer } from "../types/updatePasswordTypes";
-
-import { TNewPasswordReducer } from "../types/newPasswordTypes";
-
-export const getDataLoading = (store: any) => store.data.isLoading;
-export const getDataItems = (store: any) => store.data.items;
-
-export const getBurgerConstructorCurrentIngredients = (store: any) =>
+export const getBurgerConstructorCurrentIngredients = (store: RootState) =>
   store.burgerConstructor.ingredients;
-export const getBurgerConstructorCurrentBun = (store: any) =>
+export const getBurgerConstructorCurrentBun = (store: RootState) =>
   store.burgerConstructor.bun;
-export const getBurger = (store: any) => store.burgerConstructor.burger;
-export const getBurgerConstructorBurgerConstructorRequest = (store: any) =>
-  store.burgerConstructor.burgerConstructorRequest;
+export const getBurger = (store: RootState) => store.burgerConstructor.burger;
+export const getBurgerConstructorBurgerConstructorRequest = (
+  store: RootState
+) => store.burgerConstructor.burgerConstructorRequest;
 
-export const getTotalPrice = (store: any) => store.totalPrice;
+export const getTotalPrice = (store: RootState) => store.totalPrice;
 
-export const getOrderNumber = (store: any) => store.order.orderNumber;
-export const getOrderLoaded = (store: any) => store.order.isLoaded;
+export const getOrderNumber = (store: RootState) => store.order.orderNumber;
+export const getOrderLoaded = (store: RootState) => store.order.isLoaded;
 
-export const getRegister = (store: any) => store.registerReducer;
+export const getRegister = (store: RootState) => store.registerReducer;
 
-export const getLogin = (store: any) => store.loginReducer;
+export const getLogin = (store: RootState) => store.loginReducer;
 
-export const getUpdatePassword = (store: any) => store.updatePasswordReducer;
+export const getUpdatePassword = (store: RootState) =>
+  store.updatePasswordReducer;
 
-export const getNewPassword = (store: any) => store.newPasswordReducer;
+export const getNewPassword = (store: RootState) => store.newPasswordReducer;

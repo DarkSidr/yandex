@@ -17,12 +17,7 @@ import { useForm } from "../../utils/hooks/useForm";
 
 import styles from "./profile.module.css";
 import { AppDispatch } from "../..";
-
-type TProfile = {
-  name: string;
-  email: string;
-  password?: string;
-};
+import { TProfileForm } from "../../utils/types/commonTypes";
 
 type TPrfileMenu = {
   id: number;
@@ -56,7 +51,7 @@ export const Profile = () => {
   const accessToken = localStorage.getItem("accessToken");
   const dispatch: AppDispatch = useDispatch();
 
-  const { values, handleChange, setValues } = useForm<TProfile>(
+  const { values, handleChange, setValues } = useForm<TProfileForm>(
     getUserInfo(login)
   );
 

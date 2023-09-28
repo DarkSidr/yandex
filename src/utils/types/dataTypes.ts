@@ -1,7 +1,7 @@
 import { TItemBurger } from "./commonTypes";
 
 type TDataItems = {
-  items: TItemBurger[] | [];
+  items: [] | TItemBurger[];
 };
 
 type TDataLoading = {
@@ -13,11 +13,3 @@ export type TData = {
   itemsFailed: boolean;
 } & TDataItems &
   TDataLoading;
-
-export type TDataItemsReducer = {
-  data: TDataItems;
-};
-
-export type TDataLoadingReducer = {
-  data: TDataLoading;
-};

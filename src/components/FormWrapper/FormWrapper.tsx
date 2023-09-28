@@ -3,13 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./FormWrapper.module.css";
-
-export type TLinks = {
-  id: number;
-  text: string;
-  linkTo: string;
-  linkText: string;
-};
+import { TLinks } from "../../utils/types/commonTypes";
 
 type TFormWrapper = {
   title: string;

@@ -42,8 +42,16 @@ import {
   NEW_PASSWORD_SUCCESS,
   NEW_PASSWORD_FAILURE,
 } from "./actions/newPassword";
+import { AppThunk } from "..";
+import {
+  TForgotPasswordForm,
+  TProfileForm,
+  TRegisterForm,
+  TResetPasswordForm,
+} from "../utils/types/commonTypes";
+import { TLoginForm } from "../utils/types/loginTypes";
 
-export const register = (form) => {
+export const register = (form: TRegisterForm): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: REGISTER_REQUEST,
@@ -78,7 +86,7 @@ export const register = (form) => {
   };
 };
 
-export const login = (form) => {
+export const login = (form: TLoginForm): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: LOGIN_REQUEST,
@@ -104,19 +112,19 @@ export const login = (form) => {
         });
       })
       .catch((err) => {
-        const errorData = {
-          success: err.ok,
-        };
         dispatch({
           type: LOGIN_FAILURE,
-          error: errorData,
+          error: err,
         });
         console.error(err);
       });
   };
 };
 
-export const user = (accessToken, refreshToken) => {
+export const user = (
+  accessToken: null | string,
+  refreshToken: null | string
+): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: FETCH_USER_REQUEST,
@@ -128,7 +136,7 @@ export const user = (accessToken, refreshToken) => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
-        authorization: accessToken,
+        authorization: accessToken as string,
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -136,7 +144,7 @@ export const user = (accessToken, refreshToken) => {
       .then((data) => {
         dispatch({
           type: FETCH_USER_SUCCESS,
-          user: data,
+          data: data,
         });
         dispatch({
           type: LOGIN_SUCCESS,
@@ -169,9 +177,10 @@ export const user = (accessToken, refreshToken) => {
                 redirect: "follow",
                 referrerPolicy: "no-referrer",
               });
+              console.log("токен протух получили userData", userData); // убрать
               dispatch({
                 type: FETCH_USER_SUCCESS,
-                user: userData,
+                data: userData,
               });
               dispatch({
                 type: LOGIN_SUCCESS,
@@ -195,7 +204,7 @@ export const user = (accessToken, refreshToken) => {
   };
 };
 
-export const logout = (refreshToken) => {
+export const logout = (refreshToken: null | string): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: LOGOUT_REQUEST,
@@ -234,7 +243,10 @@ export const logout = (refreshToken) => {
   };
 };
 
-export const updateUserInfo = (token, form) => {
+export const updateUserInfo = (
+  token: null | string,
+  form: TProfileForm
+): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: UPDATE_USER_INFO_REQUEST,
@@ -246,7 +258,7 @@ export const updateUserInfo = (token, form) => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
-        authorization: token,
+        authorization: token as string,
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -272,7 +284,7 @@ export const updateUserInfo = (token, form) => {
   };
 };
 
-export const updatePassword = (form) => {
+export const updatePassword = (form: TForgotPasswordForm): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: UPDATE_PASSWORD_REQUEST,
@@ -304,7 +316,7 @@ export const updatePassword = (form) => {
   };
 };
 
-export const newPassword = (form) => {
+export const newPassword = (form: TResetPasswordForm): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: NEW_PASSWORD_REQUEST,
@@ -336,7 +348,7 @@ export const newPassword = (form) => {
   };
 };
 
-export const updateToken = (refreshToken) => {
+export const updateToken = (refreshToken: null | string): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: FETCH_USER_REQUEST,
@@ -367,7 +379,7 @@ export const updateToken = (refreshToken) => {
         });
         dispatch({
           type: FETCH_USER_SUCCESS,
-          user: userData,
+          data: userData,
         });
         dispatch({
           type: LOGIN_SUCCESS,

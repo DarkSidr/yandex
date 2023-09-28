@@ -29,7 +29,6 @@ const initialState: TData = {
 export const dataReducer = (state = initialState, action: TAction) => {
   switch (action.type) {
     case GET_ITEMS_REQUEST: {
-      console.log("request");
       return {
         ...state,
         itemsRequest: true,
@@ -37,7 +36,6 @@ export const dataReducer = (state = initialState, action: TAction) => {
       };
     }
     case GET_ITEMS_SUCCESS: {
-      console.log("success");
       return {
         ...state,
         itemsFailed: false,

@@ -2,16 +2,13 @@ import React, { FormEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import FormWrapper, { TLinks } from "../../components/FormWrapper/FormWrapper";
+import FormWrapper from "../../components/FormWrapper/FormWrapper";
 import { updatePassword } from "../../services/api";
 import { getUpdatePassword } from "../../utils/functions/getStoreFunctions";
 import { UPDATE_PASSWORD_RESET } from "../../services/actions/updatePassword";
 import { useForm } from "../../utils/hooks/useForm";
 import { AppDispatch } from "../..";
-
-type TForgotPassword = {
-  email: string;
-};
+import { TForgotPasswordForm, TLinks } from "../../utils/types/commonTypes";
 
 const links: TLinks[] = [
   {
@@ -23,7 +20,7 @@ const links: TLinks[] = [
 ];
 
 export const ForgotPassword = () => {
-  const { values, handleChange, setValues } = useForm<TForgotPassword>({
+  const { values, handleChange, setValues } = useForm<TForgotPasswordForm>({
     email: "",
   });
 
