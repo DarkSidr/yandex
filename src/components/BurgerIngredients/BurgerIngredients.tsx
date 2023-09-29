@@ -23,14 +23,14 @@ interface IntersectionObserverEntry {
 }
 
 const BurgerIngredients = () => {
-  const data = useAppSelector(getDataItems) as TItemBurger[];
+  const data = useAppSelector(getDataItems);
 
-  const sortData = data.reduce((acc: TAcc<TItemBurger>, obj: TItemBurger) => {
+  const sortData: TAcc<TItemBurger> = data.reduce((acc, obj) => {
     const property = obj.type;
     acc[property] = acc[property] || [];
     acc[property].push(obj);
     return acc;
-  }, {});
+  }, {} as TAcc<TItemBurger>);
 
   const [activeMenuIndex, setActiveMenuIndex] = useState<number>(0);
 
@@ -43,7 +43,7 @@ const BurgerIngredients = () => {
   useEffect(() => {
     const handleScroll = () => {
       const callback: IntersectionObserverCallback = (entries): void => {
-        entries.forEach((entry: IntersectionObserverEntry, index: number) => {
+        entries.forEach((entry, index) => {
           if (
             entry.isIntersecting &&
             entry.intersectionRatio >= 0.2 &&
