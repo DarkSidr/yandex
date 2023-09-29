@@ -1,9 +1,9 @@
 import { useState, useEffect, ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 
 import { getLogin } from "../../utils/functions/getStoreFunctions";
 import Loader from "../Loader/Loader";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
 
 type TComponent = {
   component: ReactElement;
@@ -19,7 +19,7 @@ const ProtectedRouteElement = ({
 }: TProtectedRouteElement) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const user = useSelector(getLogin).user;
+  const user = useAppSelector(getLogin).user;
   const location = useLocation();
 
   useEffect(() => {

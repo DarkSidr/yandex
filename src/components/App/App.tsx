@@ -1,6 +1,4 @@
-import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,

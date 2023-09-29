@@ -11,7 +11,6 @@ import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import styles from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { postIDIngredients } from "../../utils/requests/postIDIngredients";
-import { useSelector, useDispatch } from "react-redux";
 import { countBurgerCost, deleteItem } from "./BurgerConstructor.utils";
 import CustomAlert from "../CustomAlert/CustomAlert";
 import { useDrop } from "react-dnd";
@@ -25,12 +24,13 @@ import {
   getOrderLoaded,
   getLogin,
 } from "../../utils/functions/getStoreFunctions";
-import { AppDispatch } from "../..";
 import { TItemBurger } from "../../utils/types/commonTypes";
 import { TBurgerConstructorComponent } from "../../utils/types/burgerConstructorTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 
 const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
-  const login = useSelector(getLogin);
+  const login = useAppSelector(getLogin);
 
   const navigate = useNavigate();
 
@@ -38,21 +38,21 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
 
   const [checkBun, setCheckBum] = useState(false);
 
-  const currentIngredients = useSelector(
+  const currentIngredients = useAppSelector(
     getBurgerConstructorCurrentIngredients
   );
 
-  const currentBun = useSelector(getBurgerConstructorCurrentBun);
+  const currentBun = useAppSelector(getBurgerConstructorCurrentBun);
 
-  const burger = useSelector(getBurger);
+  const burger = useAppSelector(getBurger);
 
-  const totalPrice = useSelector(getTotalPrice).totalPrice;
+  const totalPrice = useAppSelector(getTotalPrice).totalPrice;
 
-  const orderNumber = useSelector(getOrderNumber);
+  const orderNumber = useAppSelector(getOrderNumber);
 
-  const isOrderLoading = useSelector(getOrderLoaded);
+  const isOrderLoading = useAppSelector(getOrderLoaded);
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (currentBun && currentIngredients) {
@@ -109,7 +109,7 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
             )}
             {currentIngredients.length > 0 ? (
               <div className={`${styles.scrollContent} pl-8`}>
-                {currentIngredients.map((item: TItemBurger, index: number) => {
+                {currentIngredients.map((item, index) => {
                   return (
                     <React.Fragment key={item.uniqueId}>
                       <BurgerConstructorItem

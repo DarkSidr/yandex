@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "./IngredientDetails.module.css";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { getDataItems } from "../../utils/functions/getStoreFunctions";
 import { TItemBurger } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
 
 const IngredientDetails = () => {
   const { ingredientId } = useParams();
-  const ingredient = useSelector(getDataItems).find(
+  const ingredient = useAppSelector(getDataItems).find(
     (item: TItemBurger) => item._id === ingredientId
   );
 

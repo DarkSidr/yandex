@@ -37,7 +37,7 @@ const FormWrapper = ({
           </Button>
         </form>
         <div className={styles.linkBlock}>
-          {links.map((item: TLinks) => {
+          {links.map((item) => {
             return (
               <span className={styles.linkText} key={item.id}>
                 {item.text}

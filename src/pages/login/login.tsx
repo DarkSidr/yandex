@@ -1,5 +1,4 @@
 import React, { FormEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   EmailInput,
   PasswordInput,
@@ -9,9 +8,10 @@ import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import { getLogin } from "../../utils/functions/getStoreFunctions";
 import { login } from "../../services/api";
 import { useForm } from "../../utils/hooks/useForm";
-import { AppDispatch } from "../..";
 import { TLoginForm } from "../../utils/types/loginTypes";
 import { TLinks } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 
 const links: TLinks[] = [
   {
@@ -34,9 +34,9 @@ export const Login = () => {
     password: "",
   });
 
-  const loginData = useSelector(getLogin);
+  const loginData = useAppSelector(getLogin);
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

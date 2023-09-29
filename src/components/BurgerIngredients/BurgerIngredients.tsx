@@ -2,9 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import Tabs from "../Tabs/Tabs";
 import BurgerIngredientsItem from "../BurgerIngredientsItem/BurgerIngredientsItem";
 import styles from "./BurgerIngredients.module.css";
-import { useSelector } from "react-redux";
 import { getDataItems } from "../../utils/functions/getStoreFunctions";
 import { TItemBurger } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
 
 type TAcc<T> = Record<string, T[]>;
 
@@ -23,7 +23,7 @@ interface IntersectionObserverEntry {
 }
 
 const BurgerIngredients = () => {
-  const data = useSelector(getDataItems) as TItemBurger[];
+  const data = useAppSelector(getDataItems) as TItemBurger[];
 
   const sortData = data.reduce((acc: TAcc<TItemBurger>, obj: TItemBurger) => {
     const property = obj.type;
@@ -115,7 +115,7 @@ const BurgerIngredients = () => {
                   : "Начинки"}
               </h2>
               <ul className={`${styles.list} pl-4`}>
-                {sortData[type].map((item: TItemBurger) => (
+                {sortData[type].map((item) => (
                   <BurgerIngredientsItem key={item._id} item={item} />
                 ))}
               </ul>

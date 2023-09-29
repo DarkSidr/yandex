@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./components/App/App";
 import { createStore, applyMiddleware, Action } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
-import { Provider, TypedUseSelectorHook, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import thunk, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { rootReducer } from "./services/reducers";
 
@@ -24,8 +24,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
-
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

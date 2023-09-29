@@ -1,12 +1,10 @@
 import React, { useState, useRef, FormEvent } from "react";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
 import {
   Input,
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
 import classNames from "classnames";
 import { getLogin } from "../../utils/functions/getStoreFunctions";
 import { logout } from "../../services/api";
@@ -16,8 +14,9 @@ import { updateToken } from "../../services/api";
 import { useForm } from "../../utils/hooks/useForm";
 
 import styles from "./profile.module.css";
-import { AppDispatch } from "../..";
 import { TProfileForm } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 
 type TPrfileMenu = {
   id: number;
@@ -46,10 +45,10 @@ const prfileMenu: TPrfileMenu[] = [
 ];
 
 export const Profile = () => {
-  const login = useSelector(getLogin);
+  const login = useAppSelector(getLogin);
   const refreshToken = localStorage.getItem("refreshToken");
   const accessToken = localStorage.getItem("accessToken");
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { values, handleChange, setValues } = useForm<TProfileForm>(
     getUserInfo(login)

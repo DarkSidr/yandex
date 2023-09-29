@@ -37,7 +37,7 @@ const tabItems: TItemTab[] = [
 const Tabs = ({ activeIndex, menuItemsRef, handleMenuItemClick }: TTabs) => {
   return (
     <div className={styles.tabWrapepr}>
-      {tabItems.map((tab: TItemTab, index: number) => {
+      {tabItems.map((tab, index) => {
         return (
           <TabItem
             key={tab.id}

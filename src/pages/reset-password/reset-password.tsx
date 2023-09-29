@@ -1,5 +1,4 @@
 import React, { FormEvent, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
@@ -11,8 +10,9 @@ import { getNewPassword } from "../../utils/functions/getStoreFunctions";
 import { newPassword } from "../../services/api";
 import { NEW_PASSWORD_RESET } from "../../services/actions/newPassword";
 import { useForm } from "../../utils/hooks/useForm";
-import { AppDispatch } from "../..";
 import { TLinks, TResetPasswordForm } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 
 const links: TLinks[] = [
   {
@@ -32,9 +32,9 @@ export const ResetPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const isNewPassword = useSelector(getNewPassword).newPassword;
+  const isNewPassword = useAppSelector(getNewPassword).newPassword;
 
   useEffect(() => {
     if (isNewPassword) {

@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { v4 as uuidv4 } from "uuid";
@@ -21,12 +20,14 @@ import {
 
 import styles from "./home.module.css";
 import { TItemBurger } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 
 export const Home = () => {
-  const dispatch = useDispatch();
-  const currentItems = useSelector(getBurgerConstructorCurrentIngredients);
+  const dispatch = useAppDispatch();
+  const currentItems = useAppSelector(getBurgerConstructorCurrentIngredients);
 
-  const itemsIsLoading = useSelector(getDataLoading);
+  const itemsIsLoading = useAppSelector(getDataLoading);
   const handleDrop = (item: TItemBurger): void => {
     if (item.type === "bun") {
       dispatch({

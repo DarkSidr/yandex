@@ -4,10 +4,10 @@ import PriceItem from "../PriceItem/PriceItem";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
 import styles from "./BurgerIngredientsItem.module.css";
-import { useSelector } from "react-redux";
 import { getBurger } from "../../utils/functions/getStoreFunctions";
 import { Link } from "react-router-dom";
 import { TItemBurger } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
 
 type TBurgerIngredientsItem = {
   item: TItemBurger;
@@ -26,12 +26,10 @@ const BurgerIngredientsItem = ({ item }: TBurgerIngredientsItem) => {
 
   const ingredientId = item["_id"];
 
-  const currentItems = useSelector(getBurger);
+  const currentItems = useAppSelector(getBurger);
 
   const filteredArray = useMemo(() => {
-    return currentItems.filter(
-      (element: TItemBurger) => element._id === item._id
-    );
+    return currentItems.filter((element) => element._id === item._id);
   }, [currentItems, item._id]);
   const count = filteredArray.length;
 

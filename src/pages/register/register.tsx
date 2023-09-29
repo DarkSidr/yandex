@@ -1,5 +1,4 @@
 import React, { FormEvent, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
@@ -12,8 +11,9 @@ import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { AppDispatch } from "../..";
 import { TLinks, TRegisterForm } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 
 const links: TLinks[] = [
   {
@@ -31,11 +31,11 @@ export const Register = () => {
     password: "",
   });
 
-  const isRegistered = useSelector(getRegister).isRegistered;
+  const isRegistered = useAppSelector(getRegister).isRegistered;
 
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isRegistered) {

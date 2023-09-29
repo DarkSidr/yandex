@@ -5,11 +5,11 @@ import AppNav from "../AppNav/AppNav";
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/logo";
 import NavItem from "../NavItem/NavItem";
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons";
-import { useSelector } from "react-redux";
 import { getLogin } from "../../utils/functions/getStoreFunctions";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
 
 const AppHeader = () => {
-  const login = useSelector(getLogin);
+  const login = useAppSelector(getLogin);
 
   return (
     <header className={`pb-4 pt-4 ${styles.header}`}>

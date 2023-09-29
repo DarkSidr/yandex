@@ -1,5 +1,4 @@
 import React, { FormEvent, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
@@ -7,8 +6,9 @@ import { updatePassword } from "../../services/api";
 import { getUpdatePassword } from "../../utils/functions/getStoreFunctions";
 import { UPDATE_PASSWORD_RESET } from "../../services/actions/updatePassword";
 import { useForm } from "../../utils/hooks/useForm";
-import { AppDispatch } from "../..";
 import { TForgotPasswordForm, TLinks } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 
 const links: TLinks[] = [
   {
@@ -27,9 +27,9 @@ export const ForgotPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const isUpdatePassword = useSelector(getUpdatePassword).updatePassword;
+  const isUpdatePassword = useAppSelector(getUpdatePassword).updatePassword;
 
   useEffect(() => {
     if (isUpdatePassword) {

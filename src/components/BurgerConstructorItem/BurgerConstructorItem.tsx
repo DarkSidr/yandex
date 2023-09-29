@@ -5,10 +5,10 @@ import { useDrop, useDrag, DropTargetMonitor } from "react-dnd";
 import { XYCoord } from "dnd-core";
 import { moveCard } from "../BurgerConstructor/BurgerConstructor.utils";
 import styles from "./BurgerConstructorItem.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { getBurgerConstructorCurrentIngredients } from "../../utils/functions/getStoreFunctions";
-import { AppDispatch } from "../..";
 import { TItemBurger } from "../../utils/types/commonTypes";
+import { useAppSelector } from "../../utils/hooks/useAppSelector";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 
 type TDelItemFN = (item: TItemBurger) => void;
 
@@ -31,9 +31,9 @@ const BurgerConstructorItem = ({
 }: TBurgerConstructorItem) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const currentItems = useSelector(getBurgerConstructorCurrentIngredients);
+  const currentItems = useAppSelector(getBurgerConstructorCurrentIngredients);
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [, drop] = useDrop({
     accept: "other",
