@@ -8,6 +8,7 @@ import {
   ResetPassword,
   Profile,
   NotFound404,
+  Feed,
 } from "../../pages";
 import AppHeader from "../AppHeader/AppHeader";
 import { user } from "../../services/api";
@@ -52,6 +53,7 @@ const App = () => {
       <AppHeader />
       <Routes location={background || location}>
         <Route path="/" element={<Home />} />
+        <Route path="/feed" element={<Feed />} />
         <Route path="/ingredients/:ingredientId" element={<Ingredients />} />
         <Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
         <Route
