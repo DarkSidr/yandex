@@ -1,23 +1,9 @@
-import { TOrder } from "../../utils/types/orderTypes";
+import { TOrder, TOrderReducer } from "../../utils/types/orderTypes";
 import {
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
   GET_ORDER_FAILED,
 } from "../actions/order";
-
-type TGetOrderRequest = {
-  type: typeof GET_ORDER_REQUEST;
-} & TOrder;
-
-type TGetOrderSuccess = {
-  type: typeof GET_ORDER_SUCCESS;
-} & TOrder;
-
-type TGetOrderFailed = {
-  type: typeof GET_ORDER_FAILED;
-} & TOrder;
-
-type TAction = TGetOrderRequest | TGetOrderSuccess | TGetOrderFailed;
 
 const initialState: TOrder = {
   success: false,
@@ -26,7 +12,7 @@ const initialState: TOrder = {
   isLoaded: false,
 };
 
-export const orderReducer = (state = initialState, action: TAction) => {
+export const orderReducer = (state = initialState, action: TOrderReducer) => {
   switch (action.type) {
     case GET_ORDER_REQUEST: {
       return {

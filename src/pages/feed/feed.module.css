@@ -6,3 +6,8 @@
   margin-top: 40px;
   max-width: 1240px;
 }
+
+.feed {
+  max-height: 756px;
+  overflow-y: auto;
+}

@@ -53,3 +53,11 @@ export type TRequestUser = {
     name: string;
   };
 };
+
+export type TUserError = {
+  error: null | TRequestError;
+};
+
+export type TUserSuccess = {
+  user: null | TRequestUser;
+};

@@ -1,22 +1,49 @@
-export const socketMiddleware = () => {
-  const test = new WebSocket("wss://norma.nomoreparties.space/orders/all");
-  test.onopen = (event) => {
-    console.log("onopen", event);
-  };
+import { Middleware, MiddlewareAPI } from "redux";
+import { AppDispatch, RootState, TApplicationActions } from "../types";
+import { TWebSocket, TWebSocketActions } from "../types/webSocketTypes";
+import { getCurrentTimestamp } from "../functions/datetime";
 
-  test.onerror = (event) => {
-    console.log("onclose", event);
-  };
+export const socketMiddleware = (
+  wsUrl: string,
+  wsActions: TWebSocket
+): Middleware => {
+  return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
+    let socket: WebSocket | null = null;
 
-  test.onmessage = (event) => {
-    const { data } = event;
-    const parsedData = JSON.parse(data);
-    const { success, ...restParsedData } = parsedData;
+    return (next) => (action: TWebSocketActions) => {
+      const { dispatch, getState } = store;
+      const { type } = action;
+      const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } =
+        wsActions;
 
-    console.log("onmessage", restParsedData);
-  };
+      if (type === wsInit) {
+        socket = new WebSocket(wsUrl);
+      }
 
-  test.onclose = (event) => {
-    console.log("onclose", event);
-  };
+      if (socket) {
+        socket.onopen = (event) => {
+          dispatch({ type: onOpen, payload: event });
+        };
+
+        socket.onerror = (event) => {
+          dispatch({ type: onError, error: event });
+        };
+
+        socket.onmessage = (event) => {
+          const { data } = event;
+          const parsedData: any = JSON.parse(data);
+          console.log("parsedData", parsedData);
+          dispatch({
+            type: onMessage,
+            messages: parsedData,
+          });
+        };
+
+        socket.onclose = (event) => {
+          dispatch({ type: onClose, payload: event });
+        };
+      }
+      next(action);
+    };
+  }) as Middleware;
 };

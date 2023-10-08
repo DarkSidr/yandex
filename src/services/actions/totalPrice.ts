@@ -1,1 +1,1 @@
-export const TOTAL_PRICE = "TOTAL_PRICE";
+export const TOTAL_PRICE: "TOTAL_PRICE" = "TOTAL_PRICE";

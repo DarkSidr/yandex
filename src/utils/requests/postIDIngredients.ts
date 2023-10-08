@@ -5,7 +5,7 @@ import {
   GET_ORDER_FAILED,
 } from "../../services/actions/order";
 import { TItemBurger } from "../types/commonTypes";
-import { AppThunk } from "../..";
+import { AppThunk } from "../types";
 
 export const postIDIngredients = (ingredients: TItemBurger[]): AppThunk => {
   return async function (dispatch) {

@@ -22,6 +22,7 @@ import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import { getIngredients } from "../../utils/requests/getIngredients";
 import Ingredients from "../../pages/ingredients/ingredients";
 import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
+import { WS_CONNECTION_START } from "../../services/actions/webSocket";
 
 const App = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -36,6 +37,9 @@ const App = () => {
     if (accessToken && refreshToken) {
       dispatch(user(accessToken, refreshToken));
     }
+    dispatch({
+      type: WS_CONNECTION_START,
+    });
   }, [dispatch, accessToken, refreshToken]);
 
   const location = useLocation();

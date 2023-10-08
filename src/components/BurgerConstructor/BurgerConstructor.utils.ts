@@ -1,8 +1,8 @@
-import { AppDispatch } from "../..";
 import {
   ADD_CURRENT_INGREDIENTS,
   DELETE_INGREDIENT,
 } from "../../services/actions/burgerConstructor";
+import { AppDispatch } from "../../utils/types";
 import { TItemBurger } from "../../utils/types/commonTypes";
 
 export function countBurgerCost(ingredients: TItemBurger[]) {

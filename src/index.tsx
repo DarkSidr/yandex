@@ -4,26 +4,8 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import App from "./components/App/App";
-import { createStore, applyMiddleware, Action } from "redux";
-import { composeWithDevTools } from "@redux-devtools/extension";
 import { Provider } from "react-redux";
-import thunk, { ThunkAction, ThunkDispatch } from "redux-thunk";
-import { rootReducer } from "./services/reducers";
-
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
-);
-
-export type AppDispatch = ThunkDispatch<RootState, Action<string>, Action>;
-export type RootState = ReturnType<typeof store.getState>;
-
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
+import { store } from "./services/reducers";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

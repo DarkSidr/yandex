@@ -42,7 +42,6 @@ import {
   NEW_PASSWORD_SUCCESS,
   NEW_PASSWORD_FAILURE,
 } from "./actions/newPassword";
-import { AppThunk } from "..";
 import {
   TForgotPasswordForm,
   TProfileForm,
@@ -50,6 +49,7 @@ import {
   TResetPasswordForm,
 } from "../utils/types/commonTypes";
 import { TLoginForm } from "../utils/types/loginTypes";
+import { AppThunk } from "../utils/types";
 
 export const register = (form: TRegisterForm): AppThunk => {
   return async function (dispatch) {

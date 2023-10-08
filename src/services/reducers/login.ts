@@ -1,28 +1,10 @@
-import { TLogin } from "../../utils/types/loginTypes";
+import { TLogin, TLoginReducer } from "../../utils/types/loginTypes";
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_LOGOUT,
   LOGIN_FAILURE,
 } from "../actions/login";
-
-type TLoginRequest = {
-  type: typeof LOGIN_REQUEST;
-} & TLogin;
-
-type TLoginSuccess = {
-  type: typeof LOGIN_SUCCESS;
-} & TLogin;
-
-type TLoginLogout = {
-  type: typeof LOGIN_LOGOUT;
-} & TLogin;
-
-type TLoginFailure = {
-  type: typeof LOGIN_FAILURE;
-} & TLogin;
-
-type TAction = TLoginRequest | TLoginSuccess | TLoginLogout | TLoginFailure;
 
 const initialState: TLogin = {
   user: null,
@@ -31,7 +13,7 @@ const initialState: TLogin = {
   isAuthenticated: false,
 };
 
-export const loginReducer = (state = initialState, action: TAction) => {
+export const loginReducer = (state = initialState, action: TLoginReducer) => {
   switch (action.type) {
     case LOGIN_REQUEST:
       return {

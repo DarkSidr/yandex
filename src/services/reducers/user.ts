@@ -1,23 +1,9 @@
-import { TUser } from "../../utils/types/userTypes";
+import { TUser, TUserReducer } from "../../utils/types/userTypes";
 import {
   FETCH_USER_REQUEST,
   FETCH_USER_SUCCESS,
   FETCH_USER_FAILURE,
 } from "../actions/user";
-
-type TFetchUserRequest = {
-  type: typeof FETCH_USER_REQUEST;
-} & TUser;
-
-type TFetchUserSuccess = {
-  type: typeof FETCH_USER_SUCCESS;
-} & TUser;
-
-type TFetchUserFailure = {
-  type: typeof FETCH_USER_FAILURE;
-} & TUser;
-
-type TAction = TFetchUserRequest | TFetchUserSuccess | TFetchUserFailure;
 
 const initialState: TUser = {
   data: null,
@@ -25,7 +11,7 @@ const initialState: TUser = {
   error: null,
 };
 
-export const userReducer = (state = initialState, action: TAction) => {
+export const userReducer = (state = initialState, action: TUserReducer) => {
   switch (action.type) {
     case FETCH_USER_REQUEST:
       return {
