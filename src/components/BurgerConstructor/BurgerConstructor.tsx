@@ -32,6 +32,8 @@ import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
   const login = useAppSelector(getLogin);
 
+  const accessToken = localStorage.getItem("accessToken") as string;
+
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -79,7 +81,7 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
   };
 
   const postResponse = () => {
-    dispatch(postIDIngredients(burger));
+    dispatch(postIDIngredients(burger, accessToken));
   };
 
   const [, dropTarget] = useDrop({

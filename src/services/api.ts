@@ -177,7 +177,7 @@ export const user = (
                 redirect: "follow",
                 referrerPolicy: "no-referrer",
               });
-              console.log("токен протух получили userData", userData); // убрать
+              console.log("токен протух получили userData", userData);
               dispatch({
                 type: FETCH_USER_SUCCESS,
                 data: userData,
@@ -192,7 +192,7 @@ export const user = (
                 type: FETCH_USER_FAILURE,
                 error: error,
               });
-              console.log(error);
+              console.error(error);
             });
         }
         dispatch({

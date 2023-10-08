@@ -1,4 +1,3 @@
-import { getCurrentTimestamp } from "../../utils/functions/datetime";
 import { TMessages, TWebSocketReducer } from "../../utils/types/webSocketTypes";
 import {
   WS_CONNECTION_CLOSED,
@@ -9,10 +8,8 @@ import {
 
 export type TWSState = {
   wsConnected: boolean;
-  messages: TMessages | any;
-
   error?: Event;
-};
+} & TMessages;
 
 const initialState: TWSState = {
   wsConnected: false,

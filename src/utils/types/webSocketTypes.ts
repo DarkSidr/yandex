@@ -16,6 +16,7 @@ export type TOrder = {
   ingredients: string[];
   status: string;
   name: string;
+  number: number;
   createdAt: string;
   updatedAt: string;
 };
@@ -24,10 +25,10 @@ export type TMessage = {
   orders: TOrder[];
   total: number;
   totalToday: number;
-};
+} | null;
 
 export type TMessages = {
-  messages: TMessage;
+  messages: TMessage | null;
 };
 
 export type TWebSocketConnectionStartAction = {

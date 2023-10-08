@@ -11,7 +11,7 @@ import { logoutReducer } from "./logout";
 import { updateUserInfoReducer } from "./updateUserInfo";
 import { updatePasswordReducer } from "./updatePassword";
 import { newPasswordReducer } from "./newPassword";
-import thunk from "redux-thunk";
+import thunkMiddleware from "redux-thunk";
 import { socketMiddleware } from "../../utils/requests/socketMiddleware";
 import { webSocketReducer } from "./webSocket";
 import { TWebSocket } from "../../utils/types/webSocketTypes";
@@ -53,6 +53,6 @@ const webSocketActions: TWebSocket = {
 export const store = createStore(
   rootReducer,
   composeWithDevTools(
-    applyMiddleware(thunk, socketMiddleware(wsUrl, webSocketActions))
+    applyMiddleware(thunkMiddleware, socketMiddleware(wsUrl, webSocketActions))
   )
 );

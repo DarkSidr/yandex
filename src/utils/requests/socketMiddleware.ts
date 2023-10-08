@@ -1,7 +1,10 @@
 import { Middleware, MiddlewareAPI } from "redux";
 import { AppDispatch, RootState, TApplicationActions } from "../types";
-import { TWebSocket, TWebSocketActions } from "../types/webSocketTypes";
-import { getCurrentTimestamp } from "../functions/datetime";
+import {
+  TMessage,
+  TWebSocket,
+  TWebSocketActions,
+} from "../types/webSocketTypes";
 
 export const socketMiddleware = (
   wsUrl: string,
@@ -31,8 +34,7 @@ export const socketMiddleware = (
 
         socket.onmessage = (event) => {
           const { data } = event;
-          const parsedData: any = JSON.parse(data);
-          console.log("parsedData", parsedData);
+          const parsedData: TMessage & { success: boolean } = JSON.parse(data);
           dispatch({
             type: onMessage,
             messages: parsedData,
@@ -43,7 +45,7 @@ export const socketMiddleware = (
           dispatch({ type: onClose, payload: event });
         };
       }
-      next(action);
+      return next(action);
     };
   }) as Middleware;
 };
