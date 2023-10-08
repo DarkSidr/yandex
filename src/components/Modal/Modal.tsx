@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import CloseModal from "../CloseModal/CloseModal";
 import styles from "./Modal.module.css";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
+import { GET_ORDER_FAILED } from "../../services/actions/order";
 
 type TModal = {
   title?: string;
@@ -13,8 +15,12 @@ type TModal = {
 const modalRoot = document.getElementById("modals");
 
 const Modal = ({ title, setState, children }: TModal) => {
+  const dispatch = useAppDispatch();
   const closeModal = (): void => {
     setState(false);
+    dispatch({
+      type: GET_ORDER_FAILED,
+    });
   };
 
   return modalRoot
