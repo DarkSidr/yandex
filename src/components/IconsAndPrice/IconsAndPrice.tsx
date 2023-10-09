@@ -1,71 +1,69 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useAppSelector } from "../../utils/hooks/useAppSelector";
 import { getDataItems } from "../../utils/functions/getStoreFunctions";
 import { countBurgerCost } from "../BurgerConstructor/BurgerConstructor.utils";
 import styles from "./IconsAndPrice.module.css";
 import PriceItem from "../PriceItem/PriceItem";
 import classNames from "classnames";
+import { TItemBurger } from "../../utils/types/commonTypes";
 
 type TIconsAndPrice = {
   ingredients: string[];
 };
 
+const generateImages = (items: TItemBurger[]) => {
+  return items.slice(0, 6).map((item, index) => (
+    <div
+      className={classNames(styles.iconWrapper)}
+      style={{ zIndex: items.length - index }}
+      key={item._id}
+    >
+      <img
+        className={classNames(styles.icon)}
+        src={item.image_mobile}
+        alt={item.name}
+      />
+      {index === 5 && items.length > 6 && (
+        <>
+          <span className={classNames(styles.opacity)}></span>
+          <span
+            className={classNames(
+              styles.counter,
+              "text text_type_main-default"
+            )}
+          >
+            +{items.length - 6}
+          </span>
+        </>
+      )}
+    </div>
+  ));
+};
+
 const IconsAndPrice = ({ ingredients }: TIconsAndPrice) => {
   const items = useAppSelector(getDataItems);
 
-  const getData = (ingredients: string[]) => {
-    const newArray = items.filter((item) => ingredients.includes(item._id));
-    newArray.sort((a, b) => {
-      if (a.type === "bun" && b.type !== "bun") {
-        return -1;
-      } else if (a.type !== "bun" && b.type === "bun") {
-        return 1;
-      } else {
-        return 0;
+  const newArray = useMemo(() => {
+    return ingredients.reduce((acc, ingredientId) => {
+      const matchingItems = items.filter((item) => item._id === ingredientId);
+      return acc.concat(matchingItems);
+    }, [] as TItemBurger[]);
+  }, [ingredients, items]);
+
+  const uniqueNewArray = useMemo(() => {
+    return newArray.reduce((acc, item) => {
+      if (!acc.some((existingItem) => existingItem._id === item._id)) {
+        acc.push(item);
       }
-    });
+      return acc;
+    }, [] as TItemBurger[]);
+  }, [newArray]);
 
-    const resultArray = [];
+  const burgerCost = countBurgerCost(newArray);
 
-    for (const item of newArray) {
-      resultArray.push(item);
-      if (item.type === "bun") {
-        resultArray.push({ ...item });
-      }
-    }
-
-    const burgerCost = countBurgerCost(resultArray);
-
-    const images = newArray.slice(0, 6).map((item, index) => (
-      <div
-        className={classNames(styles.iconWrapper)}
-        style={{ zIndex: newArray.length - index }}
-        key={item._id}
-      >
-        <img
-          className={classNames(styles.icon)}
-          src={item.image_mobile}
-          alt={item.name}
-        />
-        {index === 5 && newArray.length > 6 && (
-          <>
-            <span className={classNames(styles.opacity)}></span>
-            <span
-              className={classNames(
-                styles.counter,
-                "text text_type_main-default"
-              )}
-            >
-              +{newArray.length - 6}
-            </span>
-          </>
-        )}
-      </div>
-    ));
-
-    return { burgerCost, images };
-  };
-  const { burgerCost, images } = getData(ingredients);
+  const images = useMemo(() => {
+    return generateImages(uniqueNewArray);
+  }, [uniqueNewArray]);
 
   return (
     <div className={styles.wrapper}>
