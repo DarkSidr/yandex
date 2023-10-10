@@ -40,6 +40,7 @@ export const webSocketReducer = (
         ...state,
         error: undefined,
         wsConnected: false,
+        messages: null,
       };
 
     case WS_GET_MESSAGE:

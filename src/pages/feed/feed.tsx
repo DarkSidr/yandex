@@ -5,11 +5,17 @@ import { TMessage, TOrder } from "../../utils/types/webSocketTypes";
 import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/formatted-date/formatted-date";
 import IconsAndPrice from "../../components/IconsAndPrice/IconsAndPrice";
 import classNames from "classnames";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
+import {
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START,
+} from "../../services/actions/webSocket";
 
 export const Feed = () => {
   const data = useAppSelector(getFeedData);
   const info: TMessage = data.messages;
+  const dispatch = useAppDispatch();
 
   const done = useMemo(() => {
     return info?.orders.filter((item) => item.status === "done");
@@ -38,6 +44,15 @@ export const Feed = () => {
     }
     return columns;
   }, [pending]);
+
+  useEffect(() => {
+    dispatch({
+      type: WS_CONNECTION_START,
+    });
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
+  }, [dispatch]);
 
   return (
     <>
