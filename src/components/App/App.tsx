@@ -22,6 +22,8 @@ import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import { getIngredients } from "../../utils/requests/getIngredients";
 import Ingredients from "../../pages/ingredients/ingredients";
 import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
+import { FeedOrder } from "../../pages/feed/feedOrder/feedOrder";
+import FeedOrderDetails from "../FeedOrderDetails/FeedOrderDetails";
 
 const App = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -55,6 +57,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/ingredients/:ingredientId" element={<Ingredients />} />
+        <Route path="/feed/:id" element={<FeedOrder />} />
         <Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
         <Route
           path="/register"
@@ -81,6 +84,15 @@ const App = () => {
             element={
               <Modal setState={handleModalClose} title="Детали ингредиента">
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+
+          <Route
+            path="/feed/:id"
+            element={
+              <Modal setState={handleModalClose} isFeedOrder>
+                <FeedOrderDetails />
               </Modal>
             }
           />

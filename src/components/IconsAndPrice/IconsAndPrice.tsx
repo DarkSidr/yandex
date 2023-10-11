@@ -6,6 +6,7 @@ import styles from "./IconsAndPrice.module.css";
 import PriceItem from "../PriceItem/PriceItem";
 import classNames from "classnames";
 import { TItemBurger } from "../../utils/types/commonTypes";
+import IconsWrapper from "../IconsWrapper/IconsWrapper";
 
 type TIconsAndPrice = {
   ingredients: string[];
@@ -13,16 +14,13 @@ type TIconsAndPrice = {
 
 const generateImages = (items: TItemBurger[]) => {
   return items.slice(0, 6).map((item, index) => (
-    <div
-      className={classNames(styles.iconWrapper)}
-      style={{ zIndex: items.length - index }}
+    <IconsWrapper
       key={item._id}
+      item={item}
+      index={index}
+      itemsLength={items.length}
+      isRowIcons
     >
-      <img
-        className={classNames(styles.icon)}
-        src={item.image_mobile}
-        alt={item.name}
-      />
       {index === 5 && items.length > 6 && (
         <>
           <span className={classNames(styles.opacity)}></span>
@@ -36,7 +34,7 @@ const generateImages = (items: TItemBurger[]) => {
           </span>
         </>
       )}
-    </div>
+    </IconsWrapper>
   ));
 };
 
@@ -59,7 +57,9 @@ const IconsAndPrice = ({ ingredients }: TIconsAndPrice) => {
     }, [] as TItemBurger[]);
   }, [newArray]);
 
-  const burgerCost = countBurgerCost(newArray);
+  const burgerCost = useMemo(() => {
+    return countBurgerCost(newArray);
+  }, [newArray]);
 
   const images = useMemo(() => {
     return generateImages(uniqueNewArray);

@@ -391,7 +391,7 @@ export const updateToken = (refreshToken: null | string): AppThunk => {
           type: FETCH_USER_FAILURE,
           error: error,
         });
-        console.log(error);
+        console.error(error);
       });
   };
 };

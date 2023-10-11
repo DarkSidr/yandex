@@ -14,22 +14,6 @@
   justify-content: flex-end;
 }
 
-.iconWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 64px;
-  height: 64px;
-  overflow: hidden;
-  position: relative;
-  border-radius: 100px;
-  background-image: url("../../images/border.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  margin-left: -20px;
-}
-
 .opacity {
   display: block;
   width: 64px;
@@ -47,18 +31,4 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.iconWrapper:first-child {
-  margin: 0;
-}
-
-.icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 112px;
-  height: 56px;
-  object-position: center;
 }

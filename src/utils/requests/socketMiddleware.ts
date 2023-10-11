@@ -45,7 +45,7 @@ export const socketMiddleware = (
           dispatch({ type: onClose, payload: event });
         };
       }
-      return next(action);
+      next(action);
     };
   }) as Middleware;
 };

@@ -4,7 +4,7 @@ import styles from "./PriceItem.module.css";
 import classNames from "classnames";
 
 type TPriceItem = {
-  price: number;
+  price: number | string;
   large?: boolean;
   columnGap?: "small" | "medium";
 };

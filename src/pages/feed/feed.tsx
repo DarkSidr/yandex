@@ -1,7 +1,7 @@
 import styles from "./feed.module.css";
 import { useAppSelector } from "../../utils/hooks/useAppSelector";
 import { getFeedData } from "../../utils/functions/getStoreFunctions";
-import { TMessage, TOrder } from "../../utils/types/webSocketTypes";
+import { TOrder } from "../../utils/types/webSocketTypes";
 import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/formatted-date/formatted-date";
 import IconsAndPrice from "../../components/IconsAndPrice/IconsAndPrice";
 import classNames from "classnames";
@@ -11,11 +11,27 @@ import {
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_START,
 } from "../../services/actions/webSocket";
+import { Link, useLocation } from "react-router-dom";
 
 export const Feed = () => {
-  const data = useAppSelector(getFeedData);
-  const info: TMessage = data.messages;
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: WS_CONNECTION_START,
+    });
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
+  }, [dispatch]);
+
+  const data = useAppSelector(getFeedData);
+
+  const info = useMemo(() => {
+    return data.messages;
+  }, [data.messages]);
+
+  const location = useLocation();
 
   const done = useMemo(() => {
     return info?.orders.filter((item) => item.status === "done");
@@ -45,15 +61,6 @@ export const Feed = () => {
     return columns;
   }, [pending]);
 
-  useEffect(() => {
-    dispatch({
-      type: WS_CONNECTION_START,
-    });
-    return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED });
-    };
-  }, [dispatch]);
-
   return (
     <>
       {data.wsConnected && data.messages && info && (
@@ -64,19 +71,27 @@ export const Feed = () => {
               {info.orders.length > 0 &&
                 info.orders.map((item: TOrder) => {
                   return (
-                    <div key={item._id} className={styles.feedItem}>
+                    <Link
+                      key={item._id}
+                      className={styles.feedItem}
+                      to={`/feed/${item.number}`}
+                      state={{ background: location }}
+                    >
                       <div className={styles.feedItemTop}>
                         <span className="text text_type_digits-default">
                           #{item.number}
                         </span>
                         <FormattedDate
-                          className={styles.date}
+                          className={classNames(
+                            "text text_type_main-default",
+                            styles.date
+                          )}
                           date={new Date(item.createdAt)}
                         />
                       </div>
                       <p className="text text_type_main-medium">{item.name}</p>
                       <IconsAndPrice ingredients={item.ingredients} />
-                    </div>
+                    </Link>
                   );
                 })}
             </div>
