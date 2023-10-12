@@ -24,6 +24,7 @@ import Ingredients from "../../pages/ingredients/ingredients";
 import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 import { FeedOrder } from "../../pages/feed/feedOrder/feedOrder";
 import FeedOrderDetails from "../FeedOrderDetails/FeedOrderDetails";
+import ProfileOrders from "../../pages/profile/profileOrders/profileOrders";
 
 const App = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -72,9 +73,14 @@ const App = () => {
           element={<OnlyUnAuth component={<ResetPassword />} />}
         />
         <Route
+          path="/profile/orders"
+          element={<OnlyAuth component={<ProfileOrders />} />}
+        />
+        <Route
           path="/profile/*"
           element={<OnlyAuth component={<Profile />} />}
         />
+
         <Route path="*" element={<NotFound404 />} />
       </Routes>
       {background && (

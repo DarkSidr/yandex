@@ -5,9 +5,7 @@ import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import classNames from "classnames";
 import { getLogin } from "../../utils/functions/getStoreFunctions";
-import { logout } from "../../services/api";
 import { updateUserInfo } from "../../services/api";
 import { getUserInfo } from "./profile.utils";
 import { updateToken } from "../../services/api";
@@ -17,32 +15,8 @@ import styles from "./profile.module.css";
 import { TProfileForm } from "../../utils/types/commonTypes";
 import { useAppSelector } from "../../utils/hooks/useAppSelector";
 import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
-
-type TPrfileMenu = {
-  id: number;
-  title: string;
-  isActive: boolean;
-  href: string;
-  code?: string;
-};
-
-const prfileMenu: TPrfileMenu[] = [
-  { id: 1, title: "Профиль", isActive: true, href: "/profile" },
-  {
-    id: 2,
-    title: "История заказов",
-    isActive: false,
-    href: "/order",
-    code: "order",
-  },
-  {
-    id: 3,
-    title: "Выход",
-    isActive: false,
-    href: "/logout",
-    code: "logout",
-  },
-];
+import ProfileMenu from "../../components/ProfileMenu/ProfileMenu";
+import ProfileWrapper from "../../components/ProfileWrapper/ProfileWrapper";
 
 export const Profile = () => {
   const login = useAppSelector(getLogin);
@@ -81,40 +55,8 @@ export const Profile = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.navBlock}>
-        <ul className={styles.list}>
-          {prfileMenu.map((item) => {
-            return (
-              <li key={item.id} className={styles.item}>
-                <a
-                  className={classNames(
-                    styles.link,
-                    item.isActive && styles.linkActive
-                  )}
-                  href={item.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (item.code === "logout") {
-                      dispatch(logout(refreshToken));
-                    }
-                  }}
-                >
-                  {item.title}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-        <p
-          className={classNames(
-            "text text_type_main-default",
-            styles.navBlockText
-          )}
-        >
-          В этом разделе вы можете <br /> изменить свои персональные данные
-        </p>
-      </div>
+    <ProfileWrapper>
+      <ProfileMenu />
       <form
         className={styles.form}
         onSubmit={(e) => {
@@ -170,6 +112,6 @@ export const Profile = () => {
           </div>
         )}
       </form>
-    </div>
+    </ProfileWrapper>
   );
 };
