@@ -69,10 +69,17 @@
 
 .orderWrapper {
   display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  column-count: auto;
+  column-fill: auto;
+  column-width: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
   column-gap: 8px;
   row-gap: 8px;
-  flex-wrap: wrap;
   margin-top: 24px;
+  max-height: 330px;
 }
 
 .orderColumn {
@@ -83,4 +90,5 @@
 
 .orderNumber {
   color: #0cc;
+  width: fit-content;
 }

@@ -41,26 +41,6 @@ export const Feed = () => {
     return info?.orders.filter((item) => item.status === "pending");
   }, [info?.orders]);
 
-  const doneColums = useMemo(() => {
-    const columns = [];
-    let remaining = done && [...done];
-
-    while (remaining && remaining.length > 0) {
-      columns.push(remaining.splice(0, 10));
-    }
-    return columns;
-  }, [done]);
-
-  const pendingColums = useMemo(() => {
-    const columns = [];
-    let remaining = pending && [...pending];
-
-    while (remaining && remaining?.length > 0) {
-      columns.push(pending?.splice(0, 10));
-    }
-    return columns;
-  }, [pending]);
-
   return (
     <>
       {data.wsConnected && data.messages && info && (
@@ -100,23 +80,17 @@ export const Feed = () => {
                 <div>
                   <span className="text text_type_main-medium">Готовы:</span>
                   <div className={styles.orderWrapper}>
-                    {doneColums?.map((item, index) => {
+                    {done?.map((item) => {
                       return (
-                        <div className={styles.orderColumn} key={index}>
-                          {item.map((number) => {
-                            return (
-                              <span
-                                key={number?.number}
-                                className={classNames(
-                                  "text text_type_digits-default",
-                                  styles.orderNumber
-                                )}
-                              >
-                                {number?.number}
-                              </span>
-                            );
-                          })}
-                        </div>
+                        <span
+                          key={item._id}
+                          className={classNames(
+                            "text text_type_digits-default",
+                            styles.orderNumber
+                          )}
+                        >
+                          {item?.number}
+                        </span>
                       );
                     })}
                   </div>
@@ -124,22 +98,16 @@ export const Feed = () => {
                 <div>
                   <span className="text text_type_main-medium">В работе:</span>
                   <div className={styles.orderWrapper}>
-                    {pendingColums?.map((item, index) => {
+                    {pending?.map((item) => {
                       return (
-                        <div className={styles.orderColumn} key={index}>
-                          {item?.map((number) => {
-                            return (
-                              <span
-                                key={number?.number}
-                                className={classNames(
-                                  "text text_type_digits-default"
-                                )}
-                              >
-                                {number?.number}
-                              </span>
-                            );
-                          })}
-                        </div>
+                        <span
+                          key={item._id}
+                          className={classNames(
+                            "text text_type_digits-default"
+                          )}
+                        >
+                          {item?.number}
+                        </span>
                       );
                     })}
                   </div>
