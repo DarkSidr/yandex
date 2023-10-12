@@ -8,9 +8,13 @@ import {
 import { useAppSelector } from "../../../utils/hooks/useAppSelector";
 import { getFeedData } from "../../../utils/functions/getStoreFunctions";
 import Loader from "../../../components/Loader/Loader";
+import styles from "./feedOrder.module.css";
+import { useParams } from "react-router-dom";
+import classnames from "classnames";
 
 export const FeedOrder = () => {
   const dispatch = useAppDispatch();
+  const { id } = useParams();
 
   useEffect(() => {
     dispatch({
@@ -31,8 +35,19 @@ export const FeedOrder = () => {
         <Loader />
       ) : (
         <>
-          test
-          <FeedOrderDetails />
+          <div className={styles.wrapper}>
+            <div>
+              <h1
+                className={classnames(
+                  "text text_type_digits-default",
+                  styles.title
+                )}
+              >
+                #{id}
+              </h1>
+              <FeedOrderDetails />
+            </div>
+          </div>
         </>
       )}
     </>

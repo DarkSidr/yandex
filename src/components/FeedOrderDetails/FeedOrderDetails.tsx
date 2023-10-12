@@ -86,26 +86,24 @@ const FeedOrderDetails = () => {
       <div className="mt-15">
         <h3 className="text text_type_main-medium">Состав:</h3>
         <div className={styles.ingredientsWrapper}>
-          <>
-            {ingredients?.map((item) => {
-              return (
-                <div className={styles.ingredientsRow} key={item._id}>
-                  <div className={styles.iconAndName}>
-                    <IconsWrapper item={item} />
-                    <span className="text text_type_main-default">
-                      {item.name}
-                    </span>
-                  </div>
-                  <div>
-                    <PriceItem
-                      price={`${item.count} x ${item.price}`}
-                      columnGap="medium"
-                    />
-                  </div>
+          {ingredients?.map((item) => {
+            return (
+              <div className={styles.ingredientsRow} key={item._id}>
+                <div className={styles.iconAndName}>
+                  <IconsWrapper item={item} />
+                  <span className="text text_type_main-default">
+                    {item.name}
+                  </span>
                 </div>
-              );
-            })}
-          </>
+                <div>
+                  <PriceItem
+                    price={`${item.count} x ${item.price}`}
+                    columnGap="medium"
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
         <div className={styles.modalBottom}>
           <span>
