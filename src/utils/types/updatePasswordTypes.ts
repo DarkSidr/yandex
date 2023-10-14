@@ -12,29 +12,23 @@ export type TUpdatePassword = {
 } & TUserError;
 
 export type TUpdatePasswordRequestAction = {
-  type: typeof UPDATE_PASSWORD_REQUEST;
+  readonly type: typeof UPDATE_PASSWORD_REQUEST;
 };
 
 export type TUpdatePasswordSuccessAction = {
-  type: typeof UPDATE_PASSWORD_SUCCESS;
+  readonly type: typeof UPDATE_PASSWORD_SUCCESS;
 };
 
 export type TUpdatePasswordResetAction = {
-  type: typeof UPDATE_PASSWORD_RESET;
+  readonly type: typeof UPDATE_PASSWORD_RESET;
 };
 
 export type TUpdatePasswordFailureAction = {
-  type: typeof UPDATE_PASSWORD_FAILURE;
-};
+  readonly type: typeof UPDATE_PASSWORD_FAILURE;
+} & TUserError;
 
 export type TUpdatePasswordActions =
   | TUpdatePasswordRequestAction
   | TUpdatePasswordSuccessAction
   | TUpdatePasswordResetAction
   | TUpdatePasswordFailureAction;
-
-export type TUpdatePasswordReducer =
-  | TUpdatePasswordRequestAction
-  | TUpdatePasswordSuccessAction
-  | TUpdatePasswordResetAction
-  | (TUpdatePasswordFailureAction & TUserError);

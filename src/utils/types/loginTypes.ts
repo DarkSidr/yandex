@@ -18,29 +18,23 @@ export type TLoginForm = {
 };
 
 export type TLoginRequestAction = {
-  type: typeof LOGIN_REQUEST;
+  readonly type: typeof LOGIN_REQUEST;
 };
 
 export type TLoginSuccessAction = {
-  type: typeof LOGIN_SUCCESS;
-};
+  readonly type: typeof LOGIN_SUCCESS;
+} & TUserSuccess;
 
 export type TLoginLogoutAction = {
-  type: typeof LOGIN_LOGOUT;
+  readonly type: typeof LOGIN_LOGOUT;
 };
 
 export type TLoginFailureAction = {
   type: typeof LOGIN_FAILURE;
-};
+} & TUserError;
 
 export type TLoginActions =
   | TLoginRequestAction
   | TLoginSuccessAction
   | TLoginLogoutAction
   | TLoginFailureAction;
-
-export type TLoginReducer =
-  | TLoginRequestAction
-  | (TLoginSuccessAction & TUserSuccess)
-  | TLoginLogoutAction
-  | (TLoginFailureAction & TUserError);

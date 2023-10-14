@@ -11,23 +11,19 @@ export type TUser = {
 } & TUserError;
 
 export type TFetchUserRequestAction = {
-  type: typeof FETCH_USER_REQUEST;
+  readonly type: typeof FETCH_USER_REQUEST;
 };
 
 export type TFetchUserSuccessAction = {
-  type: typeof FETCH_USER_SUCCESS;
+  readonly type: typeof FETCH_USER_SUCCESS;
+  data: null | TRequestUser;
 };
 
 export type TFetchUserFailureAction = {
-  type: typeof FETCH_USER_FAILURE;
-};
+  readonly type: typeof FETCH_USER_FAILURE;
+} & TUserError;
 
 export type TUserActions =
   | TFetchUserRequestAction
   | TFetchUserSuccessAction
   | TFetchUserFailureAction;
-
-export type TUserReducer =
-  | TFetchUserRequestAction
-  | (TFetchUserSuccessAction & { data: null | TRequestUser })
-  | (TFetchUserFailureAction & TUserError);

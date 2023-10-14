@@ -12,29 +12,23 @@ export type TNewPassword = {
 } & TUserError;
 
 export type TNewPasswordRequestAction = {
-  type: typeof NEW_PASSWORD_REQUEST;
+  readonly type: typeof NEW_PASSWORD_REQUEST;
 };
 
 export type TNewPasswordSuccessAction = {
-  type: typeof NEW_PASSWORD_SUCCESS;
+  readonly type: typeof NEW_PASSWORD_SUCCESS;
 };
 
 export type TNewPasswordResetAction = {
-  type: typeof NEW_PASSWORD_RESET;
+  readonly type: typeof NEW_PASSWORD_RESET;
 };
 
 export type TNewPasswordFailureAction = {
-  type: typeof NEW_PASSWORD_FAILURE;
-};
+  readonly type: typeof NEW_PASSWORD_FAILURE;
+} & TUserError;
 
 export type TNewPasswordActions =
   | TNewPasswordRequestAction
   | TNewPasswordSuccessAction
   | TNewPasswordResetAction
   | TNewPasswordFailureAction;
-
-export type TNewPasswordReducer =
-  | TNewPasswordRequestAction
-  | TNewPasswordSuccessAction
-  | TNewPasswordResetAction
-  | (TNewPasswordFailureAction & TUserError);

@@ -7,11 +7,11 @@ import {
 import { TItemBurger } from "./commonTypes";
 
 type TBun = {
-  bun: null | TItemBurger;
+  readonly bun: null | TItemBurger;
 };
 
 type TIngredients = {
-  ingredients: [] | TItemBurger[];
+  readonly ingredients: [] | TItemBurger[];
 };
 
 type TBurger = {
@@ -29,29 +29,23 @@ export type TBurgerConstructorComponent = {
 };
 
 export type TAddCurrentIngredientsAction = {
-  type: typeof ADD_CURRENT_INGREDIENTS;
-};
+  readonly type: typeof ADD_CURRENT_INGREDIENTS;
+} & TIngredients;
 
 export type TAddCurrentBunAction = {
-  type: typeof ADD_CURRENT_BUN;
-};
+  readonly type: typeof ADD_CURRENT_BUN;
+} & TBun;
 
 export type TBurgerAction = {
-  type: typeof BURGER;
-};
+  readonly type: typeof BURGER;
+} & TBurger;
 
 export type TDeleteIngredientAction = {
-  type: typeof DELETE_INGREDIENT;
-};
+  readonly type: typeof DELETE_INGREDIENT;
+} & TIngredients;
 
 export type TBurgerConstructorActions =
   | TAddCurrentIngredientsAction
   | TAddCurrentBunAction
   | TBurgerAction
   | TDeleteIngredientAction;
-
-export type TBurgerConstructorReducer =
-  | (TAddCurrentIngredientsAction & TIngredients)
-  | (TAddCurrentBunAction & TBun)
-  | (TBurgerAction & TBurger)
-  | (TDeleteIngredientAction & TIngredients);

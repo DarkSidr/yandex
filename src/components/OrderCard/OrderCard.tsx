@@ -1,13 +1,13 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./OrderCard.module.css";
-import { TOrder } from "../../utils/types/webSocketTypes";
 import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 import IconsAndPrice from "../IconsAndPrice/IconsAndPrice";
+import { TWebSocketOrder } from "../../utils/types/commonTypes";
 
 type TOrderCard = {
-  item: TOrder;
+  item: TWebSocketOrder;
 };
 
 const OrderCard = ({ item }: TOrderCard) => {

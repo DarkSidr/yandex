@@ -1,4 +1,4 @@
-import { TLogout, TLogoutReducer } from "../../utils/types/logoutTypes";
+import { TLogout, TLogoutActions } from "../../utils/types/logoutTypes";
 import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
@@ -10,7 +10,7 @@ const initialState: TLogout = {
   error: null,
 };
 
-export const logoutReducer = (state = initialState, action: TLogoutReducer) => {
+export const logoutReducer = (state = initialState, action: TLogoutActions) => {
   switch (action.type) {
     case LOGOUT_REQUEST:
       return {

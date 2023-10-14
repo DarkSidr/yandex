@@ -1,4 +1,4 @@
-import { TData, TDataReducer } from "../../utils/types/dataTypes";
+import { TData, TDataActions } from "../../utils/types/dataTypes";
 import {
   GET_ITEMS_REQUEST,
   GET_ITEMS_SUCCESS,
@@ -12,7 +12,7 @@ const initialState: TData = {
   isLoading: null,
 };
 
-export const dataReducer = (state = initialState, action: TDataReducer) => {
+export const dataReducer = (state = initialState, action: TDataActions) => {
   switch (action.type) {
     case GET_ITEMS_REQUEST: {
       return {

@@ -5,9 +5,5 @@ export type TTotalPrice = {
 };
 
 export type TTotalPriceAction = {
-  type: typeof TOTAL_PRICE;
-};
-
-export type TTotalPriceReducer = {
-  type: typeof TOTAL_PRICE;
+  readonly type: typeof TOTAL_PRICE;
 } & TTotalPrice;

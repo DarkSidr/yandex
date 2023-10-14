@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import FeedOrderDetails from "../../../components/FeedOrderDetails/FeedOrderDetails";
 import { useAppDispatch } from "../../../utils/hooks/useAppDispatch";
 import {
-  WS_CONNECTION_CLOSED,
-  WS_CONNECTION_START,
-} from "../../../services/actions/webSocket";
+  FEED_WS_CONNECTION_CLOSED,
+  FEED_WS_CONNECTION_START,
+} from "../../../services/actions/feedWebSocket";
 import { useAppSelector } from "../../../utils/hooks/useAppSelector";
 import { getFeedData } from "../../../utils/functions/getStoreFunctions";
 import Loader from "../../../components/Loader/Loader";
@@ -18,10 +18,10 @@ export const FeedOrder = () => {
 
   useEffect(() => {
     dispatch({
-      type: WS_CONNECTION_START,
+      type: FEED_WS_CONNECTION_START,
     });
     return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED });
+      dispatch({ type: FEED_WS_CONNECTION_CLOSED });
     };
   }, [dispatch]);
 

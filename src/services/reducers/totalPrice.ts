@@ -1,6 +1,6 @@
 import {
   TTotalPrice,
-  TTotalPriceReducer,
+  TTotalPriceAction,
 } from "../../utils/types/totalPriceTypes";
 import { TOTAL_PRICE } from "../actions/totalPrice";
 
@@ -10,7 +10,7 @@ const initialState: TTotalPrice = {
 
 export const totalPriceReducer = (
   state = initialState,
-  action: TTotalPriceReducer
+  action: TTotalPriceAction
 ) => {
   switch (action.type) {
     case TOTAL_PRICE: {

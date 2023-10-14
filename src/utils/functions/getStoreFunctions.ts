@@ -26,4 +26,4 @@ export const getUpdatePassword = (store: RootState) =>
 
 export const getNewPassword = (store: RootState) => store.newPasswordReducer;
 
-export const getFeedData = (store: RootState) => store.webSocketReducer;
+export const getFeedData = (store: RootState) => store.feedWebSocketReducer;

@@ -12,23 +12,18 @@ export type TUpdateUserInfo = {
   TUserSuccess;
 
 export type TUpdateUserInfoRequestAction = {
-  type: typeof UPDATE_USER_INFO_REQUEST;
+  readonly type: typeof UPDATE_USER_INFO_REQUEST;
 };
 
 export type TUpdateUserInfoSuccessAction = {
-  type: typeof UPDATE_USER_INFO_SUCCESS;
-};
+  readonly type: typeof UPDATE_USER_INFO_SUCCESS;
+} & TUserSuccess;
 
 export type TUpdateUserInfoFailureAction = {
-  type: typeof UPDATE_USER_INFO_FAILURE;
-};
+  readonly type: typeof UPDATE_USER_INFO_FAILURE;
+} & TUserError;
 
 export type TUpdateUserInfoActions =
   | TUpdateUserInfoRequestAction
   | TUpdateUserInfoSuccessAction
   | TUpdateUserInfoFailureAction;
-
-export type TUpdateUserInfoReducer =
-  | TUpdateUserInfoRequestAction
-  | (TUpdateUserInfoSuccessAction & TUserSuccess)
-  | (TUpdateUserInfoFailureAction & TUserError);

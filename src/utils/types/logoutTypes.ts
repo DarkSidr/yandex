@@ -10,22 +10,17 @@ export type TLogout = {
 } & TUserError;
 
 export type TLogoutRequestAction = {
-  type: typeof LOGOUT_REQUEST;
+  readonly type: typeof LOGOUT_REQUEST;
 };
 
 export type TLogoutSuccessAction = {
-  type: typeof LOGOUT_SUCCESS;
+  readonly type: typeof LOGOUT_SUCCESS;
 };
 export type TLogoutFailureAction = {
-  type: typeof LOGOUT_FAILURE;
-};
+  readonly type: typeof LOGOUT_FAILURE;
+} & TUserError;
 
 export type TLogoutActions =
   | TLogoutRequestAction
   | TLogoutSuccessAction
   | TLogoutFailureAction;
-
-export type TLogoutReducer =
-  | TLogoutRequestAction
-  | TLogoutSuccessAction
-  | (TLogoutFailureAction & TUserError);

@@ -1,6 +1,6 @@
 import {
   TUpdateUserInfo,
-  TUpdateUserInfoReducer,
+  TUpdateUserInfoActions,
 } from "../../utils/types/updateUserInfoTypes";
 import {
   UPDATE_USER_INFO_REQUEST,
@@ -17,7 +17,7 @@ const initialState: TUpdateUserInfo = {
 
 export const updateUserInfoReducer = (
   state = initialState,
-  action: TUpdateUserInfoReducer
+  action: TUpdateUserInfoActions
 ) => {
   switch (action.type) {
     case UPDATE_USER_INFO_REQUEST:

@@ -1,41 +1,43 @@
-import { TMessages, TWebSocketReducer } from "../../utils/types/webSocketTypes";
+import { TWebSocketMessages } from "../../utils/types/commonTypes";
+import { TFeedWebSocketActions } from "../../utils/types/feedWebSocketTypes";
 import {
-  WS_CONNECTION_CLOSED,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_SUCCESS,
-  WS_GET_MESSAGE,
-} from "../actions/webSocket";
+  FEED_WS_CONNECTION_SUCCESS,
+  FEED_WS_CONNECTION_ERROR,
+  FEED_WS_CONNECTION_CLOSED,
+  FEED_WS_GET_MESSAGE,
+} from "../actions/feedWebSocket";
 
-export type TWSState = {
+type TWSState = {
   wsConnected: boolean;
   error?: Event;
-} & TMessages;
+} & TWebSocketMessages;
 
 const initialState: TWSState = {
   wsConnected: false,
+  error: undefined,
   messages: null,
 };
 
-export const webSocketReducer = (
+export const feedWebSocketReducer = (
   state = initialState,
-  action: TWebSocketReducer
+  action: TFeedWebSocketActions
 ) => {
   switch (action.type) {
-    case WS_CONNECTION_SUCCESS:
+    case FEED_WS_CONNECTION_SUCCESS:
       return {
         ...state,
         error: undefined,
         wsConnected: true,
       };
 
-    case WS_CONNECTION_ERROR:
+    case FEED_WS_CONNECTION_ERROR:
       return {
         ...state,
         error: action.error,
         wsConnected: false,
       };
 
-    case WS_CONNECTION_CLOSED:
+    case FEED_WS_CONNECTION_CLOSED:
       return {
         ...state,
         error: undefined,
@@ -43,7 +45,7 @@ export const webSocketReducer = (
         messages: null,
       };
 
-    case WS_GET_MESSAGE:
+    case FEED_WS_GET_MESSAGE:
       return {
         ...state,
         error: undefined,

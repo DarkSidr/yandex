@@ -12,7 +12,8 @@ import { TUpdateUserInfoActions } from "./updateUserInfoTypes";
 import { TUserActions } from "./userTypes";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { store } from "../../services/reducers";
-import { TWebSocketActions } from "./webSocketTypes";
+import { TFeedWebSocketActions } from "./feedWebSocketTypes";
+import { TOrdersWebSocketActions } from "./ordersWebSocketTypes";
 
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -28,7 +29,8 @@ export type TApplicationActions =
   | TUpdatePasswordActions
   | TUpdateUserInfoActions
   | TUserActions
-  | TWebSocketActions;
+  | TFeedWebSocketActions
+  | TOrdersWebSocketActions;
 
 export type AppDispatch = ThunkDispatch<RootState, Action<string>, Action>;
 
@@ -36,5 +38,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,
   unknown,
-  TApplicationActions
+  Action<string>
 >;

@@ -25,29 +25,24 @@ export type TRegister = {
 } & TUserError;
 
 export type TRegisterRequestAction = {
-  type: typeof REGISTER_REQUEST;
+  readonly type: typeof REGISTER_REQUEST;
 };
 
 export type TRegisterSuccessAction = {
-  type: typeof REGISTER_SUCCESS;
+  readonly type: typeof REGISTER_SUCCESS;
+  user: null | TUserResponse;
 };
 
 export type TRegisterResetAction = {
-  type: typeof REGISTER_RESET;
+  readonly type: typeof REGISTER_RESET;
 };
 
 export type TRegisterFailureAction = {
-  type: typeof REGISTER_FAILURE;
-};
+  readonly type: typeof REGISTER_FAILURE;
+} & TUserError;
 
 export type TRegisterActions =
   | TRegisterRequestAction
   | TRegisterSuccessAction
   | TRegisterResetAction
   | TRegisterFailureAction;
-
-export type TRegisterReducer =
-  | TRegisterRequestAction
-  | (TRegisterSuccessAction & { user: null | TUserResponse })
-  | TRegisterResetAction
-  | (TRegisterFailureAction & TUserError);

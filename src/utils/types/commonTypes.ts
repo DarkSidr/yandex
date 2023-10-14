@@ -61,3 +61,27 @@ export type TUserError = {
 export type TUserSuccess = {
   user: null | TRequestUser;
 };
+
+export type TErrorWebSocket = {
+  error: Event;
+};
+
+export type TWebSocketOrder = {
+  _id: string;
+  ingredients: string[];
+  status: string;
+  name: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TWebSocketMessage = {
+  orders: TWebSocketOrder[];
+  total: number;
+  totalToday: number;
+} | null;
+
+export type TWebSocketMessages = {
+  messages: TWebSocketMessage | null;
+};

@@ -1,4 +1,4 @@
-import { TRegister, TRegisterReducer } from "../../utils/types/registerTypes";
+import { TRegister, TRegisterActions } from "../../utils/types/registerTypes";
 import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
@@ -15,7 +15,7 @@ const initialState: TRegister = {
 
 export const registerReducer = (
   state = initialState,
-  action: TRegisterReducer
+  action: TRegisterActions
 ) => {
   switch (action.type) {
     case REGISTER_REQUEST:

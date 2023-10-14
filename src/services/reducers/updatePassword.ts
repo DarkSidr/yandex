@@ -1,6 +1,6 @@
 import {
   TUpdatePassword,
-  TUpdatePasswordReducer,
+  TUpdatePasswordActions,
 } from "../../utils/types/updatePasswordTypes";
 import {
   UPDATE_PASSWORD_REQUEST,
@@ -17,7 +17,7 @@ const initialState: TUpdatePassword = {
 
 export const updatePasswordReducer = (
   state = initialState,
-  action: TUpdatePasswordReducer
+  action: TUpdatePasswordActions
 ) => {
   switch (action.type) {
     case UPDATE_PASSWORD_REQUEST:

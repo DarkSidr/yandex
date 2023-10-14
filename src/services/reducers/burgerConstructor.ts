@@ -1,6 +1,6 @@
 import {
   TBurgerConstructor,
-  TBurgerConstructorReducer,
+  TBurgerConstructorActions,
 } from "../../utils/types/burgerConstructorTypes";
 import {
   ADD_CURRENT_INGREDIENTS,
@@ -18,7 +18,7 @@ const initialState: TBurgerConstructor = {
 
 export const burgerConstructorReducer = (
   state = initialState,
-  action: TBurgerConstructorReducer
+  action: TBurgerConstructorActions
 ) => {
   switch (action.type) {
     case ADD_CURRENT_INGREDIENTS: {

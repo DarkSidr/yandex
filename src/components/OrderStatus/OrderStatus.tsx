@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./OrderStatus.module.css";
 import classNames from "classnames";
-import { TOrder } from "../../utils/types/webSocketTypes";
+import { TWebSocketOrder } from "../../utils/types/commonTypes";
 
 type TOrderStatus = {
   title: string;
-  items?: TOrder[];
+  items?: TWebSocketOrder[];
   isDone?: boolean;
 };
 

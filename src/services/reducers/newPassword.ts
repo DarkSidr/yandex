@@ -1,6 +1,6 @@
 import {
   TNewPassword,
-  TNewPasswordReducer,
+  TNewPasswordActions,
 } from "../../utils/types/newPasswordTypes";
 import {
   NEW_PASSWORD_REQUEST,
@@ -17,7 +17,7 @@ const initialState: TNewPassword = {
 
 export const newPasswordReducer = (
   state = initialState,
-  action: TNewPasswordReducer
+  action: TNewPasswordActions
 ) => {
   switch (action.type) {
     case NEW_PASSWORD_REQUEST:

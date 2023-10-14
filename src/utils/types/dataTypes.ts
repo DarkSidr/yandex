@@ -6,7 +6,7 @@ import {
 import { TItemBurger } from "./commonTypes";
 
 type TDataItems = {
-  items: [] | TItemBurger[];
+  readonly items: [] | TItemBurger[];
 };
 
 type TDataLoading = {
@@ -25,7 +25,7 @@ export type TGetItemsRequestAction = {
 
 export type TGetItemsSuccessAction = {
   type: typeof GET_ITEMS_SUCCESS;
-};
+} & TDataItems;
 
 export type TGetItemsFailedAction = {
   type: typeof GET_ITEMS_FAILED;
@@ -34,9 +34,4 @@ export type TGetItemsFailedAction = {
 export type TDataActions =
   | TGetItemsRequestAction
   | TGetItemsSuccessAction
-  | TGetItemsFailedAction;
-
-export type TDataReducer =
-  | TGetItemsRequestAction
-  | (TGetItemsSuccessAction & TDataItems)
   | TGetItemsFailedAction;

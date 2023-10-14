@@ -1,4 +1,4 @@
-import { TUser, TUserReducer } from "../../utils/types/userTypes";
+import { TUser, TUserActions } from "../../utils/types/userTypes";
 import {
   FETCH_USER_REQUEST,
   FETCH_USER_SUCCESS,
@@ -11,7 +11,7 @@ const initialState: TUser = {
   error: null,
 };
 
-export const userReducer = (state = initialState, action: TUserReducer) => {
+export const userReducer = (state = initialState, action: TUserActions) => {
   switch (action.type) {
     case FETCH_USER_REQUEST:
       return {

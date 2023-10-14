@@ -1,4 +1,4 @@
-import { TLogin, TLoginReducer } from "../../utils/types/loginTypes";
+import { TLogin, TLoginActions } from "../../utils/types/loginTypes";
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -13,7 +13,7 @@ const initialState: TLogin = {
   isAuthenticated: false,
 };
 
-export const loginReducer = (state = initialState, action: TLoginReducer) => {
+export const loginReducer = (state = initialState, action: TLoginActions) => {
   switch (action.type) {
     case LOGIN_REQUEST:
       return {

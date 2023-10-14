@@ -13,16 +13,26 @@ import { updatePasswordReducer } from "./updatePassword";
 import { newPasswordReducer } from "./newPassword";
 import thunkMiddleware from "redux-thunk";
 import { socketMiddleware } from "../../utils/requests/socketMiddleware";
-import { webSocketReducer } from "./webSocket";
-import { TWebSocket } from "../../utils/types/webSocketTypes";
+import { feedWebSocketReducer } from "./feedWebSocket";
+import { TFeedWebSocket } from "../../utils/types/feedWebSocketTypes";
 import {
-  WS_CONNECTION_CLOSED,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_GET_MESSAGE,
-  WS_SEND_MESSAGE,
-} from "../actions/webSocket";
+  FEED_WS_CONNECTION_CLOSED,
+  FEED_WS_CONNECTION_ERROR,
+  FEED_WS_CONNECTION_START,
+  FEED_WS_CONNECTION_SUCCESS,
+  FEED_WS_GET_MESSAGE,
+  FEED_WS_SEND_MESSAGE,
+} from "../actions/feedWebSocket";
+import { ordersWebSocketReducer } from "./ordersWebSocket";
+import { TOrdersWebSocket } from "../../utils/types/ordersWebSocketTypes";
+import {
+  ORDERS_WS_CONNECTION_CLOSED,
+  ORDERS_WS_CONNECTION_ERROR,
+  ORDERS_WS_CONNECTION_START,
+  ORDERS_WS_CONNECTION_SUCCESS,
+  ORDERS_WS_GET_MESSAGE,
+  ORDERS_WS_SEND_MESSAGE,
+} from "../actions/ordersWebSocket";
 
 export const rootReducer = combineReducers({
   data: dataReducer,
@@ -36,23 +46,38 @@ export const rootReducer = combineReducers({
   updateUserInfoReducer: updateUserInfoReducer,
   updatePasswordReducer: updatePasswordReducer,
   newPasswordReducer: newPasswordReducer,
-  webSocketReducer: webSocketReducer,
+  feedWebSocketReducer: feedWebSocketReducer,
+  ordersWebSocketReducer: ordersWebSocketReducer,
 });
 
-const wsUrl: string = "wss://norma.nomoreparties.space/orders/all";
+const wsFeedUrl: string = "wss://norma.nomoreparties.space/orders/all";
+const wsOrdersUrl: string = "wss://norma.nomoreparties.space/orders";
 
-const webSocketActions: TWebSocket = {
-  wsInit: WS_CONNECTION_START,
-  wsSendMessage: WS_SEND_MESSAGE,
-  onOpen: WS_CONNECTION_SUCCESS,
-  onClose: WS_CONNECTION_CLOSED,
-  onError: WS_CONNECTION_ERROR,
-  onMessage: WS_GET_MESSAGE,
+const webFeedSocketActions: TFeedWebSocket = {
+  wsInit: FEED_WS_CONNECTION_START,
+  wsSendMessage: FEED_WS_SEND_MESSAGE,
+  onOpen: FEED_WS_CONNECTION_SUCCESS,
+  onClose: FEED_WS_CONNECTION_CLOSED,
+  onError: FEED_WS_CONNECTION_ERROR,
+  onMessage: FEED_WS_GET_MESSAGE,
+};
+
+const webOrdersSocketActions: TOrdersWebSocket = {
+  wsInit: ORDERS_WS_CONNECTION_START,
+  wsSendMessage: ORDERS_WS_SEND_MESSAGE,
+  onOpen: ORDERS_WS_CONNECTION_SUCCESS,
+  onClose: ORDERS_WS_CONNECTION_CLOSED,
+  onError: ORDERS_WS_CONNECTION_ERROR,
+  onMessage: ORDERS_WS_GET_MESSAGE,
 };
 
 export const store = createStore(
   rootReducer,
   composeWithDevTools(
-    applyMiddleware(thunkMiddleware, socketMiddleware(wsUrl, webSocketActions))
+    applyMiddleware(
+      thunkMiddleware,
+      socketMiddleware(wsFeedUrl, webFeedSocketActions),
+      socketMiddleware(wsOrdersUrl, webOrdersSocketActions, true)
+    )
   )
 );
