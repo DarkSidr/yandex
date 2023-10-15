@@ -5,17 +5,20 @@ import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-component
 import classNames from "classnames";
 import IconsAndPrice from "../IconsAndPrice/IconsAndPrice";
 import { TWebSocketOrder } from "../../utils/types/commonTypes";
+import Status from "../Status/Status";
 
 type TOrderCard = {
   item: TWebSocketOrder;
+  link: string;
+  isShowStatus?: boolean;
 };
 
-const OrderCard = ({ item }: TOrderCard) => {
+const OrderCard = ({ item, link, isShowStatus = false }: TOrderCard) => {
   const location = useLocation();
   return (
     <Link
       className={styles.feedItem}
-      to={`/feed/${item.number}`}
+      to={`${link}${item.number}`}
       state={{ background: location }}
     >
       <div className={styles.feedItemTop}>
@@ -25,7 +28,14 @@ const OrderCard = ({ item }: TOrderCard) => {
           date={new Date(item.createdAt)}
         />
       </div>
-      <p className="text text_type_main-medium">{item.name}</p>
+      <div>
+        <p className="text text_type_main-medium">{item.name}</p>
+        {isShowStatus && (
+          <div className="mt-2">
+            <Status status={item.status} />
+          </div>
+        )}
+      </div>
       <IconsAndPrice ingredients={item.ingredients} />
     </Link>
   );

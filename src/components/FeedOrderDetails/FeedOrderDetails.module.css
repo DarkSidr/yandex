@@ -9,10 +9,6 @@
   row-gap: 8px;
 }
 
-.accentColor {
-  color: #00cccc;
-}
-
 .ingredientsWrapper {
   margin-top: 24px;
   display: flex;

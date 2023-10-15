@@ -12,6 +12,7 @@ import IconsWrapper from "../IconsWrapper/IconsWrapper";
 import PriceItem from "../PriceItem/PriceItem";
 import { countBurgerCost } from "../BurgerConstructor/BurgerConstructor.utils";
 import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
+import Status from "../Status/Status";
 
 type TItemBurgerWithCount = { count: number } & TItemBurger;
 
@@ -28,12 +29,6 @@ const FeedOrderDetails = () => {
       });
     }
   }, [data, id]);
-
-  const status: { [key: string]: string } = {
-    done: "Выполнен",
-    pending: "Готовится",
-    created: "Создан",
-  };
 
   const burger = useMemo(() => {
     if (info?.ingredients) {
@@ -74,14 +69,7 @@ const FeedOrderDetails = () => {
     <div className={classNames("mt-5", styles.modalWrapper)}>
       <div className={styles.topTextWrapper}>
         <h3 className="text text_type_main-medium">{info?.name}</h3>
-        <span
-          className={classNames(
-            "text text_type_main-default",
-            styles.accentColor
-          )}
-        >
-          {status[info?.status as string]}
-        </span>
+        <Status status={info?.status as string} />
       </div>
       <div className="mt-15">
         <h3 className="text text_type_main-medium">Состав:</h3>

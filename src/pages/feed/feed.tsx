@@ -47,7 +47,7 @@ export const Feed = () => {
             <div className={styles.feed}>
               {info.orders.length > 0 &&
                 info.orders.map((item: TWebSocketOrder) => {
-                  return <OrderCard key={item._id} item={item} />;
+                  return <OrderCard key={item._id} item={item} link="/feed/" />;
                 })}
             </div>
             <div className={styles.orderTable}>

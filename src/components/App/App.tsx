@@ -25,6 +25,7 @@ import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
 import { FeedOrder } from "../../pages/feed/feedOrder/feedOrder";
 import FeedOrderDetails from "../FeedOrderDetails/FeedOrderDetails";
 import ProfileOrders from "../../pages/profile/profileOrders/profileOrders";
+import CurrentOrder from "../../pages/profile/currentOrder/currentOrder";
 
 const App = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -76,6 +77,11 @@ const App = () => {
           path="/profile/orders"
           element={<OnlyAuth component={<ProfileOrders />} />}
         />
+
+        <Route
+          path="/profile/orders/:id"
+          element={<OnlyAuth component={<CurrentOrder />} />}
+        />
         <Route
           path="/profile/*"
           element={<OnlyAuth component={<Profile />} />}
@@ -96,6 +102,15 @@ const App = () => {
 
           <Route
             path="/feed/:id"
+            element={
+              <Modal setState={handleModalClose} isFeedOrder>
+                <FeedOrderDetails />
+              </Modal>
+            }
+          />
+
+          <Route
+            path="/profile/orders/:id"
             element={
               <Modal setState={handleModalClose} isFeedOrder>
                 <FeedOrderDetails />
