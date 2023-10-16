@@ -50,6 +50,11 @@ import {
 } from "../utils/types/commonTypes";
 import { TLoginForm } from "../utils/types/loginTypes";
 import { AppThunk } from "../utils/types";
+import {
+  CURRENT_ORDER_FAILURE,
+  CURRENT_ORDER_REQUEST,
+  CURRENT_ORDER_SUCCESS,
+} from "./actions/currentOrder";
 
 export const register = (form: TRegisterForm): AppThunk => {
   return async function (dispatch) {
@@ -392,6 +397,38 @@ export const updateToken = (refreshToken: null | string): AppThunk => {
           error: error,
         });
         console.error(error);
+      });
+  };
+};
+
+export const currentOrder = (orderNumber: string | number): AppThunk => {
+  return async function (dispatch) {
+    dispatch({
+      type: CURRENT_ORDER_REQUEST,
+    });
+    return request(`orders/${orderNumber}`, {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    })
+      .then((data) => {
+        dispatch({
+          type: CURRENT_ORDER_SUCCESS,
+          data: data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: CURRENT_ORDER_FAILURE,
+          error: err,
+        });
+        console.error(err);
       });
   };
 };

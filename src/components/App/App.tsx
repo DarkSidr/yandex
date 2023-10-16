@@ -22,10 +22,9 @@ import { usePopupClose } from "../../utils/hooks/usePopupClose";
 import { getIngredients } from "../../utils/requests/getIngredients";
 import Ingredients from "../../pages/ingredients/ingredients";
 import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
-import { FeedOrder } from "../../pages/feed/feedOrder/feedOrder";
-import FeedOrderDetails from "../FeedOrderDetails/FeedOrderDetails";
 import ProfileOrders from "../../pages/profile/profileOrders/profileOrders";
-import CurrentOrder from "../../pages/profile/currentOrder/currentOrder";
+import CurrentOrder from "../CurrentOrder/CurrentOrder";
+import { CurrentOrderDetails } from "../../pages/currentOrderDetails/currentOrderDetails";
 
 const App = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -59,7 +58,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/ingredients/:ingredientId" element={<Ingredients />} />
-        <Route path="/feed/:id" element={<FeedOrder />} />
+        <Route path="/feed/:id" element={<CurrentOrderDetails />} />
         <Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
         <Route
           path="/register"
@@ -73,6 +72,7 @@ const App = () => {
           path="/reset-password"
           element={<OnlyUnAuth component={<ResetPassword />} />}
         />
+
         <Route
           path="/profile/orders"
           element={<OnlyAuth component={<ProfileOrders />} />}
@@ -80,8 +80,9 @@ const App = () => {
 
         <Route
           path="/profile/orders/:id"
-          element={<OnlyAuth component={<CurrentOrder />} />}
+          element={<OnlyAuth component={<CurrentOrderDetails />} />}
         />
+
         <Route
           path="/profile/*"
           element={<OnlyAuth component={<Profile />} />}
@@ -104,7 +105,7 @@ const App = () => {
             path="/feed/:id"
             element={
               <Modal setState={handleModalClose} isFeedOrder>
-                <FeedOrderDetails />
+                <CurrentOrder />
               </Modal>
             }
           />
@@ -113,7 +114,7 @@ const App = () => {
             path="/profile/orders/:id"
             element={
               <Modal setState={handleModalClose} isFeedOrder>
-                <FeedOrderDetails />
+                <CurrentOrder />
               </Modal>
             }
           />

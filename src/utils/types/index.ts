@@ -14,6 +14,7 @@ import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { store } from "../../services/reducers";
 import { TFeedWebSocketActions } from "./feedWebSocketTypes";
 import { TOrdersWebSocketActions } from "./ordersWebSocketTypes";
+import { TCurrentOrderActions } from "./currentOrderTypes";
 
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -30,7 +31,8 @@ export type TApplicationActions =
   | TUpdateUserInfoActions
   | TUserActions
   | TFeedWebSocketActions
-  | TOrdersWebSocketActions;
+  | TOrdersWebSocketActions
+  | TCurrentOrderActions;
 
 export type AppDispatch = ThunkDispatch<RootState, Action<string>, Action>;
 

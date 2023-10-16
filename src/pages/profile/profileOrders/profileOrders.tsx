@@ -30,8 +30,6 @@ const ProfileOrders = () => {
     return data.messages;
   }, [data.messages]);
 
-  console.log(info);
-
   return (
     <ProfileWrapper smallMargin>
       <div className={styles.menuWrapper}>

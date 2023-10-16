@@ -33,6 +33,7 @@ import {
   ORDERS_WS_GET_MESSAGE,
   ORDERS_WS_SEND_MESSAGE,
 } from "../actions/ordersWebSocket";
+import { currentOrderReducer } from "./currentOrder";
 
 export const rootReducer = combineReducers({
   data: dataReducer,
@@ -48,6 +49,7 @@ export const rootReducer = combineReducers({
   newPasswordReducer: newPasswordReducer,
   feedWebSocketReducer: feedWebSocketReducer,
   ordersWebSocketReducer: ordersWebSocketReducer,
+  currentOrderReducer: currentOrderReducer,
 });
 
 const wsFeedUrl: string = "wss://norma.nomoreparties.space/orders/all";
