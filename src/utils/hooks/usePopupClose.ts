@@ -1,10 +1,13 @@
 import { useEffect } from "react";
+import { GET_ORDER_FAILED } from "../../services/actions/order";
+import { useAppDispatch } from "./useAppDispatch";
 // кастомные хуки всегда должны начинаться с глагола `use`, чтобы реакт понял, что это хук. Он следит за их вызовами
 
 export function usePopupClose(
   isOpen: boolean,
   closePopup: (visible: boolean) => void
 ) {
+  const dispatch = useAppDispatch();
   useEffect(() => {
     if (!isOpen) return; // останавливаем действие эффекта, если попап закрыт
 
@@ -12,12 +15,18 @@ export function usePopupClose(
       // если есть атрибут data-overlay, значит, кликнули на оверлей
       if (event.target instanceof HTMLElement && event.target.dataset.overlay) {
         closePopup(false);
+        dispatch({
+          type: GET_ORDER_FAILED,
+        });
       }
     };
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         closePopup(false);
+        dispatch({
+          type: GET_ORDER_FAILED,
+        });
       }
     };
 

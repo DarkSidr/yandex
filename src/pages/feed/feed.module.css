@@ -1,0 +1,31 @@
+.mainWrapper {
+  margin: 0 auto;
+  margin-top: 40px;
+  max-width: 1240px;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 60px;
+  margin-top: 20px;
+}
+
+.feed {
+  max-height: 756px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  overflow-y: auto;
+}
+
+.orderTable {
+  display: flex;
+  flex-direction: column;
+  row-gap: 60px;
+}
+
+.orderTableTop {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 36px;
+}

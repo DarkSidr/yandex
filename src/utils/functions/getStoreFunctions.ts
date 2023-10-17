@@ -1,4 +1,4 @@
-import { RootState } from "../..";
+import { RootState } from "../types";
 
 export const getDataLoading = (store: RootState) => store.data.isLoading;
 export const getDataItems = (store: RootState) => store.data.items;
@@ -25,3 +25,10 @@ export const getUpdatePassword = (store: RootState) =>
   store.updatePasswordReducer;
 
 export const getNewPassword = (store: RootState) => store.newPasswordReducer;
+
+export const getFeedData = (store: RootState) => store.feedWebSocketReducer;
+
+export const getOrdersData = (store: RootState) => store.ordersWebSocketReducer;
+
+export const getCurrentOrderDetails = (store: RootState) =>
+  store.currentOrderReducer;

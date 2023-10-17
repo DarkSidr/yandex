@@ -28,15 +28,20 @@ import { TItemBurger } from "../../utils/types/commonTypes";
 import { TBurgerConstructorComponent } from "../../utils/types/burgerConstructorTypes";
 import { useAppSelector } from "../../utils/hooks/useAppSelector";
 import { useAppDispatch } from "../../utils/hooks/useAppDispatch";
+import Loader from "../Loader/Loader";
 
 const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
   const login = useAppSelector(getLogin);
+
+  const accessToken = localStorage.getItem("accessToken") as string;
 
   const navigate = useNavigate();
 
   const location = useLocation();
 
   const [checkBun, setCheckBum] = useState(false);
+
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   const currentIngredients = useAppSelector(
     getBurgerConstructorCurrentIngredients
@@ -53,6 +58,12 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
   const isOrderLoading = useAppSelector(getOrderLoaded);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isOrderLoading) {
+      setShowLoader(false);
+    }
+  }, [isOrderLoading]);
 
   useEffect(() => {
     if (currentBun && currentIngredients) {
@@ -79,7 +90,7 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
   };
 
   const postResponse = () => {
-    dispatch(postIDIngredients(burger));
+    dispatch(postIDIngredients(burger, accessToken));
   };
 
   const [, dropTarget] = useDrop({
@@ -140,7 +151,7 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
           </div>
 
           <div className={`mt-10 ${styles.acceptBlock}`}>
-            <PriceItem price={totalPrice} large={true} />
+            <PriceItem price={totalPrice} large={true} columnGap="medium" />
             <Button
               htmlType="button"
               type="primary"
@@ -158,6 +169,9 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
                 if (currentBun && login.isAuthenticated) {
                   setCheckBum(false);
                   setShowModal(true);
+                  if (!isOrderLoading) {
+                    setShowLoader(true);
+                  }
                   postResponse();
                 }
               }}
@@ -168,6 +182,7 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
           <CustomAlert text="выберите булки" active={checkBun && !currentBun} />
         </div>
       </section>
+      {showLoader && <Loader title="Ваш заказ обрабатывается" />}
       {showModal && isOrderLoading && (
         <Modal setState={setShowModal}>
           <OrderDetails orderNumber={orderNumber} />

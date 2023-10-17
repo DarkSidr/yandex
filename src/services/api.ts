@@ -42,7 +42,6 @@ import {
   NEW_PASSWORD_SUCCESS,
   NEW_PASSWORD_FAILURE,
 } from "./actions/newPassword";
-import { AppThunk } from "..";
 import {
   TForgotPasswordForm,
   TProfileForm,
@@ -50,6 +49,12 @@ import {
   TResetPasswordForm,
 } from "../utils/types/commonTypes";
 import { TLoginForm } from "../utils/types/loginTypes";
+import { AppThunk } from "../utils/types";
+import {
+  CURRENT_ORDER_FAILURE,
+  CURRENT_ORDER_REQUEST,
+  CURRENT_ORDER_SUCCESS,
+} from "./actions/currentOrder";
 
 export const register = (form: TRegisterForm): AppThunk => {
   return async function (dispatch) {
@@ -177,7 +182,7 @@ export const user = (
                 redirect: "follow",
                 referrerPolicy: "no-referrer",
               });
-              console.log("токен протух получили userData", userData); // убрать
+              console.log("токен протух получили userData", userData);
               dispatch({
                 type: FETCH_USER_SUCCESS,
                 data: userData,
@@ -192,7 +197,7 @@ export const user = (
                 type: FETCH_USER_FAILURE,
                 error: error,
               });
-              console.log(error);
+              console.error(error);
             });
         }
         dispatch({
@@ -391,7 +396,39 @@ export const updateToken = (refreshToken: null | string): AppThunk => {
           type: FETCH_USER_FAILURE,
           error: error,
         });
-        console.log(error);
+        console.error(error);
+      });
+  };
+};
+
+export const currentOrder = (orderNumber: string | number): AppThunk => {
+  return async function (dispatch) {
+    dispatch({
+      type: CURRENT_ORDER_REQUEST,
+    });
+    return request(`orders/${orderNumber}`, {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    })
+      .then((data) => {
+        dispatch({
+          type: CURRENT_ORDER_SUCCESS,
+          data: data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: CURRENT_ORDER_FAILURE,
+          error: err,
+        });
+        console.error(err);
       });
   };
 };

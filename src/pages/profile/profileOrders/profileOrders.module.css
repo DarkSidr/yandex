@@ -1,0 +1,12 @@
+.menuWrapper {
+  margin-top: 80px;
+}
+
+.ordersWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  max-height: 916px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}

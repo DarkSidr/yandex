@@ -17,7 +17,7 @@ const navList: TNavItem[] = [
     id: 2,
     title: "Лента заказов",
     icon: <ListIcon type="secondary" />,
-    href: "/test",
+    href: "/feed",
   },
 ];
 

@@ -5,14 +5,17 @@ import {
   GET_ORDER_FAILED,
 } from "../../services/actions/order";
 import { TItemBurger } from "../types/commonTypes";
-import { AppThunk } from "../..";
+import { AppThunk } from "../types";
 
-export const postIDIngredients = (ingredients: TItemBurger[]): AppThunk => {
+export const postIDIngredients = (
+  ingredients: TItemBurger[],
+  accessToken: string
+): AppThunk => {
   return async function (dispatch) {
     dispatch({
       type: GET_ORDER_REQUEST,
     });
-    return postData(ingredients)
+    return postData(ingredients, accessToken)
       .then((data) => {
         dispatch({
           type: GET_ORDER_SUCCESS,

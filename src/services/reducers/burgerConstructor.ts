@@ -1,32 +1,13 @@
-import { TBurgerConstructor } from "../../utils/types/burgerConstructorTypes";
+import {
+  TBurgerConstructor,
+  TBurgerConstructorActions,
+} from "../../utils/types/burgerConstructorTypes";
 import {
   ADD_CURRENT_INGREDIENTS,
   ADD_CURRENT_BUN,
   BURGER,
   DELETE_INGREDIENT,
 } from "../actions/burgerConstructor";
-
-type TAddCurrentIngredients = {
-  type: typeof ADD_CURRENT_INGREDIENTS;
-} & TBurgerConstructor;
-
-type TAddCurrentBun = {
-  type: typeof ADD_CURRENT_BUN;
-} & TBurgerConstructor;
-
-type TBurger = {
-  type: typeof BURGER;
-} & TBurgerConstructor;
-
-type TDeleteIngredient = {
-  type: typeof DELETE_INGREDIENT;
-} & TBurgerConstructor;
-
-type TAction =
-  | TAddCurrentIngredients
-  | TAddCurrentBun
-  | TBurger
-  | TDeleteIngredient;
 
 const initialState: TBurgerConstructor = {
   bun: null,
@@ -37,7 +18,7 @@ const initialState: TBurgerConstructor = {
 
 export const burgerConstructorReducer = (
   state = initialState,
-  action: TAction
+  action: TBurgerConstructorActions
 ) => {
   switch (action.type) {
     case ADD_CURRENT_INGREDIENTS: {

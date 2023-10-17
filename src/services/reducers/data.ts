@@ -1,32 +1,18 @@
-import { TData } from "../../utils/types/dataTypes";
+import { TData, TDataActions } from "../../utils/types/dataTypes";
 import {
   GET_ITEMS_REQUEST,
   GET_ITEMS_SUCCESS,
   GET_ITEMS_FAILED,
 } from "../actions/data";
 
-type TGetItemsRequest = {
-  type: typeof GET_ITEMS_REQUEST;
-} & TData;
-
-type TGetItemsSuccess = {
-  type: typeof GET_ITEMS_SUCCESS;
-} & TData;
-
-type TGetItemsFailed = {
-  type: typeof GET_ITEMS_FAILED;
-} & TData;
-
-type TAction = TGetItemsRequest | TGetItemsSuccess | TGetItemsFailed;
-
 const initialState: TData = {
-  items: [], // все полученные ингредиенты
-  itemsRequest: false, // успешное получение всех ингредиентов
-  itemsFailed: false, // ошибка при получении данных
+  items: [],
+  itemsRequest: false,
+  itemsFailed: false,
   isLoading: null,
 };
 
-export const dataReducer = (state = initialState, action: TAction) => {
+export const dataReducer = (state = initialState, action: TDataActions) => {
   switch (action.type) {
     case GET_ITEMS_REQUEST: {
       return {

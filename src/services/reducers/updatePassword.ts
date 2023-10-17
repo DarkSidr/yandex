@@ -1,32 +1,13 @@
-import { TUpdatePassword } from "../../utils/types/updatePasswordTypes";
+import {
+  TUpdatePassword,
+  TUpdatePasswordActions,
+} from "../../utils/types/updatePasswordTypes";
 import {
   UPDATE_PASSWORD_REQUEST,
   UPDATE_PASSWORD_SUCCESS,
   UPDATE_PASSWORD_RESET,
   UPDATE_PASSWORD_FAILURE,
 } from "../actions/updatePassword";
-
-type TUpdatePasswordRequest = {
-  type: typeof UPDATE_PASSWORD_REQUEST;
-} & TUpdatePassword;
-
-type TUpdatePasswordSuccess = {
-  type: typeof UPDATE_PASSWORD_SUCCESS;
-} & TUpdatePassword;
-
-type TUpdatePasswordReset = {
-  type: typeof UPDATE_PASSWORD_RESET;
-} & TUpdatePassword;
-
-type TUpdatePasswordFailure = {
-  type: typeof UPDATE_PASSWORD_FAILURE;
-} & TUpdatePassword;
-
-type TAction =
-  | TUpdatePasswordRequest
-  | TUpdatePasswordSuccess
-  | TUpdatePasswordReset
-  | TUpdatePasswordFailure;
 
 const initialState: TUpdatePassword = {
   loading: false,
@@ -36,7 +17,7 @@ const initialState: TUpdatePassword = {
 
 export const updatePasswordReducer = (
   state = initialState,
-  action: TAction
+  action: TUpdatePasswordActions
 ) => {
   switch (action.type) {
     case UPDATE_PASSWORD_REQUEST:

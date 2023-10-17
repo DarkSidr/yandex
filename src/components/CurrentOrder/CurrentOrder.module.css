@@ -1,0 +1,46 @@
+.modalWrapper {
+  max-width: 720px;
+  min-width: 720px;
+}
+
+.topTextWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.ingredientsWrapper {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 304px;
+  padding-right: 24px;
+}
+
+.ingredientsRow {
+  display: flex;
+  column-gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconAndName {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  column-gap: 16px;
+  align-items: center;
+}
+
+.modalBottom {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date {
+  color: #8585ad;
+}
