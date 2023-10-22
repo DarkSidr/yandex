@@ -12,7 +12,7 @@ type TWSState = {
   error?: Event;
 } & TWebSocketMessages;
 
-const initialState: TWSState = {
+export const initialState: TWSState = {
   wsConnected: false,
   error: undefined,
   messages: null,

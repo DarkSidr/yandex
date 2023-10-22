@@ -6,7 +6,7 @@ import {
   LOGIN_FAILURE,
 } from "../actions/login";
 
-const initialState: TLogin = {
+export const initialState: TLogin = {
   user: null,
   loading: false,
   error: null,

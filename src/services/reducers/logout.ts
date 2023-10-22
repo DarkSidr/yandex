@@ -5,7 +5,7 @@ import {
   LOGOUT_FAILURE,
 } from "../actions/logout";
 
-const initialState: TLogout = {
+export const initialState: TLogout = {
   loading: false,
   error: null,
 };

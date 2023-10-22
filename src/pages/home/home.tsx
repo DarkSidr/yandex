@@ -28,6 +28,7 @@ export const Home = () => {
   const currentItems = useAppSelector(getBurgerConstructorCurrentIngredients);
 
   const itemsIsLoading = useAppSelector(getDataLoading);
+
   const handleDrop = (item: TItemBurger): void => {
     if (item.type === "bun") {
       dispatch({

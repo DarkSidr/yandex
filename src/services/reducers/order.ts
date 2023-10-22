@@ -5,7 +5,7 @@ import {
   GET_ORDER_FAILED,
 } from "../actions/order";
 
-const initialState: TOrder = {
+export const initialState: TOrder = {
   success: false,
   orderNumber: 0,
   name: "",

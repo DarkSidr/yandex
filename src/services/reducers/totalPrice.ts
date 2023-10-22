@@ -4,7 +4,7 @@ import {
 } from "../../utils/types/totalPriceTypes";
 import { TOTAL_PRICE } from "../actions/totalPrice";
 
-const initialState: TTotalPrice = {
+export const initialState: TTotalPrice = {
   totalPrice: 0,
 };
 

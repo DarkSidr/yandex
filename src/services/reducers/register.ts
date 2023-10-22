@@ -6,7 +6,7 @@ import {
   REGISTER_FAILURE,
 } from "../actions/register";
 
-const initialState: TRegister = {
+export const initialState: TRegister = {
   user: null,
   loading: false,
   error: null,
