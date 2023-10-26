@@ -104,7 +104,11 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
     <>
       <section className="mt-25 pl-4">
         <div className={styles.burgerConstructor}>
-          <div className={`${styles.wrapper}`} ref={dropTarget}>
+          <div
+            className={`${styles.wrapper}`}
+            ref={dropTarget}
+            data-cy-dropZone
+          >
             {currentBun ? (
               <div className="pl-8">
                 <ConstructorElement
@@ -156,6 +160,7 @@ const BurgerConstructor = ({ onDropHandler }: TBurgerConstructorComponent) => {
               htmlType="button"
               type="primary"
               size="large"
+              data-cy-orderSubmit
               onClick={() => {
                 if (!login.isAuthenticated) {
                   navigate("/login", {
