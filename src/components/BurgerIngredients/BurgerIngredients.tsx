@@ -114,7 +114,7 @@ const BurgerIngredients = () => {
                   ? "Соусы"
                   : "Начинки"}
               </h2>
-              <ul className={`${styles.list} pl-4`} data-cy-items>
+              <ul className={`${styles.list} pl-4`} data-cy="ingredients">
                 {sortData[type].map((item) => (
                   <BurgerIngredientsItem key={item._id} item={item} />
                 ))}

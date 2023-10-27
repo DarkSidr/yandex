@@ -1,19 +1,22 @@
 describe("app works correctly constructor", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000");
+    cy.visit("/");
     cy.intercept("GET", "api/ingredients", { fixture: "ingredients.json" }).as(
       "ingredients"
     );
-
     window.localStorage.setItem(
       "refreshToken",
       JSON.stringify("test-refreshToken")
     );
     cy.setCookie("accessToken", "test-accessToken");
 
-    cy.get("[data-cy-items]").children().first().as("bun");
-    cy.get("[data-cy-items]").children().eq(2).as("sause");
-    cy.get("[data-cy-items]").children().last().as("main");
+    cy.get('[data-cy="ingredients"]').as("items");
+    cy.get('[data-cy="dropZone"]').as("drop");
+    cy.get('[data-cy="orderSubmit"]').as("orderSubmit");
+
+    cy.get("@items").children().first().as("bun");
+    cy.get("@items").children().eq(2).as("sause");
+    cy.get("@items").children().last().as("main");
   });
 
   it("should open main page, loaded ingredients", function () {
@@ -26,7 +29,7 @@ describe("app works correctly constructor", () => {
   });
 
   it("create order", function () {
-    cy.get("[data-cy-orderSubmit]").click();
+    cy.get("@orderSubmit").click();
     cy.intercept("POST", "api/auth/login", { fixture: "userLogin.json" }).as(
       "userLogin"
     );
@@ -38,13 +41,13 @@ describe("app works correctly constructor", () => {
     cy.intercept("GET", "api/auth/user", { fixture: "user.json" }).as("user");
 
     cy.get("@bun").trigger("dragstart");
-    cy.get("[data-cy-dropZone]").trigger("drop");
+    cy.get("@drop").trigger("drop");
     cy.get("@sause").trigger("dragstart");
-    cy.get("[data-cy-dropZone]").trigger("drop");
+    cy.get("@drop").trigger("drop");
     cy.get("@main").trigger("dragstart");
-    cy.get("[data-cy-dropZone]").trigger("drop");
+    cy.get("@drop").trigger("drop");
 
-    cy.get("[data-cy-orderSubmit]").click();
+    cy.get("@orderSubmit").click();
 
     cy.intercept("POST", "api/orders", { fixture: "order.json" }).as(
       "postOrder"
