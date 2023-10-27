@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <HashRouter basename="https://darksidr.github.io/yandex/">
+      <HashRouter>
         <App />
       </HashRouter>
     </Provider>
