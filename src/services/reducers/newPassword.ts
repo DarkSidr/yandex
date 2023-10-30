@@ -9,7 +9,7 @@ import {
   NEW_PASSWORD_FAILURE,
 } from "../actions/newPassword";
 
-const initialState: TNewPassword = {
+export const initialState: TNewPassword = {
   loading: false,
   error: null,
   newPassword: null,

@@ -5,7 +5,7 @@ import {
   GET_ITEMS_FAILED,
 } from "../actions/data";
 
-const initialState: TData = {
+export const initialState: TData = {
   items: [],
   itemsRequest: false,
   itemsFailed: false,

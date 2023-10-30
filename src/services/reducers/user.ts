@@ -5,7 +5,7 @@ import {
   FETCH_USER_FAILURE,
 } from "../actions/user";
 
-const initialState: TUser = {
+export const initialState: TUser = {
   data: null,
   loading: false,
   error: null,

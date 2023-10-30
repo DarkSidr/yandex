@@ -9,7 +9,7 @@ import {
   UPDATE_PASSWORD_FAILURE,
 } from "../actions/updatePassword";
 
-const initialState: TUpdatePassword = {
+export const initialState: TUpdatePassword = {
   loading: false,
   error: null,
   updatePassword: null,

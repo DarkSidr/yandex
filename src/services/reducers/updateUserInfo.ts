@@ -8,7 +8,7 @@ import {
   UPDATE_USER_INFO_FAILURE,
 } from "../actions/updateUserInfo";
 
-const initialState: TUpdateUserInfo = {
+export const initialState: TUpdateUserInfo = {
   user: null,
   loading: false,
   error: null,

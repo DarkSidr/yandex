@@ -9,7 +9,7 @@ import {
   CURRENT_ORDER_SUCCESS,
 } from "../actions/currentOrder";
 
-const initialState: TCurrentOrder = {
+export const initialState: TCurrentOrder = {
   isLoaded: false,
   data: null,
   error: null,

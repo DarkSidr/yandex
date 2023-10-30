@@ -9,7 +9,7 @@ import {
   DELETE_INGREDIENT,
 } from "../actions/burgerConstructor";
 
-const initialState: TBurgerConstructor = {
+export const initialState: TBurgerConstructor = {
   bun: null,
   ingredients: [],
   burger: [],
